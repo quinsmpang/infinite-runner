@@ -1,14 +1,18 @@
 package games.tinywings {
 
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.geom.Matrix;
+	
+	import games.hungryhero.Assets;
+	
 	import nape.phys.Body;
-
+	
+	import starling.display.BlendMode;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
-
-	import flash.display.BitmapData;
-	import flash.geom.Matrix;
 
 	/**
 	 * @author Aymeric
@@ -23,6 +27,9 @@ package games.tinywings {
 		
 		private var _flagAdded:Boolean = false;
 
+		[Embed(source="/../embed/noise.png")]
+		private static const Noise:Class;
+		
 		public function HillsTexture() {
 		}
 		
@@ -31,7 +38,18 @@ package games.tinywings {
 			_sliceWidth = sliceWidth;
 			_sliceHeight = sliceHeight;
 			
-			_groundTexture = Texture.fromBitmapData(new BitmapData(_sliceWidth, _sliceHeight, false, 0x2277ee));
+//			var myBitmapData:BitmapData = new BitmapData( 400, 300 );
+//			myBitmapData.perlinNoise( 400, 300, 5, 67, true, true, 4, true);
+			
+//			
+			var texture:Texture = Texture.fromBitmap( new Noise() );
+			
+//			var myBitmapData:BitmapData = new BitmapData( _sliceWidth, _sliceHeight );
+//			myBitmapData.perlinNoise( _sliceWidth, _sliceHeight, 5, 67, true, true, 4, true);
+			
+			_groundTexture = texture;
+//			_groundTexture = Texture.fromBitmapData(myBitmapData);
+//			_groundTexture = Texture.fromBitmapData(new BitmapData(_sliceWidth, _sliceHeight, false, 0x2277ee));
 			
 			_images = new Vector.<Image>();
 			
@@ -55,6 +73,7 @@ package games.tinywings {
 		public function createSlice(rider:Body, nextYPoint:uint, currentYPoint:uint):void {
 			
 			var image:Image = new Image(_groundTexture);
+			image.blendMode = BlendMode.MULTIPLY;
 			addChild(image);
 			
 			_images.push(image);

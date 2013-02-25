@@ -24,6 +24,12 @@ package games.tinywings {
 		[Embed(source="/../embed/1x/heroMobile.png")]
 		public static const HeroPng:Class;
 		
+		[Embed(source="/../embed/mickey/mickeyrun.xml", mimeType="application/octet-stream")]
+		public static const MickeyRunConfig:Class;
+		
+		[Embed(source="/../embed/mickey/mickeyrun.png")]
+		public static const MickeyRunPng:Class;
+		
 		private var _nape:Nape;
 		private var _hero:BirdHero;
 		
@@ -41,12 +47,19 @@ package games.tinywings {
 			//_nape.visible = true;
 			add(_nape);
 			
-			var bitmap:Bitmap = new HeroPng();
+//			var bitmap:Bitmap = new HeroPng();
+//			var texture:Texture = Texture.fromBitmap(bitmap);
+//			var xml:XML = XML(new HeroConfig());
+//			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
+//			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
+//			StarlingArt.setLoopAnimations(["fly"]);
+			
+			var bitmap:Bitmap = new MickeyRunPng();
 			var texture:Texture = Texture.fromBitmap(bitmap);
-			var xml:XML = XML(new HeroConfig());
+			var xml:XML = XML(new MickeyRunConfig());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
-			StarlingArt.setLoopAnimations(["fly"]);
+			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["run"], "run", 11, true);
+			StarlingArt.setLoopAnimations(["run"]);
 			
 			_hero = new BirdHero("hero", {radius:20, view:heroAnim, group:1});
 			add(_hero);
@@ -54,12 +67,12 @@ package games.tinywings {
 			_hillsTexture = new HillsTexture();
 
 			var hills:HillsManagingGraphics = new HillsManagingGraphics("hills", 
-				{sliceHeight:800, sliceWidth:30, currentYPoint:stage.stageHeight * 0.5, 
+				{sliceHeight:800, sliceWidth:70, currentYPoint:350, currentXPoint: -10, 
 					widthHills: stage.stageWidth + ( stage.stageWidth * 0.3 ), 
 					registration:"topLeft", view:_hillsTexture});
 			add(hills);
 
-			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.20, stage.stageHeight * 0.65), new Rectangle(0, -int.MAX_VALUE, int.MAX_VALUE, int.MAX_VALUE), new MathVector(.2, .2));
+			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.20, stage.stageHeight * 0.65), new Rectangle(0, -int.MAX_VALUE, int.MAX_VALUE, int.MAX_VALUE), new MathVector(.5, .5));
 			//view.camera.allowZoom = true;
 			//view.camera.zoom( 0.5 );
 
