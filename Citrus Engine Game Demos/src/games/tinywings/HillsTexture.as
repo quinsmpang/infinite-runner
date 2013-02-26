@@ -47,9 +47,9 @@ package games.tinywings {
 //			var myBitmapData:BitmapData = new BitmapData( _sliceWidth, _sliceHeight );
 //			myBitmapData.perlinNoise( _sliceWidth, _sliceHeight, 5, 67, true, true, 4, true);
 			
-			_groundTexture = texture;
+//			_groundTexture = texture;
 //			_groundTexture = Texture.fromBitmapData(myBitmapData);
-//			_groundTexture = Texture.fromBitmapData(new BitmapData(_sliceWidth, _sliceHeight, false, 0x2277ee));
+			_groundTexture = Texture.fromBitmapData(new BitmapData(_sliceWidth, _sliceHeight, false, 0x2277ee));
 			
 			_images = new Vector.<Image>();
 			
@@ -73,7 +73,7 @@ package games.tinywings {
 		public function createSlice(rider:Body, nextYPoint:uint, currentYPoint:uint):void {
 			
 			var image:Image = new Image(_groundTexture);
-			image.blendMode = BlendMode.MULTIPLY;
+			//image.blendMode = BlendMode.MULTIPLY;
 			addChild(image);
 			
 			_images.push(image);

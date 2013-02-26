@@ -12,6 +12,7 @@ package games.tinywings {
 	import starling.core.starling_internal;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	import starling.textures.TextureSmoothing;
 
 	/**
 	 * @author Aymeric
@@ -24,10 +25,16 @@ package games.tinywings {
 		[Embed(source="/../embed/1x/heroMobile.png")]
 		public static const HeroPng:Class;
 		
-		[Embed(source="/../embed/mickey/mickeyrun.xml", mimeType="application/octet-stream")]
+//		[Embed(source="/../embed/mickey/mickeyrun.xml", mimeType="application/octet-stream")]
+//		public static const MickeyRunConfig:Class;
+//		
+//		[Embed(source="/../embed/mickey/mickeyrun.png")]
+//		public static const MickeyRunPng:Class;
+		
+		[Embed(source="/../embed/mickey/mickeyrunshoebox.xml", mimeType="application/octet-stream")]
 		public static const MickeyRunConfig:Class;
 		
-		[Embed(source="/../embed/mickey/mickeyrun.png")]
+		[Embed(source="/../embed/mickey/mickeyrunshoebox.png")]
 		public static const MickeyRunPng:Class;
 		
 		private var _nape:Nape;
@@ -55,11 +62,12 @@ package games.tinywings {
 //			StarlingArt.setLoopAnimations(["fly"]);
 			
 			var bitmap:Bitmap = new MickeyRunPng();
+			bitmap.smoothing = TextureSmoothing.NONE;
 			var texture:Texture = Texture.fromBitmap(bitmap);
 			var xml:XML = XML(new MickeyRunConfig());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["run"], "run", 11, true);
-			StarlingArt.setLoopAnimations(["run"]);
+			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_"], "slice_", 12, true, "none");
+			StarlingArt.setLoopAnimations(["slice_"]);
 			
 			_hero = new BirdHero("hero", {radius:20, view:heroAnim, group:1});
 			add(_hero);
@@ -67,7 +75,7 @@ package games.tinywings {
 			_hillsTexture = new HillsTexture();
 
 			var hills:HillsManagingGraphics = new HillsManagingGraphics("hills", 
-				{sliceHeight:800, sliceWidth:70, currentYPoint:350, currentXPoint: -10, 
+				{sliceHeight:500, sliceWidth:70, currentYPoint:40, //currentXPoint: 10, 
 					widthHills: stage.stageWidth + ( stage.stageWidth * 0.3 ), 
 					registration:"topLeft", view:_hillsTexture});
 			add(hills);
