@@ -20,7 +20,7 @@ package games.tinywings {
 		}
 
 		override protected function _pushHill():void {
-			_currentAmplitude = -20;
+			//_currentAmplitude = -20;
 			
 			if (view)
 				(view as HillsTexture).createSlice(_body, _nextYPoint, currentYPoint);

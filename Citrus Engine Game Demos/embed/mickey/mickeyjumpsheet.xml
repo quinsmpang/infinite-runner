@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:8604ae9c187ae13c2fe8da6027929cf6$ -->
+<TextureAtlas imagePath="mickeyrunshoebox.png">
+    <SubTexture name="mickeyjump_01" x="2" y="2" width="122" height="170"/>
+    <SubTexture name="mickeyjump_02" x="2" y="174" width="122" height="170"/>
+    <SubTexture name="mickeyjump_03" x="2" y="346" width="122" height="170"/>
+    <SubTexture name="mickeyjump_04" x="2" y="518" width="122" height="170"/>
+    <SubTexture name="mickeyjump_05" x="2" y="690" width="122" height="170"/>
+    <SubTexture name="mickeyjump_06" x="2" y="862" width="122" height="170"/>
+    <SubTexture name="mickeyjump_07" x="2" y="1034" width="122" height="170"/>
+    <SubTexture name="mickeyjump_08" x="2" y="1206" width="122" height="170"/>
+    <SubTexture name="mickeyjump_09" x="2" y="1378" width="122" height="170"/>
+    <SubTexture name="mickeyjump_10" x="2" y="1550" width="122" height="170"/>
+    <SubTexture name="mickeyjump_11" x="2" y="1722" width="122" height="170"/>
+    <SubTexture name="mickeyjump_12" x="2" y="1894" width="122" height="87"/>
+</TextureAtlas>

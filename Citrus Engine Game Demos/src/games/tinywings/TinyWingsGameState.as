@@ -37,6 +37,12 @@ package games.tinywings {
 		[Embed(source="/../embed/mickey/mickeyrunshoebox.png")]
 		public static const MickeyRunPng:Class;
 		
+		[Embed(source="/../embed/mickey/mickeyall.xml", mimeType="application/octet-stream")]
+		public static const MickeyConfig:Class;
+		
+		[Embed(source="/../embed/mickey/mickeyall.png")]
+		public static const MickeyPng:Class;
+		
 		private var _nape:Nape;
 		private var _hero:BirdHero;
 		
@@ -61,12 +67,12 @@ package games.tinywings {
 //			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
 //			StarlingArt.setLoopAnimations(["fly"]);
 			
-			var bitmap:Bitmap = new MickeyRunPng();
-			bitmap.smoothing = TextureSmoothing.NONE;
+			var bitmap:Bitmap = new MickeyPng();
+			bitmap.smoothing = TextureSmoothing.BILINEAR;
 			var texture:Texture = Texture.fromBitmap(bitmap);
-			var xml:XML = XML(new MickeyRunConfig());
+			var xml:XML = XML(new MickeyConfig());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_"], "slice_", 12, true, "none");
+			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump_"], "slice_", 12, true, "bilinear");
 			StarlingArt.setLoopAnimations(["slice_"]);
 			
 			_hero = new BirdHero("hero", {radius:20, view:heroAnim, group:1});
@@ -80,7 +86,7 @@ package games.tinywings {
 					registration:"topLeft", view:_hillsTexture});
 			add(hills);
 
-			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.20, stage.stageHeight * 0.65), new Rectangle(0, -int.MAX_VALUE, int.MAX_VALUE, int.MAX_VALUE), new MathVector(.5, .5));
+			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.20, stage.stageHeight * 0.65), new Rectangle(0, 0, int.MAX_VALUE, int.MAX_VALUE), new MathVector(.5, .5));
 			//view.camera.allowZoom = true;
 			//view.camera.zoom( 0.5 );
 

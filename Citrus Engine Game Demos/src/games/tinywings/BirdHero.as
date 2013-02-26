@@ -42,14 +42,14 @@ package games.tinywings {
 
 			var velocity:Vec2 = _body.velocity;
 			
-			if ( velocity.x > 200 ) velocity.x -= 5;
-			else velocity.x = 200;
+			if ( velocity.x > 400 ) velocity.x -= 1;
+			else velocity.x = 400;
 			
 			if (_mobileInput.screenTouched) {
 
 				if (_onGround) {
 
-					velocity.x = 600;
+					velocity.x = 800;
 					velocity.y = -jumpHeight;
 					_onGround = false;
 
@@ -66,12 +66,14 @@ package games.tinywings {
 
 		private function _updateAnimation():void {
 
-//			if (_mobileInput.screenTouched) {
-//
+			if (_mobileInput.screenTouched) {
+
 //				_animation = _body.velocity.y < 0 ? "jump" : "ascent";
-//
-//			} else if (_onGround)
-//				_animation = "fly";
+				_animation = "mickeyjump_";//_body.velocity.y < 0 ? "jump" : "ascent";
+
+			} 
+			else if (_onGround)
+				_animation = "slice_";
 //			else
 //				_animation = "descent";
 		}

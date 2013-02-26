@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:96e710fbdcba1c2ff96f9b44f420c4cf$ -->
+<TextureAtlas imagePath="mickeyall.png">
+    <SubTexture name="mickeyjump_01" x="2" y="2" width="122" height="136"/>
+    <SubTexture name="mickeyjump_02" x="126" y="2" width="122" height="136"/>
+    <SubTexture name="mickeyjump_03" x="250" y="2" width="122" height="136"/>
+    <SubTexture name="mickeyjump_04" x="374" y="2" width="122" height="136"/>
+    <SubTexture name="mickeyjump_05" x="2" y="140" width="122" height="136"/>
+    <SubTexture name="mickeyjump_06" x="126" y="140" width="122" height="136"/>
+    <SubTexture name="mickeyjump_07" x="250" y="140" width="122" height="136"/>
+    <SubTexture name="mickeyjump_08" x="374" y="140" width="122" height="136"/>
+    <SubTexture name="mickeyjump_09" x="2" y="278" width="122" height="136"/>
+    <SubTexture name="mickeyjump_10" x="126" y="278" width="122" height="136"/>
+    <SubTexture name="mickeyjump_11" x="250" y="278" width="122" height="136"/>
+    <SubTexture name="mickeyjump_12" x="374" y="278" width="122" height="136"/>
+    <SubTexture name="slice_01" x="2" y="416" width="122" height="136"/>
+    <SubTexture name="slice_02" x="126" y="416" width="122" height="136"/>
+    <SubTexture name="slice_03" x="250" y="416" width="122" height="136"/>
+    <SubTexture name="slice_04" x="374" y="416" width="122" height="136"/>
+    <SubTexture name="slice_05" x="2" y="554" width="122" height="136"/>
+    <SubTexture name="slice_06" x="126" y="554" width="122" height="136"/>
+    <SubTexture name="slice_07" x="250" y="554" width="122" height="136"/>
+    <SubTexture name="slice_08" x="374" y="554" width="122" height="136"/>
+    <SubTexture name="slice_09" x="2" y="692" width="122" height="136"/>
+    <SubTexture name="slice_10" x="126" y="692" width="122" height="136"/>
+    <SubTexture name="slice_11" x="250" y="692" width="122" height="136"/>
+</TextureAtlas>
