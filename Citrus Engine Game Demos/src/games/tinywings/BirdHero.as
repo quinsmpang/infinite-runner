@@ -69,13 +69,13 @@ package games.tinywings {
 			if (_mobileInput.screenTouched) {
 
 //				_animation = _body.velocity.y < 0 ? "jump" : "ascent";
-				_animation = "mickeyjump_";//_body.velocity.y < 0 ? "jump" : "ascent";
+				_animation = "mickeyjump2_";//_body.velocity.y < 0 ? "jump" : "ascent";
 
 			} 
 			else if (_onGround)
 				_animation = "slice_";
-//			else
-//				_animation = "descent";
+			else
+				_animation = "mickeythrow_";
 		}
 
 		override protected function createConstraint():void {

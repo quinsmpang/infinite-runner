@@ -72,7 +72,7 @@ package games.tinywings {
 			var texture:Texture = Texture.fromBitmap(bitmap);
 			var xml:XML = XML(new MickeyConfig());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump_"], "slice_", 12, true, "bilinear");
+			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump_", "mickeyjump2_", "mickeythrow_"], "slice_", 12, true, "bilinear");
 			StarlingArt.setLoopAnimations(["slice_"]);
 			
 			_hero = new BirdHero("hero", {radius:20, view:heroAnim, group:1});
@@ -81,7 +81,7 @@ package games.tinywings {
 			_hillsTexture = new HillsTexture();
 
 			var hills:HillsManagingGraphics = new HillsManagingGraphics("hills", 
-				{sliceHeight:500, sliceWidth:70, currentYPoint:40, //currentXPoint: 10, 
+				{sliceHeight:500, sliceWidth:70, currentYPoint:350, //currentXPoint: 10, 
 					widthHills: stage.stageWidth + ( stage.stageWidth * 0.3 ), 
 					registration:"topLeft", view:_hillsTexture});
 			add(hills);

@@ -164,14 +164,49 @@
             <filename>shoebox extracts/slice_09.png</filename>
             <filename>shoebox extracts/slice_10.png</filename>
             <filename>shoebox extracts/slice_11.png</filename>
+            <filename>shoebox extracts/mickeythrow_01.png</filename>
+            <filename>shoebox extracts/mickeythrow_02.png</filename>
+            <filename>shoebox extracts/mickeythrow_03.png</filename>
+            <filename>shoebox extracts/mickeythrow_04.png</filename>
+            <filename>shoebox extracts/mickeythrow_05.png</filename>
+            <filename>shoebox extracts/mickeypush_01.png</filename>
+            <filename>shoebox extracts/mickeypush_02.png</filename>
+            <filename>shoebox extracts/mickeypush_03.png</filename>
+            <filename>shoebox extracts/mickeypush_04.png</filename>
+            <filename>shoebox extracts/mickeypush_05.png</filename>
+            <filename>shoebox extracts/mickeypush_06.png</filename>
+            <filename>shoebox extracts/mickeyjump2_01.png</filename>
+            <filename>shoebox extracts/mickeyjump2_02.png</filename>
+            <filename>shoebox extracts/mickeyjump2_03.png</filename>
+            <filename>shoebox extracts/mickeyjump2_04.png</filename>
+            <filename>shoebox extracts/mickeyjump2_05.png</filename>
+            <filename>shoebox extracts/mickeyjump2_06.png</filename>
+            <filename>shoebox extracts/mickeyjump2_07.png</filename>
+            <filename>shoebox extracts/mickeyjump2_08.png</filename>
+            <filename>shoebox extracts/mickeyjump2_09.png</filename>
+            <filename>shoebox extracts/mickeyjump2_10.png</filename>
+            <filename>shoebox extracts/mickeyjump2_11.png</filename>
+            <filename>shoebox extracts/mickeyfall_01.png</filename>
+            <filename>shoebox extracts/mickeyfall_02.png</filename>
+            <filename>shoebox extracts/mickeyfall_03.png</filename>
+            <filename>shoebox extracts/mickeyfall_04.png</filename>
+            <filename>shoebox extracts/mickeyfall_05.png</filename>
+            <filename>shoebox extracts/mickeyfall_06.png</filename>
+            <filename>shoebox extracts/mickeyfall_07.png</filename>
+            <filename>shoebox extracts/mickeyfall_08.png</filename>
+            <filename>shoebox extracts/mickeyedge_01.png</filename>
+            <filename>shoebox extracts/mickeyedge_02.png</filename>
+            <filename>shoebox extracts/mickeyedge_03.png</filename>
+            <filename>shoebox extracts/mickeyedge_04.png</filename>
+            <filename>shoebox extracts/mickeyedge_05.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
         <key>replaceList</key>
         <array/>
         <key>commonDivisorX</key>
-        <uint>118</uint>
+        <uint>160</uint>
         <key>commonDivisorY</key>
-        <uint>132</uint>
+        <uint>150</uint>
     </struct>
 </data>

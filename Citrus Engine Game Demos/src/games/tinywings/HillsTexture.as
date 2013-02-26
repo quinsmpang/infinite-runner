@@ -49,7 +49,7 @@ package games.tinywings {
 			
 //			_groundTexture = texture;
 //			_groundTexture = Texture.fromBitmapData(myBitmapData);
-			_groundTexture = Texture.fromBitmapData(new BitmapData(_sliceWidth, _sliceHeight, false, 0x2277ee));
+			_groundTexture = Texture.fromBitmapData(new BitmapData(_sliceWidth, _sliceHeight, false, 0xaaaaaa));
 			
 			_images = new Vector.<Image>();
 			
