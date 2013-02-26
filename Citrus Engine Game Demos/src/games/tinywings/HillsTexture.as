@@ -30,6 +30,9 @@ package games.tinywings {
 		[Embed(source="/../embed/noise.png")]
 		private static const Noise:Class;
 		
+		[Embed(source="/../embed/greengradient.png")]
+		private static const GreenGradient:Class;
+		
 		public function HillsTexture() {
 		}
 		
@@ -42,14 +45,14 @@ package games.tinywings {
 //			myBitmapData.perlinNoise( 400, 300, 5, 67, true, true, 4, true);
 			
 //			
-			var texture:Texture = Texture.fromBitmap( new Noise() );
+			var texture:Texture = Texture.fromBitmap( new GreenGradient() );
 			
 //			var myBitmapData:BitmapData = new BitmapData( _sliceWidth, _sliceHeight );
 //			myBitmapData.perlinNoise( _sliceWidth, _sliceHeight, 5, 67, true, true, 4, true);
 			
-//			_groundTexture = texture;
+			_groundTexture = texture;
 //			_groundTexture = Texture.fromBitmapData(myBitmapData);
-			_groundTexture = Texture.fromBitmapData(new BitmapData(_sliceWidth, _sliceHeight, false, 0xaaaaaa));
+//			_groundTexture = Texture.fromBitmapData(new BitmapData(_sliceWidth, _sliceHeight, false, 0xaaaaaa));
 			
 			_images = new Vector.<Image>();
 			

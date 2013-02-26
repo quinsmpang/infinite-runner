@@ -7,6 +7,8 @@ package games.tinywings {
 	 */
 	public class HillsManagingGraphics extends Hills {
 
+		private var isFirstTime:Boolean = true;
+		
 		public function HillsManagingGraphics(name:String, params:Object = null) {
 			super(name, params);
 		}
@@ -20,7 +22,10 @@ package games.tinywings {
 		}
 
 		override protected function _pushHill():void {
-			//_currentAmplitude = -20;
+			if ( !isFirstTime ) { 
+				_currentAmplitude = 30;
+				isFirstTime = false;
+			}
 			
 			if (view)
 				(view as HillsTexture).createSlice(_body, _nextYPoint, currentYPoint);

@@ -15,7 +15,7 @@ package games.tinywings {
 	 */
 	public class BirdHero extends Hero {
 
-		public var jumpDecceleration:Number = 20;
+		public var jumpDecceleration:Number = 2;
 
 		private var _mobileInput:TouchInput;
 		private var _preListener:PreListener;
@@ -24,6 +24,9 @@ package games.tinywings {
 
 			super(name, params);
 
+			jumpAcceleration += 10;
+			jumpHeight += 20;
+			
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
 		}
@@ -42,14 +45,18 @@ package games.tinywings {
 
 			var velocity:Vec2 = _body.velocity;
 			
-			if ( velocity.x > 400 ) velocity.x -= 1;
-			else velocity.x = 400;
+			if (velocity.x < 400) velocity.x = 400;
 			
 			if (_mobileInput.screenTouched) {
 
+				velocity.x *= 1.5;
+				if (velocity.x > 1000) {
+					velocity.x = 1000;
+				}
+				
 				if (_onGround) {
 
-					velocity.x = 800;
+					//velocity.x = 800;
 					velocity.y = -jumpHeight;
 					_onGround = false;
 
@@ -57,6 +64,9 @@ package games.tinywings {
 					velocity.y -= jumpAcceleration;
 				else
 					velocity.y -= jumpDecceleration;
+			} else {
+				if ( velocity.x > 400 ) velocity.x *= 0.99999;
+				//else velocity.x = 200;	
 			}
 
 			_body.velocity = velocity;
@@ -74,8 +84,8 @@ package games.tinywings {
 			} 
 			else if (_onGround)
 				_animation = "slice_";
-			else
-				_animation = "mickeythrow_";
+//			else
+//				_animation = "mickeythrow_";
 		}
 
 		override protected function createConstraint():void {

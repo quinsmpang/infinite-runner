@@ -4,7 +4,7 @@ package {
 	
 	import games.tinywings.TinyWingsGameState;
 	
-	[SWF(frameRate="60", width="960", height="640", backgroundColor="0xffffff")]
+	[SWF(frameRate="60", width="960", height="640", backgroundColor="0xcccccc")]
 	
 	/**
 	 * @author Aymeric
