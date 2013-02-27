@@ -22,7 +22,7 @@ package games.tinywings {
 		}
 
 		override protected function _pushHill():void {
-			if ( !isFirstTime ) { 
+			if ( isFirstTime ) { 
 				_currentAmplitude = 30;
 				isFirstTime = false;
 			}

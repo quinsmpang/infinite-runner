@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:136b37a253f2424576137eccac4ed7bf$ -->
+<TextureAtlas imagePath="mickeyrunshoebox.png">
+    <SubTexture name="slice_01" x="2" y="2" width="122" height="170"/>
+    <SubTexture name="slice_02" x="2" y="174" width="122" height="170"/>
+    <SubTexture name="slice_03" x="2" y="346" width="122" height="170"/>
+    <SubTexture name="slice_04" x="2" y="518" width="122" height="170"/>
+    <SubTexture name="slice_05" x="2" y="690" width="122" height="170"/>
+    <SubTexture name="slice_06" x="2" y="862" width="122" height="170"/>
+    <SubTexture name="slice_07" x="2" y="1034" width="122" height="170"/>
+    <SubTexture name="slice_08" x="2" y="1206" width="122" height="170"/>
+    <SubTexture name="slice_09" x="2" y="1378" width="122" height="170"/>
+    <SubTexture name="slice_10" x="2" y="1550" width="122" height="170"/>
+    <SubTexture name="slice_11" x="2" y="1722" width="122" height="170"/>
+</TextureAtlas>
