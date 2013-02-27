@@ -19,6 +19,9 @@ package games.tinywings {
 
 		private var _mobileInput:TouchInput;
 		private var _preListener:PreListener;
+		
+		private var _minSpeed:uint = 100;
+		private var _maxSpeed:uint = 400;
 
 		public function BirdHero(name:String, params:Object = null) {
 
@@ -45,13 +48,13 @@ package games.tinywings {
 
 			var velocity:Vec2 = _body.velocity;
 			
-			if (velocity.x < 400) velocity.x = 400;
+			if (velocity.x < _minSpeed) velocity.x = _minSpeed;
 			
 			if (_mobileInput.screenTouched) {
 
 				velocity.x *= 1.5;
-				if (velocity.x > 1000) {
-					velocity.x = 1000;
+				if (velocity.x > _maxSpeed) {
+					velocity.x = _maxSpeed;
 				}
 				
 				if (_onGround) {
@@ -65,7 +68,7 @@ package games.tinywings {
 				else
 					velocity.y -= jumpDecceleration;
 			} else {
-				if ( velocity.x > 400 ) velocity.x *= 0.99999;
+				if ( velocity.x > _minSpeed ) velocity.x *= 0.99999;
 				//else velocity.x = 200;	
 			}
 

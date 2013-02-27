@@ -2,7 +2,7 @@ package {
 
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Platform;
-
+	
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionType;
 	import nape.callbacks.PreCallback;
@@ -19,13 +19,18 @@ package {
 
 		private var _mobileInput:TouchInput;
 		private var _preListener:PreListener;
+		
+		private var _minSpeed:uint = 100;
+		private var _maxSpeed:uint = 400;
+		
+		private var _zoomModified:Boolean = false;
 
 		public function BirdHero(name:String, params:Object = null) {
 
 			super(name, params);
 
-			jumpAcceleration += 10;
-			jumpHeight += 20;
+			jumpAcceleration += 7;
+			//jumpHeight += 20;
 			
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
@@ -45,30 +50,45 @@ package {
 
 			var velocity:Vec2 = _body.velocity;
 			
-			if (velocity.x < 400) velocity.x = 400;
+			if (velocity.x < _minSpeed) velocity.x = _minSpeed;
 			
 			if (_mobileInput.screenTouched) {
 
 				velocity.x *= 1.5;
-				if (velocity.x > 1000) {
-					velocity.x = 1000;
+				if (velocity.x > _maxSpeed) {
+					velocity.x = _maxSpeed;
 				}
 				
 				if (_onGround) {
 
+					//if (Math.random() > 0.5)
+						//this._ce.state.view.camera.setZoom( 0.8 );
+					//else
+						//this._ce.state.view.camera.setZoom( 1.0 );
+					
+					_zoomModified = true;
 					//velocity.x = 800;
 					velocity.y = -jumpHeight;
 					_onGround = false;
 
 				} else if (velocity.y < 0)
 					velocity.y -= jumpAcceleration;
-				else
+				else {
 					velocity.y -= jumpDecceleration;
+					
+				}
 			} else {
-				if ( velocity.x > 400 ) velocity.x *= 0.99999;
+				if ( velocity.x > _minSpeed ) velocity.x *= 0.99999;
 				//else velocity.x = 200;	
+//				if ( _onGround ) {
+//					if ( _zoomModified ) {
+//						this._ce.state.view.camera.setZoom( 1.0 );
+//						_zoomModified = false;
+//					}
+//				}
 			}
 
+			//velocity.x = 0;
 			_body.velocity = velocity;
 
 			_updateAnimation();
@@ -98,8 +118,14 @@ package {
 
 		override public function handlePreContact(callback:PreCallback):PreFlag {
 
-			if (callback.int2.userData.myData is Platform)
+			if (callback.int2.userData.myData is Platform) {
 				_onGround = true;
+				
+//				if ( _zoomModified ) {
+//					this._ce.state.view.camera.setZoom( 1 );
+//					_zoomModified = false;
+//				}
+			}
 
 			return PreFlag.ACCEPT;
 		}

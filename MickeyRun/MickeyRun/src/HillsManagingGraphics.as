@@ -1,11 +1,9 @@
 package {
 
-	import citrus.objects.platformer.nape.Hills;
-
 	/**
 	 * @author Aymeric
 	 */
-	public class HillsManagingGraphics extends Hills {
+	public class HillsManagingGraphics extends CustomHills {
 
 		private var isFirstTime:Boolean = true;
 		
