@@ -76,16 +76,25 @@ package {
 			}
 		}
 		
+		private var _currentXPoint:uint = 0;
 		protected function _createSlice():void {
 			
 			// Every time a new hill has to be created this algorithm predicts where the slices will be positioned
 			if (_indexSliceInCurrentHill >= _slicesInCurrentHill) {
-				_slicesInCurrentHill = Math.random() * 40 + 10;
-				_currentAmplitude = Math.random() * 40 - 20;
+				_slicesInCurrentHill = 44;//Math.random() * 40 + 10;
+				_currentAmplitude = Math.random() * 20 + 10;
 				_indexSliceInCurrentHill = 0;
+				_currentXPoint = 0;
 			}
 			// Calculate the position of the next slice
-			_nextYPoint = currentYPoint;// + (Math.sin(((Math.PI / _slicesInCurrentHill) * _indexSliceInCurrentHill)) * _currentAmplitude);
+			//sin(x) + 3.5 * sin(x/2*pi) + 2 * cos(x/pi)
+//			_nextYPoint = Math.sin(((Math.PI / 180) * (-1)));// + (3.5 * Math.sin(currentYPoint/2* Math.PI * (Math.PI/180))) + (Math.cos(180 * (currentYPoint))) ;
+//			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / _slicesInCurrentHill) * _indexSliceInCurrentHill)) * _currentAmplitude);
+
+			_nextYPoint = currentYPoint;// + (Math.sin((( ( Math.PI / 180 ) * currentYPoint) * _indexSliceInCurrentHill)) * _currentAmplitude);
+			
+			// generates 'sine wave' hills:
+			//_nextYPoint = currentYPoint + (Math.sin(((Math.PI / 180 * _slicesInCurrentHill * 4) * _indexSliceInCurrentHill * 4)) * _currentAmplitude);
 			_sliceVectorConstructor[2].y = _nextYPoint - currentYPoint;
 			var slicePolygon:Polygon = new Polygon(_sliceVectorConstructor);
 			_body = new Body(BodyType.STATIC);
@@ -94,6 +103,8 @@ package {
 			_body.position.x = _slicesCreated * sliceWidth;
 			_body.position.y = currentYPoint;
 			_body.space = _nape.space;
+			
+			_currentXPoint += _body.position.x;
 			
 			_pushHill();
 		}

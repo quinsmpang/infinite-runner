@@ -3,19 +3,16 @@ package {
 	import flash.display.Bitmap;
 	import flash.geom.Rectangle;
 	
-	import citrus.core.starling.StarlingCitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
-	import citrus.objects.CitrusSprite;
 	import citrus.objects.NapePhysicsObject;
+	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	
-	import games.hungryhero.com.hsharma.hungryHero.gameElements.GameBackground;
-	
-	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -41,11 +38,11 @@ package {
 //		[Embed(source="/../embed/mickey/mickeyrun.png")]
 //		public static const MickeyRunPng:Class;
 		
-		[Embed(source="/../embed/mickey/mickeyrunshoebox.xml", mimeType="application/octet-stream")]
-		public static const MickeyRunConfig:Class;
-		
-		[Embed(source="/../embed/mickey/mickeyrunshoebox.png")]
-		public static const MickeyRunPng:Class;
+//		[Embed(source="/../embed/mickey/mickeyrunshoebox.xml", mimeType="application/octet-stream")]
+//		public static const MickeyRunConfig:Class;
+//		
+//		[Embed(source="/../embed/mickey/mickeyrunshoebox.png")]
+//		public static const MickeyRunPng:Class;
 		
 		[Embed(source="/../embed/mickey/mickeyall.xml", mimeType="application/octet-stream")]
 		public static const MickeyConfig:Class;
@@ -60,7 +57,7 @@ package {
 		private var bgLayer:Class;
 		
 		private var _nape:Nape;
-		private var _hero:BirdHero;
+		private var _hero:MickeyHero;
 		
 		private var _hillsTexture:HillsTexture;
 		
@@ -90,6 +87,9 @@ package {
 //			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
 //			StarlingArt.setLoopAnimations(["fly"]);
 			
+			// Draw background.
+			bg = new GameBackground("background", null, _hero);
+			add(bg);
 			
 			
 			var bitmap:Bitmap = new MickeyPng();
@@ -97,17 +97,18 @@ package {
 			var texture:Texture = Texture.fromBitmap(bitmap);
 			var xml:XML = XML(new MickeyConfig());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump_", "mickeyjump2_", "mickeythrow_"], "slice_", 12, true, "bilinear");
-			StarlingArt.setLoopAnimations(["slice_"]);
+			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump_", "mickeyjump2_", "mickeythrow_", "mickeypush_"], "slice_", 12, true, "bilinear");
+			StarlingArt.setLoopAnimations(["slice_", "mickeypush_"]);
 			
 			var filter:BlurFilter;// = new BlurFilter(1, 1, 1);
-			filter = BlurFilter.createGlow(0x000000, 1, 0, 1);
+			filter = BlurFilter.createGlow(0x000000);//0x000000, 1, 0.2, 1);
 			//filter = BlurFilter.createDropShadow(4, 0, 0x000000, 1, 0, 1);
-			//filter.blurX = filter.blurY = 5;
+//			filter.blurX = filter.blurY = 1;
+//			filter.setUniformColor(true, 0x000000, 1);
 			
 			heroAnim.filter = filter;
 			
-			_hero = new BirdHero("hero", {radius:20, view:heroAnim, group:1});
+			_hero = new MickeyHero("hero", {x:stage.stageWidth * 0.2, radius:40, view:heroAnim, group:1});
 			add(_hero);
 			
 			_hillsTexture = new HillsTexture();
@@ -118,9 +119,11 @@ package {
 					registration:"topLeft", view:_hillsTexture});
 			add(_hills);
 			
-			// Draw background.
-			//bg = new GameBackground("background");
-			//add(bg);
+//			var floor:Platform = new Platform("floor", {x:-100, y:stage.stageHeight - 100, width:5000, height: 250});
+//			floor.view = new Quad(5100, 250, 0x00dd11);
+//			add(floor);
+			
+			
 			
 			_cameraBounds = new Rectangle(0, 0, int.MAX_VALUE, int.MAX_VALUE);
 
@@ -140,10 +143,24 @@ package {
 				
 				var image:Image = new Image(Texture.fromBitmap(new _cratePng()));
 				
-				var physicObject:NapePhysicsObject = new NapePhysicsObject("physicobject", { x:_hero.x + 600, y:touch.getLocation(this).y, width:35, height:38, view:image} );
+				var physicObject:CrateObject = new CrateObject("physicobject", { x:stage.stageWidth + 100, y:touch.getLocation(this).y, width:35, height:38, view:image} );
 				add(physicObject);
 			}
 			
+		}
+		
+		private function addCrate():void {
+			var image:Image = new Image(Texture.fromBitmap(new _cratePng()));
+			
+			var physicObject:CrateObject = new CrateObject("physicobject", { x:_hero.x + stage.stageWidth, y:_hero.y - 100, width:35, height:38, view:image}, _hero );
+			add(physicObject);	
+		}
+		
+		private function addPlatform():void {
+			var floor:Platform = new SmallPlatform("floor", {x:_hero.x + stage.stageWidth, y:_hero.y - 100, width:600, height: 30}, _hero);
+			floor.view = new Quad(600, 30, 0xB85804);
+			floor.oneWay = true;
+			add(floor);
 		}
 		
 		override public function update(timeDelta:Number):void {
@@ -153,12 +170,16 @@ package {
 			// update the hills here to remove the displacement made by StarlingArt. Called after all operations done.
 			_hillsTexture.update();
 			
-			if (_cameraBounds.y < _hills.currentYPoint - 590) {
-				_cameraBounds.y += 3;
-			} else if ( _cameraBounds.y > _hills.currentYPoint - 610 ) {
-				_cameraBounds.y -= 3;
-			}
-			view.camera.bounds = _cameraBounds;
+			if (Math.random() > 0.99) addCrate();
+			
+			if (Math.random() > 0.99) addPlatform();
+			
+//			if (_cameraBounds.y < _hills.currentYPoint - 590) {
+//				_cameraBounds.y += 3;
+//			} else if ( _cameraBounds.y > _hills.currentYPoint - 610 ) {
+//				_cameraBounds.y -= 3;
+//			}
+			//view.camera.bounds = _cameraBounds;
 			// Set the background's speed based on hero's speed.
 			//bg.speed = _hero.velocity.x;
 //			bg.y = _hero.y;

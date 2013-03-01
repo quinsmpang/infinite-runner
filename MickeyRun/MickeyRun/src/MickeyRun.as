@@ -5,7 +5,7 @@ package
 	
 
 	
-	[SWF(frameRate="60", width="960", height="640", backgroundColor="0xafe1f2")]
+	[SWF(frameRate="60", width="1024", height="768", backgroundColor="0xDEF2FC")]
 	public class MickeyRun extends StarlingCitrusEngine
 	{
 		public function MickeyRun()

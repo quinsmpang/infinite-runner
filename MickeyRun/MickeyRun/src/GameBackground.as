@@ -14,7 +14,7 @@
 package {
 
 	import citrus.objects.CitrusSprite;
-
+	
 	import starling.display.Sprite;
 	
 	/**
@@ -37,7 +37,7 @@ package {
 		private var bgLayer4:BgLayer;
 		
 		/** Current speed of animation of the background. */
-		public var speed:Number = 400;
+		public var speed:Number = 100;
 		
 		/** State of the game. */		
 		public var state:int;
@@ -45,13 +45,17 @@ package {
 		/** Game paused? */
 		public var gamePaused:Boolean = false;
 		
-		public function GameBackground(name:String, params:Object = null)
+		private var _hero:MickeyHero;
+		
+		public function GameBackground(name:String, params:Object = null, _hero:MickeyHero=null)
 		{
 			super(name, params);
 			
 			_container = new Sprite();
 			
 			_view = _container;
+			
+			this._hero = _hero;
 			
 			bgLayer1 = new BgLayer(1);
 			bgLayer1.parallaxDepth = 0.02;
@@ -80,6 +84,7 @@ package {
 			
 			if (!gamePaused)
 			{
+				if ( _hero ) this.x = _hero.x;
 				// Background 1 - Sky
 				bgLayer1.x -= Math.ceil(speed * bgLayer1.parallaxDepth);
 				// Hero flying left

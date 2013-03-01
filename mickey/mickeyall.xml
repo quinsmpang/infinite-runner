@@ -23,9 +23,9 @@
     <SubTexture name="mickeyjump2_06" x="960" y="150" width="160" height="150"/>
     <SubTexture name="mickeyjump2_07" x="1120" y="150" width="160" height="150"/>
     <SubTexture name="mickeyjump2_08" x="1280" y="150" width="160" height="150"/>
-<!--     <SubTexture name="mickeyjump2_09" x="1440" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_10" x="1600" y="150" width="160" height="150"/> -->
-<!--     <SubTexture name="mickeyjump2_11" x="1760" y="150" width="160" height="150"/> -->
+    <SubTexture name="mickeyjump2_09" x="1440" y="150" width="160" height="150"/>
+    <SubTexture name="mickeyjump2_10" x="1600" y="150" width="160" height="150"/>
+    <SubTexture name="mickeyjump2_11" x="1760" y="150" width="160" height="150"/>
     <SubTexture name="mickeyjump_01" x="0" y="300" width="160" height="150"/>
     <SubTexture name="mickeyjump_02" x="160" y="300" width="160" height="150"/>
     <SubTexture name="mickeyjump_03" x="320" y="300" width="160" height="150"/>
