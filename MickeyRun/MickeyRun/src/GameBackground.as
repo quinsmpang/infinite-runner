@@ -74,6 +74,14 @@ package {
 //			_container.addChild(bgLayer4);
 		}
 		
+		private var offsetX:int = 0;
+		public function setHero( _hero:MickeyHero ):void {
+			this._hero = _hero;
+			
+			offsetX = _hero.x;
+			speed = 100;
+		}
+		
 		/**
 		 * On every frame, animate each layer based on its parallax depth and hero's speed. 
 		 * @param event
@@ -84,13 +92,17 @@ package {
 			
 			if (!gamePaused)
 			{
-				if ( _hero ) this.x = _hero.x;
+				if ( _hero != null ) 
+					this.x = _hero.x - offsetX;
 				// Background 1 - Sky
 				bgLayer1.x -= Math.ceil(speed * bgLayer1.parallaxDepth);
 				// Hero flying left
-				if (bgLayer1.x > 0) bgLayer1.x = -_ce.stage.stageWidth;
+//				if (bgLayer1.x > 0) bgLayer1.x = -_ce.stage.stageWidth;
 				// Hero flying right
-				if (bgLayer1.x < -_ce.stage.stageWidth ) bgLayer1.x = 0;
+				if (bgLayer1.x < -_ce.stage.stageWidth ) {
+					this.x = _hero.x - offsetX;
+					bgLayer1.x = 0;
+				}
 				
 				//bgLayer1.y = 0;
 				

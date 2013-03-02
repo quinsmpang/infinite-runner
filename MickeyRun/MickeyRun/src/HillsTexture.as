@@ -33,6 +33,9 @@ package {
 		[Embed(source="/../embed/greengradient.png")]
 		private static const GreenGradient:Class;
 		
+		[Embed(source="/../embed/graygradient.png")]
+		private static const GrayGradient:Class;
+		
 		public function HillsTexture() {
 		}
 		
@@ -45,7 +48,7 @@ package {
 //			myBitmapData.perlinNoise( 400, 300, 5, 67, true, true, 4, true);
 			
 //			
-			var texture:Texture = Texture.fromBitmap( new GreenGradient() );
+			var texture:Texture = Texture.fromBitmap( new GrayGradient() );
 			
 //			var myBitmapData:BitmapData = new BitmapData( _sliceWidth, _sliceHeight );
 //			myBitmapData.perlinNoise( _sliceWidth, _sliceHeight, 5, 67, true, true, 4, true);

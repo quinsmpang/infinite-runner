@@ -25,21 +25,23 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 200;
-		private var _maxSpeed:uint = 400;
+		private var _minSpeed:uint = 180;
+		private var _maxSpeed:uint = 800;
 		
 		private var _zoomModified:Boolean = false;
 		
 		private var _isPushing:Boolean = false;
 		
 		public var _heroSpeed:uint = 100;
+		
+		private var numJump:int = 0;
 
 		public function MickeyHero(name:String, params:Object = null) {
 
 			super(name, params);
 
-			jumpAcceleration += 7;
-			//jumpHeight += 20;
+			//jumpAcceleration += 20;
+			jumpHeight += 100;
 			
 //			this.dynamicFriction = 0;
 //			this.staticFriction = 0;
@@ -57,6 +59,10 @@ package {
 
 			super.destroy();
 		}
+		
+		public function get velocityX():Number {
+			return _body.velocity.x;
+		}
 
 		override public function update(timeDelta:Number):void {
 
@@ -70,9 +76,17 @@ package {
 //				if (velocity.x > _maxSpeed) {
 //					velocity.x = _maxSpeed;
 //				}
+//				if ( numJump < 10 ) {
+//					trace( "jump" );
+//					velocity.y = -jumpHeight;
+//					numJump++;
+//				} else {
+//					//numJump = 0;	
+//				}
 				
 				if (_onGround) {
 
+//					numJump = 0;
 					//if (Math.random() > 0.5)
 						//this._ce.state.view.camera.setZoom( 0.8 );
 					//else
@@ -90,7 +104,8 @@ package {
 					
 				}
 			} else {
-				if ( velocity.x > _minSpeed ) velocity.x *= 0.99999;
+
+//				if ( velocity.x > _minSpeed ) velocity.x *= 0.99999;
 				//else velocity.x = 200;	
 //				if ( _onGround ) {
 //					if ( _zoomModified ) {
@@ -100,6 +115,7 @@ package {
 //				}
 			}
 
+//			if ( velocity.x < _maxSpeed ) velocity.x *= 1.015;
 			//velocity.x = 0;
 			_body.velocity = velocity;
 
@@ -168,6 +184,9 @@ package {
 //					_zoomModified = false;
 //				}
 			} 
+//			else if (callback.int2.userData.myData is CrateObject) {
+//				return PreFlag.IGNORE;	
+//			}
 
 			return PreFlag.ACCEPT;
 		}

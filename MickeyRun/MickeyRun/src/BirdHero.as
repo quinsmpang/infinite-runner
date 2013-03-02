@@ -20,7 +20,7 @@ package {
 		private var _mobileInput:TouchInput;
 		private var _preListener:PreListener;
 		
-		private var _minSpeed:uint = 100;
+		private var _minSpeed:uint = 10;
 		private var _maxSpeed:uint = 400;
 		
 		private var _zoomModified:Boolean = false;
@@ -29,8 +29,9 @@ package {
 
 			super(name, params);
 
-			jumpAcceleration += 7;
+			jumpAcceleration += 200;
 			//jumpHeight += 20;
+			jumpHeight += 500;
 			
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
@@ -78,7 +79,7 @@ package {
 					
 				}
 			} else {
-				if ( velocity.x > _minSpeed ) velocity.x *= 0.99999;
+				if ( velocity.x > _minSpeed ) velocity.x *= 0.9;
 				//else velocity.x = 200;	
 //				if ( _onGround ) {
 //					if ( _zoomModified ) {
@@ -88,7 +89,7 @@ package {
 //				}
 			}
 
-			//velocity.x = 0;
+			velocity.x = 0;
 			_body.velocity = velocity;
 
 			_updateAnimation();
