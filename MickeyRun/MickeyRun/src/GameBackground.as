@@ -47,31 +47,44 @@ package {
 		
 		private var _hero:MickeyHero;
 		
-		public function GameBackground(name:String, params:Object = null, _hero:MickeyHero=null)
+		private var _backGround:Boolean = true;
+		
+		public function GameBackground(name:String, params:Object = null, _hero:MickeyHero=null, backGround:Boolean=true )
 		{
 			super(name, params);
 			
+//			this.parallax = 1;
+			
 			_container = new Sprite();
+			
+			_container.touchable = false;
 			
 			_view = _container;
 			
+			this._backGround = backGround;
+			
 			this._hero = _hero;
 			
-			bgLayer1 = new BgLayer(1);
-			bgLayer1.parallaxDepth = 0.02;
-			_container.addChild(bgLayer1);
+			if ( backGround ) {
+//				bgLayer1 = new BgLayer(1);
+//				bgLayer1.parallaxDepth = 0.02;
+//				_container.addChild(bgLayer1);
+				
+				bgLayer2 = new BgLayer(2);
+				bgLayer2.parallaxDepth = 0.2;
+				_container.addChild(bgLayer2);
+				
+//				bgLayer3 = new BgLayer(3);
+//				bgLayer3.parallaxDepth = 0.5;
+//				_container.addChild(bgLayer3);
 			
-//			bgLayer2 = new BgLayer(2);
-//			bgLayer2.parallaxDepth = 0.2;
-//			_container.addChild(bgLayer2);
-//			
-//			bgLayer3 = new BgLayer(3);
-//			bgLayer3.parallaxDepth = 0.5;
-//			_container.addChild(bgLayer3);
-//			
-//			bgLayer4 = new BgLayer(4);
-//			bgLayer4.parallaxDepth = 1;
-//			_container.addChild(bgLayer4);
+			} else {
+			
+				bgLayer4 = new BgLayer(4);
+				bgLayer4.parallaxDepth = 0.9;
+				_container.addChild(bgLayer4);
+				
+			}
 		}
 		
 		private var offsetX:int = 0;
@@ -79,7 +92,7 @@ package {
 			this._hero = _hero;
 			
 			offsetX = _hero.x;
-			speed = 100;
+			speed = 20;
 		}
 		
 		/**
@@ -94,38 +107,42 @@ package {
 			{
 				if ( _hero != null ) 
 					this.x = _hero.x - offsetX;
-				// Background 1 - Sky
-				bgLayer1.x -= Math.ceil(speed * bgLayer1.parallaxDepth);
-				// Hero flying left
-//				if (bgLayer1.x > 0) bgLayer1.x = -_ce.stage.stageWidth;
-				// Hero flying right
-				if (bgLayer1.x < -_ce.stage.stageWidth ) {
-					this.x = _hero.x - offsetX;
-					bgLayer1.x = 0;
+				
+				speed = _hero.velocityX / 20;
+				
+				if ( _backGround ) {
+				
+					// Background 1 - Sky
+//					bgLayer1.x -= Math.ceil(speed * bgLayer1.parallaxDepth);
+					// Hero flying left
+	//				if (bgLayer1.x > 0) bgLayer1.x = -_ce.stage.stageWidth;
+					// Hero flying right
+//					if (bgLayer1.x < -_ce.stage.stageWidth ) bgLayer1.x = 0;
+					
+					//bgLayer1.y = 0;
+					
+	//				// Background 2 - Hills
+					bgLayer2.x -= Math.ceil(speed * bgLayer2.parallaxDepth);
+	//				// Hero flying left
+	//				if (bgLayer2.x > 0) bgLayer2.x = -_ce.stage.stageWidth;
+	//				// Hero flying right
+					if (bgLayer2.x < -_ce.stage.stageWidth - 100 ) bgLayer2.x = -100;
+	//				
+	//				// Background 3 - Buildings
+//					bgLayer3.x -= Math.ceil(speed * bgLayer3.parallaxDepth);
+	//				// Hero flying left
+	//				if (bgLayer3.x > 0) bgLayer3.x = -_ce.stage.stageWidth;
+	//				// Hero flying right
+//					if (bgLayer3.x < -_ce.stage.stageWidth ) bgLayer3.x = 0;
+				
+				} else {
+	//				// Background 4 - Trees
+					bgLayer4.x -= Math.ceil(speed * bgLayer4.parallaxDepth);
+	//				// Hero flying left
+	//				if (bgLayer4.x > 0) bgLayer4.x = -_ce.stage.stageWidth;
+	//				// Hero flying right
+					if (bgLayer4.x < -_ce.stage.stageWidth ) bgLayer4.x = 0;
 				}
-				
-				//bgLayer1.y = 0;
-				
-//				// Background 2 - Hills
-//				bgLayer2.x -= Math.ceil(speed * bgLayer2.parallaxDepth);
-//				// Hero flying left
-//				if (bgLayer2.x > 0) bgLayer2.x = -_ce.stage.stageWidth;
-//				// Hero flying right
-//				if (bgLayer2.x < -_ce.stage.stageWidth ) bgLayer2.x = 0;
-//				
-//				// Background 3 - Buildings
-//				bgLayer3.x -= Math.ceil(speed * bgLayer3.parallaxDepth);
-//				// Hero flying left
-//				if (bgLayer3.x > 0) bgLayer3.x = -_ce.stage.stageWidth;
-//				// Hero flying right
-//				if (bgLayer3.x < -_ce.stage.stageWidth ) bgLayer3.x = 0;
-//				
-//				// Background 4 - Trees
-//				bgLayer4.x -= Math.ceil(speed * bgLayer4.parallaxDepth);
-//				// Hero flying left
-//				if (bgLayer4.x > 0) bgLayer4.x = -_ce.stage.stageWidth;
-//				// Hero flying right
-//				if (bgLayer4.x < -_ce.stage.stageWidth ) bgLayer4.x = 0;
 			}
 		}
 	}

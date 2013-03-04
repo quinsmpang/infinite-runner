@@ -39,8 +39,8 @@ package {
 		/** Parallax depth - used to decide speed of the animation. */
 		public var parallaxDepth:Number;
 		
-		[Embed(source="/../embed/bgLayer1.jpg")]
-		private var bgLayer:Class;
+		[Embed(source="/../embed/bgMountains.png")]
+		private var bgMountains:Class;
 		
 		public function BgLayer(_layer:int)
 		{
@@ -61,16 +61,28 @@ package {
 			
 			if (_layer == 1)
 			{
-				image1 = new Image(Texture.fromBitmap(new bgLayer()));
+//				image1 = new Image(Texture.fromBitmap(new bgLayer()));
+//				image1.blendMode = BlendMode.NONE;
+//				image2 = new Image(Texture.fromBitmap(new bgLayer()));
+//				image2.blendMode = BlendMode.NONE;
+				
+				image1 = new Image(Assets.getTexture("BgLayer" + _layer));
 				image1.blendMode = BlendMode.NONE;
-				image2 = new Image(Texture.fromBitmap(new bgLayer()));
+				image2 = new Image(Assets.getTexture("BgLayer" + _layer));
 				image2.blendMode = BlendMode.NONE;
+				
 			}
-//			else
-//			{
-//				image1 = new Image(Assets.getAtlas().getTexture("bgLayer" + _layer));
-//				image2 = new Image(Assets.getAtlas().getTexture("bgLayer" + _layer));
-//			}
+			else if (_layer == 2) {
+				image1 = new Image(Texture.fromBitmap(new bgMountains()));
+				//image1.blendMode = BlendMode.NONE;
+				image2 = new Image(Texture.fromBitmap(new bgMountains()));
+				//image2.blendMode = BlendMode.NONE;	
+			}
+			else
+			{
+				image1 = new Image(Assets.getAtlas().getTexture("bgLayer" + _layer));
+				image2 = new Image(Assets.getAtlas().getTexture("bgLayer" + _layer));
+			}
 			
 			image1.x = 0;
 			image1.y = stage.stageHeight - image1.height;

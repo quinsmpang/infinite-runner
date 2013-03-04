@@ -1,8 +1,9 @@
 package
 {
 	import citrus.objects.NapePhysicsObject;
+	import citrus.objects.platformer.nape.Crate;
 	
-	public class CrateObject extends NapePhysicsObject
+	public class CrateObject extends Crate
 	{
 		private var origX:int = 0;
 		private var _hero:MickeyHero = null;

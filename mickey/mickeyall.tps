@@ -117,7 +117,7 @@
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>
-        <enum type="SettingsBase::OutputFormat">RGBA8888</enum>
+        <enum type="SettingsBase::OutputFormat">RGBA4444</enum>
         <key>autoAliasEnabled</key>
         <false/>
         <key>trimSpriteNames</key>
@@ -127,7 +127,7 @@
             <key>scale</key>
             <double>1</double>
             <key>scaleMode</key>
-            <enum type="ScaleMode">Eagle</enum>
+            <enum type="ScaleMode">Hq2x</enum>
             <key>innerPadding</key>
             <uint>0</uint>
             <key>extrude</key>
@@ -141,18 +141,6 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>shoebox extracts/mickeyjump_01.png</filename>
-            <filename>shoebox extracts/mickeyjump_02.png</filename>
-            <filename>shoebox extracts/mickeyjump_03.png</filename>
-            <filename>shoebox extracts/mickeyjump_04.png</filename>
-            <filename>shoebox extracts/mickeyjump_05.png</filename>
-            <filename>shoebox extracts/mickeyjump_06.png</filename>
-            <filename>shoebox extracts/mickeyjump_07.png</filename>
-            <filename>shoebox extracts/mickeyjump_08.png</filename>
-            <filename>shoebox extracts/mickeyjump_09.png</filename>
-            <filename>shoebox extracts/mickeyjump_10.png</filename>
-            <filename>shoebox extracts/mickeyjump_11.png</filename>
-            <filename>shoebox extracts/mickeyjump_12.png</filename>
             <filename>shoebox extracts/slice_01.png</filename>
             <filename>shoebox extracts/slice_02.png</filename>
             <filename>shoebox extracts/slice_03.png</filename>
@@ -165,7 +153,6 @@
             <filename>shoebox extracts/slice_10.png</filename>
             <filename>shoebox extracts/slice_11.png</filename>
             <filename>shoebox extracts/mickeythrow_01.png</filename>
-            <filename>shoebox extracts/mickeythrow_02.png</filename>
             <filename>shoebox extracts/mickeythrow_03.png</filename>
             <filename>shoebox extracts/mickeythrow_04.png</filename>
             <filename>shoebox extracts/mickeythrow_05.png</filename>
@@ -183,30 +170,14 @@
             <filename>shoebox extracts/mickeyjump2_06.png</filename>
             <filename>shoebox extracts/mickeyjump2_07.png</filename>
             <filename>shoebox extracts/mickeyjump2_08.png</filename>
-            <filename>shoebox extracts/mickeyjump2_09.png</filename>
-            <filename>shoebox extracts/mickeyjump2_10.png</filename>
-            <filename>shoebox extracts/mickeyjump2_11.png</filename>
-            <filename>shoebox extracts/mickeyfall_01.png</filename>
-            <filename>shoebox extracts/mickeyfall_02.png</filename>
-            <filename>shoebox extracts/mickeyfall_03.png</filename>
-            <filename>shoebox extracts/mickeyfall_04.png</filename>
-            <filename>shoebox extracts/mickeyfall_05.png</filename>
-            <filename>shoebox extracts/mickeyfall_06.png</filename>
-            <filename>shoebox extracts/mickeyfall_07.png</filename>
-            <filename>shoebox extracts/mickeyfall_08.png</filename>
-            <filename>shoebox extracts/mickeyedge_01.png</filename>
-            <filename>shoebox extracts/mickeyedge_02.png</filename>
-            <filename>shoebox extracts/mickeyedge_03.png</filename>
-            <filename>shoebox extracts/mickeyedge_04.png</filename>
-            <filename>shoebox extracts/mickeyedge_05.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
         <key>replaceList</key>
         <array/>
         <key>commonDivisorX</key>
-        <uint>160</uint>
+        <uint>112</uint>
         <key>commonDivisorY</key>
-        <uint>150</uint>
+        <uint>140</uint>
     </struct>
 </data>

@@ -1,14 +1,9 @@
 package {
 
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.geom.Matrix;
-	
-	import games.hungryhero.Assets;
 	
 	import nape.phys.Body;
 	
-	import starling.display.BlendMode;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -27,14 +22,14 @@ package {
 		
 		private var _flagAdded:Boolean = false;
 
-		[Embed(source="/../embed/noise.png")]
-		private static const Noise:Class;
+//		[Embed(source="/../embed/noise.png")]
+//		private static const Noise:Class;
+//		
+//		[Embed(source="/../embed/greengradient.png")]
+//		private static const GreenGradient:Class;
 		
-		[Embed(source="/../embed/greengradient.png")]
-		private static const GreenGradient:Class;
-		
-		[Embed(source="/../embed/graygradient.png")]
-		private static const GrayGradient:Class;
+		[Embed(source="/../embed/fatgreengradient.png")]
+		private static const FatGreenGradient:Class;
 		
 		public function HillsTexture() {
 		}
@@ -48,7 +43,7 @@ package {
 //			myBitmapData.perlinNoise( 400, 300, 5, 67, true, true, 4, true);
 			
 //			
-			var texture:Texture = Texture.fromBitmap( new GrayGradient() );
+			var texture:Texture = Texture.fromBitmap( new FatGreenGradient() );
 			
 //			var myBitmapData:BitmapData = new BitmapData( _sliceWidth, _sliceHeight );
 //			myBitmapData.perlinNoise( _sliceWidth, _sliceHeight, 5, 67, true, true, 4, true);

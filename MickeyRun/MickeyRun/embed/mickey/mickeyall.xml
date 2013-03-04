@@ -1,63 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:84476ebb052ce21e5f5079679c31f1de$ -->
+<!-- $TexturePacker:SmartUpdate:302d4e292307e875d20da378808deb53$ -->
 <TextureAtlas imagePath="mickeyall.png">
-    <SubTexture name="mickeyedge_01" x="0" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyedge_02" x="160" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyedge_03" x="320" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyedge_04" x="480" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyedge_05" x="640" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyfall_01" x="800" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyfall_02" x="960" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyfall_03" x="1120" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyfall_04" x="1280" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyfall_05" x="1440" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyfall_06" x="1600" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyfall_07" x="1760" y="0" width="160" height="150"/>
-    <SubTexture name="mickeyfall_08" x="0" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_01" x="160" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_02" x="320" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_03" x="480" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_04" x="640" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_05" x="800" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_06" x="960" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_07" x="1120" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_08" x="1280" y="150" width="160" height="150"/>
-<!--     <SubTexture name="mickeyjump2_09" x="1440" y="150" width="160" height="150"/>
-    <SubTexture name="mickeyjump2_10" x="1600" y="150" width="160" height="150"/> -->
-<!--     <SubTexture name="mickeyjump2_11" x="1760" y="150" width="160" height="150"/> -->
-    <SubTexture name="mickeyjump_01" x="0" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_02" x="160" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_03" x="320" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_04" x="480" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_05" x="640" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_06" x="800" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_07" x="960" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_08" x="1120" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_09" x="1280" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_10" x="1440" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_11" x="1600" y="300" width="160" height="150"/>
-    <SubTexture name="mickeyjump_12" x="1760" y="300" width="160" height="150"/>
-    <SubTexture name="mickeypush_01" x="0" y="450" width="160" height="150"/>
-    <SubTexture name="mickeypush_02" x="160" y="450" width="160" height="150"/>
-    <SubTexture name="mickeypush_03" x="320" y="450" width="160" height="150"/>
-    <SubTexture name="mickeypush_04" x="480" y="450" width="160" height="150"/>
-    <SubTexture name="mickeypush_05" x="640" y="450" width="160" height="150"/>
-    <SubTexture name="mickeypush_06" x="800" y="450" width="160" height="150"/>
-    <SubTexture name="mickeythrow_01" x="960" y="450" width="160" height="150"/>
-    <SubTexture name="mickeythrow_02" x="1120" y="450" width="160" height="150"/>
-    <SubTexture name="mickeythrow_03" x="1280" y="450" width="160" height="150"/>
-    <SubTexture name="mickeythrow_04" x="1440" y="450" width="160" height="150"/>
-    <SubTexture name="mickeythrow_05" x="1600" y="450" width="160" height="150"/>
-    <SubTexture name="slice_01" x="1760" y="450" width="160" height="150"/>
-    <SubTexture name="slice_02" x="0" y="600" width="160" height="150"/>
-    <SubTexture name="slice_03" x="160" y="600" width="160" height="150"/>
-    <SubTexture name="slice_04" x="320" y="600" width="160" height="150"/>
-    <SubTexture name="slice_05" x="480" y="600" width="160" height="150"/>
-    <SubTexture name="slice_06" x="640" y="600" width="160" height="150"/>
-    <SubTexture name="slice_07" x="800" y="600" width="160" height="150"/>
-    <SubTexture name="slice_08" x="960" y="600" width="160" height="150"/>
-    <SubTexture name="slice_09" x="1120" y="600" width="160" height="150"/>
-    <SubTexture name="slice_10" x="1280" y="600" width="160" height="150"/>
-    <SubTexture name="slice_11" x="1440" y="600" width="160" height="150"/>
+    <SubTexture name="mickeyjump2_01" x="0" y="0" width="112" height="140"/>
+    <SubTexture name="mickeyjump2_02" x="112" y="0" width="112" height="140"/>
+    <SubTexture name="mickeyjump2_03" x="224" y="0" width="112" height="140"/>
+    <SubTexture name="mickeyjump2_04" x="336" y="0" width="112" height="140"/>
+    <SubTexture name="mickeyjump2_05" x="448" y="0" width="112" height="140"/>
+    <SubTexture name="mickeyjump2_06" x="560" y="0" width="112" height="140"/>
+    <SubTexture name="mickeyjump2_07" x="672" y="0" width="112" height="140"/>
+    <SubTexture name="mickeyjump2_08" x="784" y="0" width="112" height="140"/>
+    <SubTexture name="mickeypush_01" x="896" y="0" width="112" height="140"/>
+    <SubTexture name="mickeypush_02" x="1008" y="0" width="112" height="140"/>
+    <SubTexture name="mickeypush_03" x="1120" y="0" width="112" height="140"/>
+    <SubTexture name="mickeypush_04" x="1232" y="0" width="112" height="140"/>
+    <SubTexture name="mickeypush_05" x="1344" y="0" width="112" height="140"/>
+    <SubTexture name="mickeypush_06" x="1456" y="0" width="112" height="140"/>
+    <SubTexture name="mickeythrow_01" x="1568" y="0" width="112" height="140"/>
+    <SubTexture name="mickeythrow_03" x="0" y="140" width="112" height="140"/>
+    <SubTexture name="mickeythrow_04" x="112" y="140" width="112" height="140"/>
+    <SubTexture name="mickeythrow_05" x="224" y="140" width="112" height="140"/>
+    <SubTexture name="slice_01" x="336" y="140" width="112" height="140"/>
+    <SubTexture name="slice_02" x="448" y="140" width="112" height="140"/>
+    <SubTexture name="slice_03" x="560" y="140" width="112" height="140"/>
+    <SubTexture name="slice_04" x="672" y="140" width="112" height="140"/>
+    <SubTexture name="slice_05" x="784" y="140" width="112" height="140"/>
+    <SubTexture name="slice_06" x="896" y="140" width="112" height="140"/>
+    <SubTexture name="slice_07" x="1008" y="140" width="112" height="140"/>
+    <SubTexture name="slice_08" x="1120" y="140" width="112" height="140"/>
+    <SubTexture name="slice_09" x="1232" y="140" width="112" height="140"/>
+    <SubTexture name="slice_10" x="1344" y="140" width="112" height="140"/>
+    <SubTexture name="slice_11" x="1456" y="140" width="112" height="140"/>
 </TextureAtlas>

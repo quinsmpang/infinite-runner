@@ -20,7 +20,7 @@ package games.tinywings {
 		private var _mobileInput:TouchInput;
 		private var _preListener:PreListener;
 		
-		private var _minSpeed:uint = 100;
+		private var _minSpeed:uint = 300;
 		private var _maxSpeed:uint = 400;
 
 		public function BirdHero(name:String, params:Object = null) {

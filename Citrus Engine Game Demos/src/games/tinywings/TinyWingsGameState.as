@@ -97,7 +97,7 @@ package games.tinywings {
 
 			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.30, stage.stageHeight * 0.5), new Rectangle(0, 0, int.MAX_VALUE, int.MAX_VALUE), new MathVector(.5, .5));
 			view.camera.allowZoom = true;
-			view.camera.zoom( 0.8 );
+			//view.camera.zoom( 0.8 );
 
 			//stage.addEventListener(TouchEvent.TOUCH, _addObject);
 		}

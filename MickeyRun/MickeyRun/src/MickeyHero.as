@@ -25,8 +25,8 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 180;
-		private var _maxSpeed:uint = 800;
+		private var _minSpeed:uint = 200;
+		private var _maxSpeed:uint = 400;
 		
 		private var _zoomModified:Boolean = false;
 		
@@ -41,7 +41,9 @@ package {
 			super(name, params);
 
 			//jumpAcceleration += 20;
-			jumpHeight += 100;
+			jumpHeight += 300;
+			
+			this._body.gravMass = 10;
 			
 //			this.dynamicFriction = 0;
 //			this.staticFriction = 0;
@@ -96,11 +98,13 @@ package {
 					//velocity.x = 800;
 					velocity.y = -jumpHeight;
 					_onGround = false;
+					
+					_animation = "slice_";
 
 				} else if (velocity.y < 0)
 					velocity.y -= jumpAcceleration;
 				else {
-					velocity.y -= jumpDecceleration;
+					//velocity.y -= jumpDecceleration;
 					
 				}
 			} else {
@@ -127,7 +131,7 @@ package {
 			if (_mobileInput.screenTouched) {
 
 //				_animation = _body.velocity.y < 0 ? "jump" : "ascent";
-				_animation = "mickeyjump2_";//_body.velocity.y < 0 ? "jump" : "ascent";
+				_animation = "mickeyjump2_";//_body.velocity.y < 0 ? "mickeyjump2_" : "mickeythrow_";
 
 			} 
 			else {

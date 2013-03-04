@@ -81,7 +81,7 @@ package {
 			
 			// Every time a new hill has to be created this algorithm predicts where the slices will be positioned
 			if (_indexSliceInCurrentHill >= _slicesInCurrentHill) {
-				_slicesInCurrentHill = 44;//Math.random() * 40 + 10;
+				_slicesInCurrentHill = 10;//Math.random() * 40 + 10;
 				_currentAmplitude = Math.random() * 20 + 10;
 				_indexSliceInCurrentHill = 0;
 				_currentXPoint = 0;
