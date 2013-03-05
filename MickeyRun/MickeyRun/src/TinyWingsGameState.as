@@ -18,6 +18,10 @@ package {
 	import citrus.view.starlingview.StarlingView;
 	
 	import nape.callbacks.InteractionCallback;
+	import nape.geom.Vec2;
+	import nape.phys.Body;
+	import nape.phys.BodyType;
+	import nape.shape.Polygon;
 	
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -143,18 +147,19 @@ package {
 //			fallSensor.onBeginContact.add(_fallSensorTouched);
 //			add( fallSensor );
 			
-			var fallSensor:CustomPlatform = new CustomPlatform("fallSensor", {x:_hero.x, y: stage.stageHeight * 0.85, width:400,
-				height: 20}, _hero);
-			fallSensor.view = new Quad( fallSensor.width, fallSensor.height, 0x88dd11);
-			//fallSensor.onBeginContact.add(_fallSensorTouched);
-			add( fallSensor );
+			// small safety platform that follows Mickey
+//			var fallSensor:CustomPlatform = new CustomPlatform("fallSensor", {x:_hero.x, y: stage.stageHeight * 0.85, width:400,
+//				height: 20}, _hero);
+//			fallSensor.view = new Quad( fallSensor.width, fallSensor.height, 0x88dd11);
+//			//fallSensor.onBeginContact.add(_fallSensorTouched);
+//			add( fallSensor );
 				
 
-//			_hills = new HillsManagingGraphics("hills", 
-//				{rider:_hero, sliceHeight:200, sliceWidth:200, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
-//					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
-//					registration:"topLeft", view:_hillsTexture});
-//			add(_hills);
+			_hills = new HillsManagingGraphics("hills", 
+				{rider:_hero, sliceHeight:30, sliceWidth:200, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
+					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
+					registration:"topLeft", view:_hillsTexture});
+			add(_hills);
 			
 //			var floor:Platform = new Platform("floor", {x:-100, y:stage.stageHeight - 100, width:5000, height: 250});
 //			floor.view = new Quad(5100, 250, 0x00dd11);
@@ -185,7 +190,7 @@ package {
 
 			//stage.addEventListener(TouchEvent.TOUCH, _addObject);
 			
-			addPlatform( stage.stageWidth, stage.stageWidth * 2 );
+//			addPlatform( stage.stageWidth, stage.stageWidth * 2 );
 		}
 		
 		private function _fallSensorTouched(callback:InteractionCallback):void
@@ -214,6 +219,10 @@ package {
 				var physicObject:CrateObject = new CrateObject("physicobject", { x:stage.stageWidth + 100, y:touch.getLocation(this).y, width:35, height:38, view:image} );
 				add(physicObject);
 			}
+			
+		}
+		
+		private function addCurvedPlatform():void {
 			
 		}
 		
