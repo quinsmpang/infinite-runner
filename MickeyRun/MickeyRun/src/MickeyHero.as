@@ -18,7 +18,7 @@ package {
 	 */
 	public class MickeyHero extends Hero {
 
-		public var jumpDecceleration:Number = 2;
+		//public var jumpDecceleration:Number = 2;
 
 		private var _mobileInput:TouchInput;
 		private var _preListener:PreListener;
@@ -41,9 +41,9 @@ package {
 			super(name, params);
 
 			//jumpAcceleration += 20;
-			jumpHeight += 300;
+			jumpHeight += 380;
 			
-			this._body.gravMass = 10;
+			this._body.gravMass = 9;
 			
 //			this.dynamicFriction = 0;
 //			this.staticFriction = 0;
@@ -104,10 +104,12 @@ package {
 				} else if (velocity.y < 0)
 					velocity.y -= jumpAcceleration;
 				else {
-					//velocity.y -= jumpDecceleration;
+					;//velocity.y += jumpAcceleration;
 					
 				}
 			} else {
+				if (velocity.y < 0) velocity.y *= 0.9;
+				else velocity.y *= 1.01;
 
 //				if ( velocity.x > _minSpeed ) velocity.x *= 0.99999;
 				//else velocity.x = 200;	

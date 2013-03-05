@@ -22,7 +22,7 @@ package
 			if (_hero.x - this.x > 200 ) {
 				this._ce.state.remove(this);
 				this.destroy();
-				trace( "removed body" + this.x );
+				//trace( "removed body" + this.x );
 			}
 		}
 	}

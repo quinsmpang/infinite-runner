@@ -18,7 +18,7 @@ package
 			
 			if (_hero.x - this.x > this.width + 100 ) {
 				this._ce.state.remove(this);
-				trace( "removed body" + this.x );
+				//trace( "removed body" + this.x );
 			}
 		}
 	}

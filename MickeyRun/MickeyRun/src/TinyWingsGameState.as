@@ -11,10 +11,13 @@ package {
 	import citrus.objects.platformer.nape.Coin;
 	import citrus.objects.platformer.nape.MovingPlatform;
 	import citrus.objects.platformer.nape.Platform;
+	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	import citrus.view.starlingview.StarlingView;
+	
+	import nape.callbacks.InteractionCallback;
 	
 	import starling.display.Image;
 	import starling.display.Quad;
@@ -80,6 +83,8 @@ package {
 		private var bg:GameBackground;
 		
 		private var fg:GameBackground;
+		
+		private var fallSensor:CustomFallSensor
 
 		public function TinyWingsGameState() {
 			super();
@@ -125,15 +130,31 @@ package {
 			_hero = new MickeyHero("hero", {x:stage.stageWidth * 0.2, radius:40, view:heroAnim, group:1});
 			add(_hero);
 			
+			bg = new GameBackground("background", null, _hero, true);
+			add(bg);
+			
 //			bg.setHero( _hero );
 			
 			_hillsTexture = new HillsTexture();
+			
+//			fallSensor = new CustomFallSensor("fallSensor", {x:_hero.x, y: stage.stageHeight * 0.85, width:stage.stageWidth + ( stage.stageWidth * 0.5 ),
+//				height: 20}, _hero);
+//			fallSensor.view = new Quad( fallSensor.width, fallSensor.height, 0x00dd11);
+//			fallSensor.onBeginContact.add(_fallSensorTouched);
+//			add( fallSensor );
+			
+			var fallSensor:CustomPlatform = new CustomPlatform("fallSensor", {x:_hero.x, y: stage.stageHeight * 0.85, width:400,
+				height: 20}, _hero);
+			fallSensor.view = new Quad( fallSensor.width, fallSensor.height, 0x88dd11);
+			//fallSensor.onBeginContact.add(_fallSensorTouched);
+			add( fallSensor );
+				
 
-			_hills = new HillsManagingGraphics("hills", 
-				{rider:_hero, sliceHeight:200, sliceWidth:200, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
-					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
-					registration:"topLeft", view:_hillsTexture});
-			add(_hills);
+//			_hills = new HillsManagingGraphics("hills", 
+//				{rider:_hero, sliceHeight:200, sliceWidth:200, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
+//					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
+//					registration:"topLeft", view:_hillsTexture});
+//			add(_hills);
 			
 //			var floor:Platform = new Platform("floor", {x:-100, y:stage.stageHeight - 100, width:5000, height: 250});
 //			floor.view = new Quad(5100, 250, 0x00dd11);
@@ -145,10 +166,14 @@ package {
 //			
 //			fg.setHero( _hero );
 			
-			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
+//			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
+			
+			_cameraBounds = new Rectangle(0, -1500, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.75), _cameraBounds, new MathVector(0.05, 0.05));
+			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.6), _cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
+			
+			
 			
 			var downTimer:Timer = new Timer( 1200 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
@@ -160,7 +185,15 @@ package {
 
 			//stage.addEventListener(TouchEvent.TOUCH, _addObject);
 			
-			addPlatform( stage.stageWidth, stage.stageWidth );
+			addPlatform( stage.stageWidth, stage.stageWidth * 2 );
+		}
+		
+		private function _fallSensorTouched(callback:InteractionCallback):void
+		{
+			trace( "Hero fell down!" );
+			_hero.y -= 800; // temp reset
+			_hero.x += 500;
+			
 		}
 		
 		protected function handleTimeEvent(event:TimerEvent):void
@@ -212,9 +245,9 @@ package {
 		}
 		
 		private var platformY:int = 0;
-		private function addPlatform( platformX:int=0, platWidth:int = 0 ):void {
+		private function addPlatform( platformX:int=0, platWidth:int=0 ):void {
 			var platformWidth:int = platWidth > 0 ? platWidth : 500;//Math.random() * 400 + 300;
-			var floor:Platform = new SmallPlatform("floor", {x:_hero.x + stage.stageWidth - platformX + platformWidth, y:stage.stageHeight * 0.7 - platformY - ( Math.random() * 200 ), 
+			var floor:Platform = new SmallPlatform("floor", {x:_hero.x + stage.stageWidth - platformX, y:stage.stageHeight * 0.7 - platformY - ( Math.random() * 200 ), 
 				width:platformWidth, height: 30}, _hero);
 			floor.view = platformWidth == 500 ? new Image(Texture.fromBitmap(new platform500())) : new Quad(platformWidth, 30, 0xF09732);
 			floor.oneWay = true;
@@ -245,6 +278,13 @@ package {
 			
 			// update the hills here to remove the displacement made by StarlingArt. Called after all operations done.
 			_hillsTexture.update();
+			
+//			var aa:int;
+//			
+//			aa = view.camera.camPos.x;
+//			aa = view.camera.camPos.y;
+//			aa = view.camera.cameraLensWidth;
+//			aa = view.camera.cameraLensHeight;
 			
 //			if (Math.random() > 0.99) addCrate(false);
 //			

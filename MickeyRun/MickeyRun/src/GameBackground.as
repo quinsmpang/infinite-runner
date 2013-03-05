@@ -66,13 +66,13 @@ package {
 			this._hero = _hero;
 			
 			if ( backGround ) {
-//				bgLayer1 = new BgLayer(1);
-//				bgLayer1.parallaxDepth = 0.02;
-//				_container.addChild(bgLayer1);
+				bgLayer1 = new BgLayer(1);
+				bgLayer1.parallaxDepth = 0.02;
+				_container.addChild(bgLayer1);
 				
-				bgLayer2 = new BgLayer(2);
-				bgLayer2.parallaxDepth = 0.2;
-				_container.addChild(bgLayer2);
+//				bgLayer2 = new BgLayer(2);
+//				bgLayer2.parallaxDepth = 0.2;
+//				_container.addChild(bgLayer2);
 				
 //				bgLayer3 = new BgLayer(3);
 //				bgLayer3.parallaxDepth = 0.5;
@@ -85,6 +85,9 @@ package {
 				_container.addChild(bgLayer4);
 				
 			}
+			
+			_container.flatten();
+			
 		}
 		
 		private var offsetX:int = 0;
@@ -105,10 +108,13 @@ package {
 			
 			if (!gamePaused)
 			{
-				if ( _hero != null ) 
-					this.x = _hero.x - offsetX;
+//				if ( _hero != null ) 
+//					this.x = _hero.x - offsetX;
 				
-				speed = _hero.velocityX / 20;
+				this.x = _ce.state.view.camera.camPos.x;
+				this.y = _ce.state.view.camera.camPos.y;
+				
+//				speed = _hero.velocityX / 20;
 				
 				if ( _backGround ) {
 				
@@ -122,11 +128,11 @@ package {
 					//bgLayer1.y = 0;
 					
 	//				// Background 2 - Hills
-					bgLayer2.x -= Math.ceil(speed * bgLayer2.parallaxDepth);
+//					bgLayer2.x -= Math.ceil(speed * bgLayer2.parallaxDepth);
 	//				// Hero flying left
 	//				if (bgLayer2.x > 0) bgLayer2.x = -_ce.stage.stageWidth;
 	//				// Hero flying right
-					if (bgLayer2.x < -_ce.stage.stageWidth - 100 ) bgLayer2.x = -100;
+//					if (bgLayer2.x < -_ce.stage.stageWidth - 100 ) bgLayer2.x = -100;
 	//				
 	//				// Background 3 - Buildings
 //					bgLayer3.x -= Math.ceil(speed * bgLayer3.parallaxDepth);

@@ -51,12 +51,22 @@ package {
 						
 			var touchStart:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.BEGAN);
 			var touchEnd:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.ENDED);
-
-			if (touchStart)
-				_screenTouched = true;
 			
-			if (touchEnd)
+//			var touchHover:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.HOVER);
+//			var touchMoved:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.MOVED);
+
+			if (touchStart) {
+				_screenTouched = true;
+				trace( " touch began " );
+			}
+			
+//			if ( !touchHover && !touchMoved )
+//				trace( " touch going on " );
+			
+			if (touchEnd) {
 				_screenTouched = false;
+				trace( " touch ended " );
+			}
 		}
 
 		public function get screenTouched():Boolean {
