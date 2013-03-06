@@ -37,6 +37,8 @@ package {
 		
 		public function init(sliceWidth:uint, sliceHeight:uint):void {
 			
+			touchable = false;
+			
 			_sliceWidth = sliceWidth;
 			_sliceHeight = sliceHeight;
 			

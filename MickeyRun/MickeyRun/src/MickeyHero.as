@@ -26,10 +26,10 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 250;
+		private var _minSpeed:uint = 150;
 		private var _maxSpeed:uint = 400;
 		
-		private var _isFlying:Boolean = true;
+		private var _isFlying:Boolean = false;
 		
 		private var _zoomModified:Boolean = false;
 		
@@ -44,7 +44,7 @@ package {
 			super(name, params);
 
 			//jumpAcceleration += 20;
-			jumpHeight += 400;
+			jumpHeight += 300;
 			
 			this._body.gravMass = 8;
 			
@@ -127,7 +127,7 @@ package {
 				if ( !_isFlying ) {
 					if (velocity.y < 0) velocity.y *= 0.8;
 				} else {
-					velocity.y *= 0.6;
+					velocity.y *= 0.2;
 				}
 				//else velocity.y *= 1.01;
 

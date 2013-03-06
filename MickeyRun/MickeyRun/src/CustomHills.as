@@ -61,6 +61,9 @@ package {
 		
 		protected function _prepareSlices():void {
 			
+			if (view)
+				(view as HillsTexture).init(sliceWidth, sliceHeight);
+			
 			_slices = new Vector.<Body>();
 			
 			// Generate a rectangle made of Vec2
@@ -82,7 +85,7 @@ package {
 			// Every time a new hill has to be created this algorithm predicts where the slices will be positioned
 			if (_indexSliceInCurrentHill >= _slicesInCurrentHill) {
 				_slicesInCurrentHill = 44;//Math.random() * 40 + 10;
-				_currentAmplitude = Math.random() * 20 + 10;
+				_currentAmplitude = Math.random() * 10 + 10;
 				_indexSliceInCurrentHill = 0;
 				_currentXPoint = 0;
 			}
@@ -96,7 +99,7 @@ package {
 			// generates 'sine wave' hills:
 //			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / 180 * _slicesInCurrentHill * 4) * _indexSliceInCurrentHill * 4)) * _currentAmplitude);
 			
-			_nextYPoint = currentYPoint + (Math.sin( (Math.PI / 180 * 10) * _indexSliceInCurrentHill ) * 10);//_currentAmplitude);
+			_nextYPoint = currentYPoint + (Math.sin( (Math.PI / 180 * 10) * _indexSliceInCurrentHill ) * _currentAmplitude);
 			
 			_sliceVectorConstructor[2].y = _nextYPoint - currentYPoint;
 			var slicePolygon:Polygon = new Polygon(_sliceVectorConstructor);
@@ -113,6 +116,9 @@ package {
 		}
 		
 		protected function _pushHill():void {
+			
+			if (view)
+				(view as HillsTexture).createSlice(_body, _nextYPoint, currentYPoint);
 			
 			_slicesCreated++;
 			_indexSliceInCurrentHill++;
@@ -142,6 +148,8 @@ package {
 		}
 		
 		protected function _deleteHill(index:uint):void {
+			
+			(view as HillsTexture).deleteHill(index);
 			
 			_nape.space.bodies.remove(_slices[index]);
 			_slices.splice(index, 1);

@@ -78,6 +78,9 @@ package {
 		[Embed(source="/../embed/platform500.png")]
 		private var platform500:Class;
 		
+		[Embed(source="/../embed/platformMonsters.png")]
+		private var platformMonsters:Class;
+		
 		private var _nape:Nape;
 		private var _hero:MickeyHero;
 		
@@ -159,7 +162,7 @@ package {
 //			add( fallSensor );
 				
 
-			_hills = new HillsManagingGraphics("hills", 
+			_hills = new CustomHills("hills", 
 				{rider:_hero, sliceHeight:30, sliceWidth:70, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
 					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
 					registration:"topLeft", view:_hillsTexture});
@@ -177,7 +180,7 @@ package {
 			
 //			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 			
-			_cameraBounds = new Rectangle(0, -1500, int.MAX_VALUE, int.MAX_VALUE);
+			_cameraBounds = new Rectangle(0, 0, int.MAX_VALUE, int.MAX_VALUE);
 
 			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.6), _cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
@@ -256,6 +259,7 @@ package {
 			add(physicObject);	
 		}
 		
+		private var coins:Vector.<Coin> = new Vector.<Coin>();
 		private function addCoin( coinX:int, coinY:int ):void {
 			var image:Image;
 			var width:int; var height:int;
@@ -265,18 +269,21 @@ package {
 
 			var physicObject:Coin = new CustomCoin("physicobject", { x:coinX, y:coinY, width:width, height:height, view:image}, _hero );
 			add(physicObject);	
+			
+			coins.push( physicObject );
 		}
 		
 		private var platformY:int = 0;
 		private var particleCoffee:CitrusSprite;
 		private var particleMushroom:CitrusSprite;
+		
 		private function addPlatform( platformX:int=0, platWidth:int=0 ):void {
 			var platformWidth:int = platWidth > 0 ? platWidth : 500;//Math.random() * 400 + 300;
 			var floor:Platform = new SmallPlatform("floor", {x:_hero.x + stage.stageWidth - platformX, 
 //				y:stage.stageHeight * 0.7 - platformY - ( Math.random() * 200 ),
 				y:_hero.y - platformY - ( Math.random() * 100 ),
 				width:platformWidth, height: 30}, _hero);
-			floor.view = platformWidth == 500 ? new Image(Texture.fromBitmap(new platform500())) : new Quad(platformWidth, 30, 0xF09732);
+			floor.view = platformWidth == 500 ? new Image(Texture.fromBitmap(new platformMonsters())) : new Quad(platformWidth, 30, 0xF09732);
 			floor.oneWay = true;
 			add(floor);
 			
@@ -299,6 +306,7 @@ package {
 			add(floor);
 		}
 		
+		private var tempCoin:Coin;
 		override public function update(timeDelta:Number):void {
 			
 			super.update(timeDelta);
@@ -312,6 +320,18 @@ package {
 			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterX = _hero.x + _hero.width * 0.5 * 0.5;
 			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterY = _hero.y;
 			
+			
+//			for ( var i:int = 0; i<coins.length; i++ ) {
+//				tempCoin = coins[i];
+//				
+//				if (tempCoin == null) {
+//					coins.splice(i, 1);
+//					continue;
+//				}
+//				// Move the item towards the player.
+//				tempCoin.x -= (tempCoin.x - _hero.x - 25) * 0.2;
+//				tempCoin.y -= (tempCoin.y - _hero.y - 25) * 0.2;
+//			}
 //			var aa:int;
 //			
 //			aa = view.camera.camPos.x;

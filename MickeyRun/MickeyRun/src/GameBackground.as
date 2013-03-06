@@ -86,7 +86,7 @@ package {
 				
 			}
 			
-			_container.flatten();
+			//_container.flatten();
 			
 		}
 		
@@ -114,7 +114,7 @@ package {
 				this.x = _ce.state.view.camera.camPos.x;
 				this.y = _ce.state.view.camera.camPos.y;
 				
-//				speed = _hero.velocityX / 20;
+				speed = _hero.velocityX / 20;
 				
 				if ( _backGround ) {
 				
@@ -132,7 +132,7 @@ package {
 	//				// Hero flying left
 	//				if (bgLayer2.x > 0) bgLayer2.x = -_ce.stage.stageWidth;
 	//				// Hero flying right
-//					if (bgLayer2.x < -_ce.stage.stageWidth - 100 ) bgLayer2.x = -100;
+//					if (bgLayer2.x < -_ce.stage.stageWidth ) bgLayer2.x = 0;
 	//				
 	//				// Background 3 - Buildings
 //					bgLayer3.x -= Math.ceil(speed * bgLayer3.parallaxDepth);

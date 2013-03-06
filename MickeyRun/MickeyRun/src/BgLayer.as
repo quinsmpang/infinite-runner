@@ -69,9 +69,9 @@ package {
 				image1 = new Image(Assets.getTexture("BgLayer" + _layer));
 				image1.blendMode = BlendMode.NONE;
 				image1.touchable = false;
-				image2 = new Image(Assets.getTexture("BgLayer" + _layer));
-				image2.blendMode = BlendMode.NONE;
-				image2.touchable = false;
+//				image2 = new Image(Assets.getTexture("BgLayer" + _layer));
+//				image2.blendMode = BlendMode.NONE;
+//				image2.touchable = false;
 				
 			}
 			else if (_layer == 2) {
@@ -89,10 +89,14 @@ package {
 			image1.x = 0;
 			image1.y = stage.stageHeight - image1.height;
 			
+			this.addChild(image1);
+			
+			if ( _layer == 1 ) return;
+			
 			image2.x = image2.width;
 			image2.y = image1.y;
 			
-			this.addChild(image1);
+
 			this.addChild(image2);
 		}
 	}
