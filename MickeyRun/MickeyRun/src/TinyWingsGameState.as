@@ -7,6 +7,7 @@ package {
 	
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
+	import citrus.objects.CitrusSprite;
 	import citrus.objects.NapePhysicsObject;
 	import citrus.objects.platformer.nape.Coin;
 	import citrus.objects.platformer.nape.MovingPlatform;
@@ -16,6 +17,8 @@ package {
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	import citrus.view.starlingview.StarlingView;
+	
+	import games.hungryhero.ParticleAssets;
 	
 	import nape.callbacks.InteractionCallback;
 	import nape.geom.Vec2;
@@ -28,6 +31,7 @@ package {
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.extensions.particles.PDParticleSystem;
 	import starling.filters.BlurFilter;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -120,8 +124,8 @@ package {
 			var texture:Texture = Texture.fromBitmap(bitmap, true, false, 1);
 			var xml:XML = XML(new MickeyConfig());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump2_", "mickeythrow_", "mickeypush_"], "slice_", 18, true, "none");
-			StarlingArt.setLoopAnimations(["slice_", "mickeypush_"]);
+			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump2_", "mickeythrow_", "mickeypush_", "mickeycarpet_", "mickeybubble_"], "slice_", 12, true, "none");
+			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", "mickeycarpet_", "mickeybubble_"]);
 			
 //			var filter:BlurFilter;// = new BlurFilter(1, 1, 1);
 //			filter = BlurFilter.createGlow(0x000000);//0x000000, 1, 0.2, 1);
@@ -156,7 +160,7 @@ package {
 				
 
 			_hills = new HillsManagingGraphics("hills", 
-				{rider:_hero, sliceHeight:30, sliceWidth:200, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
+				{rider:_hero, sliceHeight:30, sliceWidth:70, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
 					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
 					registration:"topLeft", view:_hillsTexture});
 			add(_hills);
@@ -178,6 +182,12 @@ package {
 			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.6), _cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
 			
+			// particle effects
+			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleCoffeeXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
+			add(particleCoffee);
+			
+			particleMushroom = new CitrusSprite("particleMushroom", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleMushroomXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
+			add(particleMushroom);
 			
 			
 			var downTimer:Timer = new Timer( 1200 );
@@ -191,6 +201,10 @@ package {
 			//stage.addEventListener(TouchEvent.TOUCH, _addObject);
 			
 //			addPlatform( stage.stageWidth, stage.stageWidth * 2 );
+			
+			
+			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).start(60);
+//			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).start(60);
 		}
 		
 		private function _fallSensorTouched(callback:InteractionCallback):void
@@ -254,9 +268,13 @@ package {
 		}
 		
 		private var platformY:int = 0;
+		private var particleCoffee:CitrusSprite;
+		private var particleMushroom:CitrusSprite;
 		private function addPlatform( platformX:int=0, platWidth:int=0 ):void {
 			var platformWidth:int = platWidth > 0 ? platWidth : 500;//Math.random() * 400 + 300;
-			var floor:Platform = new SmallPlatform("floor", {x:_hero.x + stage.stageWidth - platformX, y:stage.stageHeight * 0.7 - platformY - ( Math.random() * 200 ), 
+			var floor:Platform = new SmallPlatform("floor", {x:_hero.x + stage.stageWidth - platformX, 
+//				y:stage.stageHeight * 0.7 - platformY - ( Math.random() * 200 ),
+				y:_hero.y - platformY - ( Math.random() * 100 ),
 				width:platformWidth, height: 30}, _hero);
 			floor.view = platformWidth == 500 ? new Image(Texture.fromBitmap(new platform500())) : new Quad(platformWidth, 30, 0xF09732);
 			floor.oneWay = true;
@@ -287,6 +305,12 @@ package {
 			
 			// update the hills here to remove the displacement made by StarlingArt. Called after all operations done.
 			_hillsTexture.update();
+			
+			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).emitterX = _hero.x + _hero.width * 0.5 * 0.5;
+			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).emitterY = _hero.y;
+			
+			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterX = _hero.x + _hero.width * 0.5 * 0.5;
+			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterY = _hero.y;
 			
 //			var aa:int;
 //			

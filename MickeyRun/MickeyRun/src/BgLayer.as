@@ -68,8 +68,10 @@ package {
 				
 				image1 = new Image(Assets.getTexture("BgLayer" + _layer));
 				image1.blendMode = BlendMode.NONE;
+				image1.touchable = false;
 				image2 = new Image(Assets.getTexture("BgLayer" + _layer));
 				image2.blendMode = BlendMode.NONE;
+				image2.touchable = false;
 				
 			}
 			else if (_layer == 2) {

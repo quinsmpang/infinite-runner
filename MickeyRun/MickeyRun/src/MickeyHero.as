@@ -3,6 +3,7 @@ package {
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.view.starlingview.AnimationSequence;
+	import citrus.view.starlingview.StarlingView;
 	
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
@@ -25,8 +26,10 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 200;
+		private var _minSpeed:uint = 250;
 		private var _maxSpeed:uint = 400;
+		
+		private var _isFlying:Boolean = true;
 		
 		private var _zoomModified:Boolean = false;
 		
@@ -41,12 +44,13 @@ package {
 			super(name, params);
 
 			//jumpAcceleration += 20;
-			jumpHeight += 380;
+			jumpHeight += 400;
 			
-			this._body.gravMass = 9;
+			this._body.gravMass = 8;
 			
 //			this.dynamicFriction = 0;
 //			this.staticFriction = 0;
+
 			
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
@@ -72,44 +76,60 @@ package {
 			
 			if (velocity.x < _minSpeed) velocity.x = _minSpeed;
 			
+			
 			if (_mobileInput.screenTouched) {
-
-//				velocity.x *= 1.5;
-//				if (velocity.x > _maxSpeed) {
-//					velocity.x = _maxSpeed;
-//				}
-//				if ( numJump < 10 ) {
-//					trace( "jump" );
-//					velocity.y = -jumpHeight;
-//					numJump++;
-//				} else {
-//					//numJump = 0;	
-//				}
 				
-				if (_onGround) {
+				if ( _isFlying ) {
+					if ( _mobileInput.touchPoint ) {
+//						this.y = _mobileInput.touchPoint.y;
+//						this.y -= ( this.y - _mobileInput.touchPoint.y ) * 0.1;	
+						velocity.y = -100;
+					}
+				} else {
 
-//					numJump = 0;
-					//if (Math.random() > 0.5)
-						//this._ce.state.view.camera.setZoom( 0.8 );
-					//else
-						//this._ce.state.view.camera.setZoom( 1.0 );
+	//				velocity.x *= 1.5;
+	//				if (velocity.x > _maxSpeed) {
+	//					velocity.x = _maxSpeed;
+	//				}
+	//				if ( numJump < 10 ) {
+	//					trace( "jump" );
+	//					velocity.y = -jumpHeight;
+	//					numJump++;
+	//				} else {
+	//					//numJump = 0;	
+	//				}
 					
-					_zoomModified = true;
-					//velocity.x = 800;
-					velocity.y = -jumpHeight;
-					_onGround = false;
+					if (_onGround) {
+	
+	//					numJump = 0;
+						//if (Math.random() > 0.5)
+							//this._ce.state.view.camera.setZoom( 0.8 );
+						//else
+							//this._ce.state.view.camera.setZoom( 1.0 );
+						
+						_zoomModified = true;
+						//velocity.x = 800;
+						velocity.y = -jumpHeight;
+						_onGround = false;
+						
+						_animation = "slice_";
+	
+					} else if (velocity.y < 0)
+						velocity.y -= jumpAcceleration;
+					else {
+						;//velocity.y += jumpAcceleration;
+						
+					}
 					
-					_animation = "slice_";
-
-				} else if (velocity.y < 0)
-					velocity.y -= jumpAcceleration;
-				else {
-					;//velocity.y += jumpAcceleration;
-					
-				}
+				} // isFlying
+				
 			} else {
-				if (velocity.y < 0) velocity.y *= 0.9;
-				else velocity.y *= 1.01;
+				if ( !_isFlying ) {
+					if (velocity.y < 0) velocity.y *= 0.8;
+				} else {
+					velocity.y *= 0.6;
+				}
+				//else velocity.y *= 1.01;
 
 //				if ( velocity.x > _minSpeed ) velocity.x *= 0.99999;
 				//else velocity.x = 200;	
@@ -133,7 +153,8 @@ package {
 			if (_mobileInput.screenTouched) {
 
 //				_animation = _body.velocity.y < 0 ? "jump" : "ascent";
-				_animation = "mickeyjump2_";//_body.velocity.y < 0 ? "mickeyjump2_" : "mickeythrow_";
+				if ( _isFlying ) _animation = true ? "mickeycarpet_" : "mickeybubble_";
+				else _animation = "mickeyjump2_";//_body.velocity.y < 0 ? "mickeyjump2_" : "mickeythrow_";
 
 			} 
 			else {
@@ -141,7 +162,9 @@ package {
 					//(this.view as AnimationSequence).changeAnimation("mickeypush_", true);	
 					_animation = "mickeypush_";
 				} else {
-					if (_onGround)
+					if ( _isFlying ) {
+						
+					} else if (_onGround)
 						_animation = "slice_";
 				}
 			}

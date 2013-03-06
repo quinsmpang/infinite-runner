@@ -1,9 +1,12 @@
 package {
 
+	import flash.geom.Point;
+	
 	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingCitrusEngine;
+	import citrus.core.starling.StarlingState;
 	import citrus.input.Input;
-
+	
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -47,17 +50,24 @@ package {
 			(_ce as StarlingCitrusEngine).starling.stage.addEventListener(TouchEvent.TOUCH, _touchEvent);
 		}
 
+		public var touchPoint:Point = new Point();
 		private function _touchEvent(tEvt:TouchEvent):void {
 						
 			var touchStart:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.BEGAN);
 			var touchEnd:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.ENDED);
 			
 //			var touchHover:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.HOVER);
-//			var touchMoved:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.MOVED);
+			var touchMoved:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.MOVED);
 
 			if (touchStart) {
 				_screenTouched = true;
 				trace( " touch began " );
+			}
+			
+			if ( touchMoved ) {
+				touchPoint = touchMoved.getLocation( (_ce.state as StarlingState) );
+//				touchPoint.x = touchMoved.globalX;
+//				touchPoint.y = touchMoved.globalY;
 			}
 			
 //			if ( !touchHover && !touchMoved )

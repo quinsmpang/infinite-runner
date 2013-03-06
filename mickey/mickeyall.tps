@@ -170,6 +170,17 @@
             <filename>shoebox extracts/mickeyjump2_06.png</filename>
             <filename>shoebox extracts/mickeyjump2_07.png</filename>
             <filename>shoebox extracts/mickeyjump2_08.png</filename>
+            <filename>shoebox extracts/mickeybubble_05.png</filename>
+            <filename>shoebox extracts/mickeybubble_06.png</filename>
+            <filename>shoebox extracts/mickeybubble_07.png</filename>
+            <filename>shoebox extracts/mickeybubble_08.png</filename>
+            <filename>shoebox extracts/mickeybubble_09.png</filename>
+            <filename>shoebox extracts/mickeycarpet_01.png</filename>
+            <filename>shoebox extracts/mickeycarpet_02.png</filename>
+            <filename>shoebox extracts/mickeycarpet_03.png</filename>
+            <filename>shoebox extracts/mickeycarpet_04.png</filename>
+            <filename>shoebox extracts/mickeycarpet_05.png</filename>
+            <filename>shoebox extracts/mickeycarpet_06.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
