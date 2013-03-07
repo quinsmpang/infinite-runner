@@ -26,7 +26,7 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 150;
+		private var _minSpeed:uint = 170;
 		private var _maxSpeed:uint = 400;
 		
 		private var _isFlying:Boolean = false;

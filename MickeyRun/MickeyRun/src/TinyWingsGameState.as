@@ -2,6 +2,7 @@ package {
 
 	import flash.display.Bitmap;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 	
@@ -180,7 +181,7 @@ package {
 			
 //			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 			
-			_cameraBounds = new Rectangle(0, 0, int.MAX_VALUE, int.MAX_VALUE);
+			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 
 			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.6), _cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
@@ -195,7 +196,7 @@ package {
 			
 			var downTimer:Timer = new Timer( 1200 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
-			downTimer.start();
+//			downTimer.start();
 			
 //			view.camera.zoom( 1.2 );
 			
@@ -277,11 +278,13 @@ package {
 		private var particleCoffee:CitrusSprite;
 		private var particleMushroom:CitrusSprite;
 		
-		private function addPlatform( platformX:int=0, platWidth:int=0 ):void {
+		private function addPlatform( platformX:int=0, platWidth:int=0, platformY:int=0 ):Platform {
 			var platformWidth:int = platWidth > 0 ? platWidth : 500;//Math.random() * 400 + 300;
-			var floor:Platform = new SmallPlatform("floor", {x:_hero.x + stage.stageWidth - platformX, 
+			
+			var floor:Platform = new SmallPlatform("floor", {
+				x: platformX == 0 ? _hero.x + stage.stageWidth : platformX, 
 //				y:stage.stageHeight * 0.7 - platformY - ( Math.random() * 200 ),
-				y:_hero.y - platformY - ( Math.random() * 100 ),
+				y: platformY == 0? _hero.y - platformY - ( Math.random() * 100 ) : platformY,
 				width:platformWidth, height: 30}, _hero);
 			floor.view = platformWidth == 500 ? new Image(Texture.fromBitmap(new platformMonsters())) : new Quad(platformWidth, 30, 0xF09732);
 			floor.oneWay = true;
@@ -295,6 +298,8 @@ package {
 			addCoin( coinX + 100, floor.y - 50 );
 			addCoin( coinX + 200, floor.y - 50 );
 			addCoin( coinX + 300, floor.y - 50 );
+			
+			return floor;
 		}
 		
 		private function addMovingPlatform():void {
@@ -306,9 +311,45 @@ package {
 			add(floor);
 		}
 		
+		private var prevPlatform1X:int = 0;
+		private var prevPlatform1Y:int = 0;
+		private var prevPlatform1:Platform = null;
+		
+		private var prevPlatform2X:int = 0;
+		private var prevPlatform2Y:int = 0;
+		private var prevPlatform2:Platform = null;
+		
+		private var camPosX:Number = 0;
+		private var camLensWidth:Number = 0;
+
+		private function platformGenerator():void {
+			camPosX = _ce.state.view.camera.camPos.x;
+			camLensWidth = _ce.state.view.camera.cameraLensWidth;
+			
+			if ( prevPlatform1Y < _hero.y - 500 ) prevPlatform1Y = _hero.y - 100;
+			
+			prevPlatform2Y = prevPlatform1Y - 300;
+			
+			
+			if ( camPosX + camLensWidth - prevPlatform1X > 200 ) {
+				
+				//add a new platform
+				prevPlatform1 = addPlatform( camPosX + camLensWidth + 250, 0, 
+					prevPlatform1Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
+				prevPlatform1X = prevPlatform1.x + prevPlatform1.width/2;
+				prevPlatform1Y = prevPlatform1.y;
+				
+				prevPlatform2X = prevPlatform1X - 200;
+				//add a new platform
+				prevPlatform2 = addPlatform( camPosX + camLensWidth + 450, 0, 
+					prevPlatform2Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
+				prevPlatform2X = prevPlatform2.x + prevPlatform2.width/2;
+				prevPlatform2Y = prevPlatform2.y;
+			}
+		}
+		
 		private var tempCoin:Coin;
 		override public function update(timeDelta:Number):void {
-			
 			super.update(timeDelta);
 			
 			// update the hills here to remove the displacement made by StarlingArt. Called after all operations done.
@@ -320,6 +361,8 @@ package {
 			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterX = _hero.x + _hero.width * 0.5 * 0.5;
 			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterY = _hero.y;
 			
+			// generate platforms
+			platformGenerator();
 			
 //			for ( var i:int = 0; i<coins.length; i++ ) {
 //				tempCoin = coins[i];
