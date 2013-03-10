@@ -29,7 +29,7 @@ package {
 		private var _minSpeed:uint = 170;
 		private var _maxSpeed:uint = 400;
 		
-		private var _isFlying:Boolean = false;
+		public var _isFlying:Boolean = false;
 		
 		private var _zoomModified:Boolean = false;
 		
@@ -44,9 +44,9 @@ package {
 			super(name, params);
 
 			//jumpAcceleration += 20;
-			jumpHeight += 300;
+			jumpHeight += 100;
 			
-			this._body.gravMass = 8;
+			this._body.gravMass = 4;
 			
 //			this.dynamicFriction = 0;
 //			this.staticFriction = 0;
@@ -83,7 +83,7 @@ package {
 					if ( _mobileInput.touchPoint ) {
 //						this.y = _mobileInput.touchPoint.y;
 //						this.y -= ( this.y - _mobileInput.touchPoint.y ) * 0.1;	
-						velocity.y = -100;
+						velocity.y = -200;
 					}
 				} else {
 
@@ -125,9 +125,9 @@ package {
 				
 			} else {
 				if ( !_isFlying ) {
-					if (velocity.y < 0) velocity.y *= 0.8;
+					if (velocity.y < 0) velocity.y *= 0.9;
 				} else {
-					velocity.y *= 0.2;
+					velocity.y *= 0.9;
 				}
 				//else velocity.y *= 1.01;
 
@@ -163,7 +163,7 @@ package {
 					_animation = "mickeypush_";
 				} else {
 					if ( _isFlying ) {
-						
+						_animation = "mickeycarpet_";	
 					} else if (_onGround)
 						_animation = "slice_";
 				}
@@ -191,6 +191,10 @@ package {
 				_isPushing = true;	
 			}
 			
+			if (callback.int2.userData.myData is CustomCoin) {
+				_isFlying = !_isFlying;	
+			}
+			
 			super.handleBeginContact(callback);
 		}
 		
@@ -204,6 +208,9 @@ package {
 
 		override public function handlePreContact(callback:PreCallback):PreFlag {
 			//_isPushing = false;
+			
+			if ( _isFlying ) return PreFlag.IGNORE;
+			
 			if (callback.int2.userData.myData is Platform) {
 				_onGround = true;
 				//_animation = "slice_";

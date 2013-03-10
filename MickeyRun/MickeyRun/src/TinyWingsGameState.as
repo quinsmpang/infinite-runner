@@ -67,20 +67,26 @@ package {
 		[Embed(source="/../embed/mickey/mickeyall.png")]
 		public static const MickeyPng:Class;
 		
-		[Embed(source="/../embed/small_crate.png")]
-		private var _cratePng:Class;
+		[Embed(source="/../embed/mickey/misc.xml", mimeType="application/octet-stream")]
+		public static const MiscConfig:Class;
 		
-		[Embed(source="/../embed/large_crate.png")]
-		private var _largeCratePng:Class;
+		[Embed(source="/../embed/mickey/misc.png")]
+		public static const MiscPng:Class;
 		
-		[Embed(source="/../embed/coin.png")]
-		private var _coinPng:Class;
+//		[Embed(source="/../embed/small_crate.png")]
+//		private var _cratePng:Class;
+//		
+//		[Embed(source="/../embed/large_crate.png")]
+//		private var _largeCratePng:Class;
 		
-		[Embed(source="/../embed/platform500.png")]
-		private var platform500:Class;
+//		[Embed(source="/../embed/coin.png")]
+//		private var _coinPng:Class;
 		
-		[Embed(source="/../embed/platformMonsters.png")]
-		private var platformMonsters:Class;
+//		[Embed(source="/../embed/platform500.png")]
+//		private var platform500:Class;
+		
+//		[Embed(source="/../embed/platformMonsters.png")]
+//		private var platformMonsters:Class;
 		
 		private var _nape:Nape;
 		private var _hero:MickeyHero;
@@ -98,6 +104,9 @@ package {
 		
 		private var fallSensor:CustomFallSensor
 
+		
+		private var _miscTextureAtlas:TextureAtlas;
+		
 		public function TinyWingsGameState() {
 			super();
 		}
@@ -125,11 +134,16 @@ package {
 			
 			var bitmap:Bitmap = new MickeyPng();
 			//bitmap.smoothing = TextureSmoothing.BILINEAR;
-			var texture:Texture = Texture.fromBitmap(bitmap, true, false, 1);
+			var texture:Texture = Texture.fromBitmap(bitmap, false, false, 1);
 			var xml:XML = XML(new MickeyConfig());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
 			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump2_", "mickeythrow_", "mickeypush_", "mickeycarpet_", "mickeybubble_"], "slice_", 12, true, "none");
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", "mickeycarpet_", "mickeybubble_"]);
+			
+			bitmap = new MiscPng();
+			texture = Texture.fromBitmap( bitmap, false, false, 1 );
+			xml = XML( new MiscConfig() );
+			_miscTextureAtlas = new TextureAtlas( texture, xml );
 			
 //			var filter:BlurFilter;// = new BlurFilter(1, 1, 1);
 //			filter = BlurFilter.createGlow(0x000000);//0x000000, 1, 0.2, 1);
@@ -164,7 +178,7 @@ package {
 				
 
 			_hills = new CustomHills("hills", 
-				{rider:_hero, sliceHeight:30, sliceWidth:70, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
+				{rider:_hero, sliceHeight:300, sliceWidth:70, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
 					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
 					registration:"topLeft", view:_hillsTexture});
 			add(_hills);
@@ -174,14 +188,14 @@ package {
 //			add(floor);
 			
 			// Draw background.
-//			fg = new GameBackground("foreground", null, _hero, false);
-//			add(fg);
+			fg = new GameBackground("foreground", null, _hero, false);
+			add(fg);
 //			
 //			fg.setHero( _hero );
 			
 //			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 			
-			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
+			_cameraBounds = new Rectangle(0, -100, int.MAX_VALUE, int.MAX_VALUE);
 
 			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.6), _cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
@@ -194,8 +208,8 @@ package {
 			add(particleMushroom);
 			
 			
-			var downTimer:Timer = new Timer( 1200 );
-			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
+//			var downTimer:Timer = new Timer( 5000 );
+//			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 //			downTimer.start();
 			
 //			view.camera.zoom( 1.2 );
@@ -207,7 +221,7 @@ package {
 //			addPlatform( stage.stageWidth, stage.stageWidth * 2 );
 			
 			
-			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).start(60);
+			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).start(30);
 //			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).start(60);
 		}
 		
@@ -221,51 +235,53 @@ package {
 		
 		protected function handleTimeEvent(event:TimerEvent):void
 		{
-			addPlatform();
+			_hero._isFlying = !_hero._isFlying;
+			//addPlatform();
 			//addCrate( true );
 			
 		}
 		
-		private function _addObject(tEvt:TouchEvent):void {
-			
-			var touch:Touch = tEvt.getTouch(stage, TouchPhase.BEGAN);
-			
-			if (touch) {
-				
-				var image:Image = new Image(Texture.fromBitmap(new _cratePng()));
-				
-				var physicObject:CrateObject = new CrateObject("physicobject", { x:stage.stageWidth + 100, y:touch.getLocation(this).y, width:35, height:38, view:image} );
-				add(physicObject);
-			}
-			
-		}
+//		private function _addObject(tEvt:TouchEvent):void {
+//			
+//			var touch:Touch = tEvt.getTouch(stage, TouchPhase.BEGAN);
+//			
+//			if (touch) {
+//				
+//				var image:Image = new Image(Texture.fromBitmap(new _cratePng()));
+//				
+//				var physicObject:CrateObject = new CrateObject("physicobject", { x:stage.stageWidth + 100, y:touch.getLocation(this).y, width:35, height:38, view:image} );
+//				add(physicObject);
+//			}
+//			
+//		}
 		
 		private function addCurvedPlatform():void {
 			
 		}
 		
-		private function addCrate(addSmallCrate:Boolean):void {
-			var image:Image;
-			var width:int; var height:int;
-			
-			if ( addSmallCrate ) {
-				image = new Image(Texture.fromBitmap(new _cratePng()));
-				width = 35; height = 38;
-			} else {
-				image = new Image(Texture.fromBitmap(new _largeCratePng()));
-				width = 70; height = 76;
-			}
-			
-			var physicObject:CrateObject = new CrateObject("physicobject", { x:_hero.x + stage.stageWidth, y:_hero.y - 100, width:width, height:height, view:image}, _hero );
-			add(physicObject);	
-		}
+//		private function addCrate(addSmallCrate:Boolean):void {
+//			var image:Image;
+//			var width:int; var height:int;
+//			
+//			if ( addSmallCrate ) {
+//				image = new Image(Texture.fromBitmap(new _cratePng()));
+//				width = 35; height = 38;
+//			} else {
+//				image = new Image(Texture.fromBitmap(new _largeCratePng()));
+//				width = 70; height = 76;
+//			}
+//			
+//			var physicObject:CrateObject = new CrateObject("physicobject", { x:_hero.x + stage.stageWidth, y:_hero.y - 100, width:width, height:height, view:image}, _hero );
+//			add(physicObject);	
+//		}
 		
 		private var coins:Vector.<Coin> = new Vector.<Coin>();
 		private function addCoin( coinX:int, coinY:int ):void {
 			var image:Image;
 			var width:int; var height:int;
 			
-			image = new Image(Texture.fromBitmap(new _coinPng()));
+//			image = new Image(Texture.fromBitmap(new _coinPng()));
+			image = new Image( _miscTextureAtlas.getTexture("coin") );
 			width = 40; height = 40;
 
 			var physicObject:Coin = new CustomCoin("physicobject", { x:coinX, y:coinY, width:width, height:height, view:image}, _hero );
@@ -286,7 +302,10 @@ package {
 //				y:stage.stageHeight * 0.7 - platformY - ( Math.random() * 200 ),
 				y: platformY == 0? _hero.y - platformY - ( Math.random() * 100 ) : platformY,
 				width:platformWidth, height: 30}, _hero);
-			floor.view = platformWidth == 500 ? new Image(Texture.fromBitmap(new platformMonsters())) : new Quad(platformWidth, 30, 0xF09732);
+			floor.view = platformWidth == 500 ? 
+//				new Image(Texture.fromBitmap(new platformMonsters())) : 
+				new Image( _miscTextureAtlas.getTexture("platformGreen") ) :
+				new Quad(platformWidth, 30, 0xF09732);
 			floor.oneWay = true;
 			add(floor);
 			
@@ -295,9 +314,9 @@ package {
 			if ( floor.y < _hero.y - 700 ) platformY = 0;
 			
 			var coinX:int = floor.x - floor.width/2;
-			addCoin( coinX + 100, floor.y - 50 );
-			addCoin( coinX + 200, floor.y - 50 );
-			addCoin( coinX + 300, floor.y - 50 );
+//			addCoin( coinX + 100, floor.y - 50 );
+//			addCoin( coinX + 200, floor.y - 50 );
+			if ( Math.random() > 0.9 ) addCoin( coinX + 300, floor.y - 50 );
 			
 			return floor;
 		}
@@ -319,6 +338,10 @@ package {
 		private var prevPlatform2Y:int = 0;
 		private var prevPlatform2:Platform = null;
 		
+		private var prevPlatform3X:int = 0;
+		private var prevPlatform3Y:int = 0;
+		private var prevPlatform3:Platform = null;
+		
 		private var camPosX:Number = 0;
 		private var camLensWidth:Number = 0;
 
@@ -329,6 +352,17 @@ package {
 			if ( prevPlatform1Y < _hero.y - 500 ) prevPlatform1Y = _hero.y - 100;
 			
 			prevPlatform2Y = prevPlatform1Y - 300;
+			
+			// lowermost platform
+//			prevPlatform3Y = stage.stageHeight;
+//			prevPlatform3X = -250;
+//			if ( camPosX + camLensWidth > prevPlatform3X ) {
+//				//add a new platform
+//				prevPlatform3 = addPlatform( prevPlatform3X + 250, 0, 
+//					prevPlatform3Y );
+//				prevPlatform3X = prevPlatform3.x + prevPlatform3.width/2;
+//				prevPlatform3Y = prevPlatform3.y;	
+//			}
 			
 			
 			if ( camPosX + camLensWidth - prevPlatform1X > 200 ) {
@@ -364,6 +398,9 @@ package {
 			// generate platforms
 			platformGenerator();
 			
+//			if ( Math.random() > 0.9 ) addCoin( view.camera.camPos.x + view.camera.cameraLensWidth, _hero.y - 50 );
+			
+			// coin magnet code
 //			for ( var i:int = 0; i<coins.length; i++ ) {
 //				tempCoin = coins[i];
 //				

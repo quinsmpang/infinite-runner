@@ -41,7 +41,7 @@ package {
 		/**
 		 * Background Assets 
 		 */
-		[Embed(source="/../embed/bgLayer1.jpg")]
+		[Embed(source="/../embed/bgLayer1.png")]
 		public static const BgLayer1:Class;
 		
 //		[Embed(source="/../embed/games/hungryhero//graphics/bgWelcome.jpg")]

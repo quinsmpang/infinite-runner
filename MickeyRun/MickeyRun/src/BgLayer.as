@@ -42,6 +42,12 @@ package {
 		[Embed(source="/../embed/bgMountains.png")]
 		private var bgMountains:Class;
 		
+		[Embed(source="/../embed/bgBushes.png")]
+		private var bgBushes:Class;
+		
+		[Embed(source="/../embed/bgForegroundBush.png")]
+		private var bgForegroundBush:Class;
+		
 		public function BgLayer(_layer:int)
 		{
 			super();
@@ -78,6 +84,18 @@ package {
 				image1 = new Image(Texture.fromBitmap(new bgMountains()));
 				//image1.blendMode = BlendMode.NONE;
 				image2 = new Image(Texture.fromBitmap(new bgMountains()));
+				//image2.blendMode = BlendMode.NONE;	
+			}
+			else if (_layer == 3) {
+				image1 = new Image(Texture.fromBitmap(new bgBushes()));
+				//image1.blendMode = BlendMode.NONE;
+				image2 = new Image(Texture.fromBitmap(new bgBushes()));
+				//image2.blendMode = BlendMode.NONE;	
+			}
+			else if (_layer == 4) {
+				image1 = new Image(Texture.fromBitmap(new bgForegroundBush()));
+				//image1.blendMode = BlendMode.NONE;
+				image2 = new Image(Texture.fromBitmap(new bgForegroundBush()));
 				//image2.blendMode = BlendMode.NONE;	
 			}
 			else

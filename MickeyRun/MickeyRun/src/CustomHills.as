@@ -97,9 +97,9 @@ package {
 //			_nextYPoint = currentYPoint;// + (Math.sin((( ( Math.PI / 180 ) * currentYPoint) * _indexSliceInCurrentHill)) * _currentAmplitude);
 			
 			// generates 'sine wave' hills:
-//			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / 180 * _slicesInCurrentHill * 4) * _indexSliceInCurrentHill * 4)) * _currentAmplitude);
+			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / 180 * _slicesInCurrentHill * 4) * _indexSliceInCurrentHill * 4)) * _currentAmplitude);
 			
-			_nextYPoint = currentYPoint + (Math.sin( (Math.PI / 180 * 10) * _indexSliceInCurrentHill ) * _currentAmplitude);
+//			_nextYPoint = currentYPoint + (Math.sin( (Math.PI / 180 * 10) * _indexSliceInCurrentHill ) * _currentAmplitude);
 			
 			_sliceVectorConstructor[2].y = _nextYPoint - currentYPoint;
 			var slicePolygon:Polygon = new Polygon(_sliceVectorConstructor);
