@@ -26,7 +26,7 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 170;
+		private var _minSpeed:uint = 190;
 		private var _maxSpeed:uint = 400;
 		
 		public var _isFlying:Boolean = false;
@@ -44,9 +44,9 @@ package {
 			super(name, params);
 
 			//jumpAcceleration += 20;
-			jumpHeight += 100;
+			jumpHeight += 150;
 			
-			this._body.gravMass = 4;
+			this._body.gravMass = 5;
 			
 //			this.dynamicFriction = 0;
 //			this.staticFriction = 0;
@@ -84,6 +84,7 @@ package {
 //						this.y = _mobileInput.touchPoint.y;
 //						this.y -= ( this.y - _mobileInput.touchPoint.y ) * 0.1;	
 						velocity.y = -200;
+						
 					}
 				} else {
 
@@ -143,6 +144,13 @@ package {
 
 //			if ( velocity.x < _maxSpeed ) velocity.x *= 1.015;
 			//velocity.x = 0;
+			
+			if ( _isFlying ) {
+				velocity.x = _minSpeed + 60;
+			} else {
+				velocity.x = _minSpeed;
+			}
+			
 			_body.velocity = velocity;
 
 			_updateAnimation();
@@ -209,9 +217,14 @@ package {
 		override public function handlePreContact(callback:PreCallback):PreFlag {
 			//_isPushing = false;
 			
-			if ( _isFlying ) return PreFlag.IGNORE;
+			if ( _isFlying ) {
+				
+				if ( !(callback.int2.userData.myData is CustomHills) )
+					return PreFlag.IGNORE;
+			}
 			
-			if (callback.int2.userData.myData is Platform) {
+			if (callback.int2.userData.myData is Platform ||
+				callback.int2.userData.myData is PhyEPlatform285) {
 				_onGround = true;
 				//_animation = "slice_";
 				

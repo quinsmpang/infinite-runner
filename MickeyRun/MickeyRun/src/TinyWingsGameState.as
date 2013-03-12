@@ -73,6 +73,8 @@ package {
 		[Embed(source="/../embed/mickey/misc.png")]
 		public static const MiscPng:Class;
 		
+
+		
 //		[Embed(source="/../embed/small_crate.png")]
 //		private var _cratePng:Class;
 //		
@@ -195,7 +197,7 @@ package {
 			
 //			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 			
-			_cameraBounds = new Rectangle(0, -100, int.MAX_VALUE, int.MAX_VALUE);
+			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 
 			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.6), _cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
@@ -206,6 +208,10 @@ package {
 			
 			particleMushroom = new CitrusSprite("particleMushroom", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleMushroomXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
 			add(particleMushroom);
+			
+//			var pePlatform:PhyEPlatform285 = new PhyEPlatform285( "customPlat", { x: stage.stageWidth, y: 500, width: 285, height: 50 }, _hero );
+//			pePlatform.view = new Image( _miscTextureAtlas.getTexture("platformGreen") );
+//			add( pePlatform );
 			
 			
 //			var downTimer:Timer = new Timer( 5000 );
@@ -295,21 +301,25 @@ package {
 		private var particleMushroom:CitrusSprite;
 		
 		private function addPlatform( platformX:int=0, platWidth:int=0, platformY:int=0 ):Platform {
-			var platformWidth:int = platWidth > 0 ? platWidth : 500;//Math.random() * 400 + 300;
+			var platformWidth:int = platWidth > 0 ? platWidth : 285;//Math.random() * 400 + 300;
+			
+			var textureName:String = platWidth == 100 ? "platformGreen100" : "platformGreen";
 			
 			var floor:Platform = new SmallPlatform("floor", {
 				x: platformX == 0 ? _hero.x + stage.stageWidth : platformX, 
 //				y:stage.stageHeight * 0.7 - platformY - ( Math.random() * 200 ),
 				y: platformY == 0? _hero.y - platformY - ( Math.random() * 100 ) : platformY,
 				width:platformWidth, height: 30}, _hero);
-			floor.view = platformWidth == 500 ? 
+			floor.view = //platformWidth == 285 ? 
 //				new Image(Texture.fromBitmap(new platformMonsters())) : 
-				new Image( _miscTextureAtlas.getTexture("platformGreen") ) :
-				new Quad(platformWidth, 30, 0xF09732);
+				new Image( _miscTextureAtlas.getTexture(textureName) )// :
+				//new Quad(platformWidth, 30, 0xF09732);
 			floor.oneWay = true;
 			add(floor);
 			
 			platformY += Math.random() * 50;
+			
+			if ( floor.y < 300 ) platformY = 0;
 			
 			if ( floor.y < _hero.y - 700 ) platformY = 0;
 			
@@ -349,7 +359,9 @@ package {
 			camPosX = _ce.state.view.camera.camPos.x;
 			camLensWidth = _ce.state.view.camera.cameraLensWidth;
 			
-			if ( prevPlatform1Y < _hero.y - 500 ) prevPlatform1Y = _hero.y - 100;
+//			if ( prevPlatform1Y < _hero.y - 500 ) prevPlatform1Y = _hero.y - 100;
+//			prevPlatform1Y = _hills.currentYPoint - 200;
+			prevPlatform1Y = _hero.y;
 			
 			prevPlatform2Y = prevPlatform1Y - 300;
 			
@@ -368,18 +380,28 @@ package {
 			if ( camPosX + camLensWidth - prevPlatform1X > 200 ) {
 				
 				//add a new platform
-				prevPlatform1 = addPlatform( camPosX + camLensWidth + 250, 0, 
+				prevPlatform1 = addPlatform( camPosX + camLensWidth + 50, 
+					( Math.random() > 0.8 ) ? 100 : 0, 
 					prevPlatform1Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform1X = prevPlatform1.x + prevPlatform1.width/2;
 				prevPlatform1Y = prevPlatform1.y;
 				
 				prevPlatform2X = prevPlatform1X - 200;
 				//add a new platform
-				prevPlatform2 = addPlatform( camPosX + camLensWidth + 450, 0, 
+				prevPlatform2 = addPlatform( camPosX + camLensWidth + 150, 
+					( Math.random() > 0.8 ) ? 100 : 0, 
 					prevPlatform2Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform2X = prevPlatform2.x + prevPlatform2.width/2;
 				prevPlatform2Y = prevPlatform2.y;
 			}
+		}
+		
+		private var pePlatform:PhyEPlatform285;
+		private function createCustomShape():void {
+			pePlatform = new PhyEPlatform285( "customPlat", { x: _hero.x + stage.stageWidth, y: _hero.y - 100, 
+				width: 285, height: 50}, _hero );
+			pePlatform.view = new Image( _miscTextureAtlas.getTexture("platformGreen") );
+			add( pePlatform );	
 		}
 		
 		private var tempCoin:Coin;
@@ -398,7 +420,18 @@ package {
 			// generate platforms
 			platformGenerator();
 			
+			if ( _hero.y > stage.stageHeight ) {
+				_hero.y = stage.stageHeight;
+				_hero._isFlying = true;
+			}
+			
+			if ( _hero.velocity.x == 0 ) {
+				_hero.y -= 1;
+			}
+			
 //			if ( Math.random() > 0.9 ) addCoin( view.camera.camPos.x + view.camera.cameraLensWidth, _hero.y - 50 );
+			
+//			if ( Math.random() > 0.9 ) createCustomShape();
 			
 			// coin magnet code
 //			for ( var i:int = 0; i<coins.length; i++ ) {

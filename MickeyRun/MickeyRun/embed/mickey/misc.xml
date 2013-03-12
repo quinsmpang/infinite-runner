@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:192a073f4135e0c7b09ef4b9b6bc4e84$ -->
+<!-- $TexturePacker:SmartUpdate:13c1e5b7e479edce11e752042a8c2a33$ -->
 <TextureAtlas imagePath="misc.png">
-    <SubTexture name="coin" x="496" y="40" width="40" height="40"/>
-    <SubTexture name="platformGreen" x="496" y="2" width="279" height="36" frameX="-2" frameY="-2" frameWidth="285" frameHeight="50"/>
+    <SubTexture name="coin" x="496" y="2" width="40" height="40"/>
+    <SubTexture name="platformGreen" x="496" y="44" width="279" height="36" frameX="-2" frameY="-2" frameWidth="285" frameHeight="50"/>
+    <SubTexture name="platformGreen100" x="538" y="2" width="98" height="36" frameX="-1" frameY="-2" frameWidth="100" frameHeight="50"/>
     <SubTexture name="platformMonsters" x="2" y="2" width="492" height="119"/>
 </TextureAtlas>
