@@ -5,6 +5,7 @@ package {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
+	import flash.utils.setTimeout;
 	
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
@@ -75,11 +76,11 @@ package {
 		
 
 		
-//		[Embed(source="/../embed/small_crate.png")]
-//		private var _cratePng:Class;
-//		
-//		[Embed(source="/../embed/large_crate.png")]
-//		private var _largeCratePng:Class;
+		[Embed(source="/../embed/small_crate.png")]
+		private var _cratePng:Class;
+		
+		[Embed(source="/../embed/large_crate.png")]
+		private var _largeCratePng:Class;
 		
 //		[Embed(source="/../embed/coin.png")]
 //		private var _coinPng:Class;
@@ -139,7 +140,7 @@ package {
 			var texture:Texture = Texture.fromBitmap(bitmap, false, false, 1);
 			var xml:XML = XML(new MickeyConfig());
 			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump2_", "mickeythrow_", "mickeypush_", "mickeycarpet_", "mickeybubble_"], "slice_", 12, true, "none");
+			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump2_", "mickeythrow_", "mickeypush_", "mickeycarpet_", "mickeybubble_"], "slice_", 15, true, "none");
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", "mickeycarpet_", "mickeybubble_"]);
 			
 			bitmap = new MiscPng();
@@ -179,11 +180,11 @@ package {
 //			add( fallSensor );
 				
 
-			_hills = new CustomHills("hills", 
-				{rider:_hero, sliceHeight:300, sliceWidth:70, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
-					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
-					registration:"topLeft", view:_hillsTexture});
-			add(_hills);
+//			_hills = new CustomHills("hills", 
+//				{rider:_hero, sliceHeight:300, sliceWidth:70, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
+//					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
+//					registration:"topLeft", view:_hillsTexture});
+//			add(_hills);
 			
 //			var floor:Platform = new Platform("floor", {x:-100, y:stage.stageHeight - 100, width:5000, height: 250});
 //			floor.view = new Quad(5100, 250, 0x00dd11);
@@ -199,7 +200,7 @@ package {
 			
 			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp(_hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.6), _cameraBounds, new MathVector(0.05, 0.05));
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.6), _cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
 			
 			// particle effects
@@ -224,7 +225,7 @@ package {
 
 			//stage.addEventListener(TouchEvent.TOUCH, _addObject);
 			
-//			addPlatform( stage.stageWidth, stage.stageWidth * 2 );
+			addPlatform( _ce.state.view.camera.camPos + 1000, 2500, stage.stageHeight - 100 );
 			
 			
 			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).start(30);
@@ -265,21 +266,21 @@ package {
 			
 		}
 		
-//		private function addCrate(addSmallCrate:Boolean):void {
-//			var image:Image;
-//			var width:int; var height:int;
-//			
-//			if ( addSmallCrate ) {
-//				image = new Image(Texture.fromBitmap(new _cratePng()));
-//				width = 35; height = 38;
-//			} else {
-//				image = new Image(Texture.fromBitmap(new _largeCratePng()));
-//				width = 70; height = 76;
-//			}
-//			
-//			var physicObject:CrateObject = new CrateObject("physicobject", { x:_hero.x + stage.stageWidth, y:_hero.y - 100, width:width, height:height, view:image}, _hero );
-//			add(physicObject);	
-//		}
+		private function addCrate(addSmallCrate:Boolean):void {
+			var image:Image;
+			var width:int; var height:int;
+			
+			if ( addSmallCrate ) {
+				image = new Image(Texture.fromBitmap(new _cratePng()));
+				width = 35; height = 38;
+			} else {
+				image = new Image(Texture.fromBitmap(new _largeCratePng()));
+				width = 70; height = 76;
+			}
+			
+			var physicObject:CrateObject = new CrateObject("physicobject", { x:_hero.x + stage.stageWidth, y:_hero.y - 100, width:width, height:height, view:image}, _hero );
+			add(physicObject);	
+		}
 		
 		private var coins:Vector.<Coin> = new Vector.<Coin>();
 		private function addCoin( coinX:int, coinY:int ):void {
@@ -306,14 +307,14 @@ package {
 			var textureName:String = platWidth == 100 ? "platformGreen100" : "platformGreen";
 			
 			var floor:Platform = new SmallPlatform("floor", {
-				x: platformX == 0 ? _hero.x + stage.stageWidth : platformX, 
+				x: platformX,// == 0 ? _hero.x + stage.stageWidth : platformX, 
 //				y:stage.stageHeight * 0.7 - platformY - ( Math.random() * 200 ),
 				y: platformY == 0? _hero.y - platformY - ( Math.random() * 100 ) : platformY,
 				width:platformWidth, height: 30}, _hero);
 			floor.view = //platformWidth == 285 ? 
 //				new Image(Texture.fromBitmap(new platformMonsters())) : 
-				new Image( _miscTextureAtlas.getTexture(textureName) )// :
-				//new Quad(platformWidth, 30, 0xF09732);
+				//new Image( _miscTextureAtlas.getTexture(textureName) )// :
+				new Quad( platformWidth, 20, 0x08CC18 );
 			floor.oneWay = true;
 			add(floor);
 			
@@ -354,6 +355,8 @@ package {
 		
 		private var camPosX:Number = 0;
 		private var camLensWidth:Number = 0;
+		
+		private var initialPosX:Number = -1500;
 
 		private function platformGenerator():void {
 			camPosX = _ce.state.view.camera.camPos.x;
@@ -361,39 +364,46 @@ package {
 			
 //			if ( prevPlatform1Y < _hero.y - 500 ) prevPlatform1Y = _hero.y - 100;
 //			prevPlatform1Y = _hills.currentYPoint - 200;
-			prevPlatform1Y = _hero.y;
+			
+//			prevPlatform1Y = _hero.y;
+			prevPlatform1Y = stage.stageHeight - 200;
 			
 			prevPlatform2Y = prevPlatform1Y - 300;
 			
-			// lowermost platform
-//			prevPlatform3Y = stage.stageHeight;
-//			prevPlatform3X = -250;
-//			if ( camPosX + camLensWidth > prevPlatform3X ) {
-//				//add a new platform
-//				prevPlatform3 = addPlatform( prevPlatform3X + 250, 0, 
-//					prevPlatform3Y );
-//				prevPlatform3X = prevPlatform3.x + prevPlatform3.width/2;
-//				prevPlatform3Y = prevPlatform3.y;	
-//			}
+			prevPlatform3Y = prevPlatform2Y - 300;
 			
 			
-			if ( camPosX + camLensWidth - prevPlatform1X > 200 ) {
+			if ( initialPosX < 0 || initialPosX - prevPlatform1X > 150 ) {
 				
 				//add a new platform
-				prevPlatform1 = addPlatform( camPosX + camLensWidth + 50, 
-					( Math.random() > 0.8 ) ? 100 : 0, 
+				prevPlatform1 = addPlatform( initialPosX + 500, 
+					( Math.random() > 0.8 ) ? 1000 : 800, 
 					prevPlatform1Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform1X = prevPlatform1.x + prevPlatform1.width/2;
 				prevPlatform1Y = prevPlatform1.y;
 				
 				prevPlatform2X = prevPlatform1X - 200;
 				//add a new platform
-				prevPlatform2 = addPlatform( camPosX + camLensWidth + 150, 
-					( Math.random() > 0.8 ) ? 100 : 0, 
+				prevPlatform2 = addPlatform( initialPosX + 250, 
+					( Math.random() > 0.8 ) ? 800 : 500, 
 					prevPlatform2Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform2X = prevPlatform2.x + prevPlatform2.width/2;
 				prevPlatform2Y = prevPlatform2.y;
+				
+				//lowermost platform
+				prevPlatform3X = prevPlatform2X - 200;
+				//prevPlatform3X = -250;
+//				if ( camPosX + camLensWidth > prevPlatform3X ) {
+					//add a new platform
+				prevPlatform3 = addPlatform( initialPosX + 150, 
+					( Math.random() > 0.8 ) ? 500 : 300, 
+					prevPlatform3Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
+				prevPlatform3X = prevPlatform3.x + prevPlatform3.width/2;
+				prevPlatform3Y = prevPlatform3.y;	
+//				}
 			}
+			
+			initialPosX = camPosX + camLensWidth;
 		}
 		
 		private var pePlatform:PhyEPlatform285;
@@ -404,6 +414,8 @@ package {
 			add( pePlatform );	
 		}
 		
+		private var numLives:int = 3;
+		private var gameOver:Boolean = false;
 		private var tempCoin:Coin;
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
@@ -421,9 +433,24 @@ package {
 			platformGenerator();
 			
 			if ( _hero.y > stage.stageHeight ) {
-				_hero.y = stage.stageHeight;
-				_hero._isFlying = true;
+				if ( !gameOver ) _hero.y = stage.stageHeight;
+				
+//				numLives--;
+//				
+//				if ( numLives > 0 ) 
+//					_hero._isFlying = true;
+//				else 
+				if ( !_hero._isFlying ) {
+					setTimeout( function():void { 
+						_ce.state = new TinyWingsGameState();
+						//_ce.playing = true;
+					}, 500 );
+					//_ce.playing = false;
+					gameOver = true;
+				}
 			}
+			
+			if ( _hero.y < -400 ) _hero.y = -400;
 			
 			if ( _hero.velocity.x == 0 ) {
 				_hero.y -= 1;
@@ -432,6 +459,8 @@ package {
 //			if ( Math.random() > 0.9 ) addCoin( view.camera.camPos.x + view.camera.cameraLensWidth, _hero.y - 50 );
 			
 //			if ( Math.random() > 0.9 ) createCustomShape();
+			
+//			if ( Math.random() > 0.9 ) addCrate( false );
 			
 			// coin magnet code
 //			for ( var i:int = 0; i<coins.length; i++ ) {

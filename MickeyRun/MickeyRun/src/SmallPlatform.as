@@ -16,7 +16,7 @@ package
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			
-			if (_hero.x - this.x > this.width + 100 ) {
+			if (_hero.x - this.x > this.width + this.width/2 ) {
 				this._ce.state.remove(this);
 				//trace( "removed body" + this.x );
 			}
