@@ -1,5 +1,8 @@
 package {
 
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.view.starlingview.AnimationSequence;
@@ -38,15 +41,18 @@ package {
 		public var _heroSpeed:uint = 100;
 		
 		private var numJump:int = 0;
+		
+		private var downTimer:Timer;
+		private var numCoins:Number = 0;
 
 		public function MickeyHero(name:String, params:Object = null) {
 
 			super(name, params);
 
 			//jumpAcceleration += 20;
-			jumpHeight += 150;
+			jumpHeight += 180;
 			
-			this._body.gravMass = 5;
+			this._body.gravMass = 4.8;
 			
 //			this.dynamicFriction = 0;
 //			this.staticFriction = 0;
@@ -54,8 +60,19 @@ package {
 			
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
+			
+			downTimer = new Timer( 10000 );
+			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
+			
 		}
-
+		
+		protected function handleTimeEvent(event:TimerEvent):void
+		{
+			// TODO Auto-generated method stub
+			_isFlying = false;
+			downTimer.stop();
+		}
+		
 		override public function destroy():void {
 
 			_preListener.space = null;
@@ -68,6 +85,10 @@ package {
 		
 		public function get velocityX():Number {
 			return _body.velocity.x;
+		}
+		
+		public function get numCoinsCollected():Number {
+			return numCoins;
 		}
 
 		override public function update(timeDelta:Number):void {
@@ -128,7 +149,7 @@ package {
 				if ( !_isFlying ) {
 					if (velocity.y < 0) velocity.y *= 0.9;
 				} else {
-					velocity.y *= 0.9;
+					if ( velocity.y > 0 ) velocity.y *= 0.8;
 				}
 				//else velocity.y *= 1.01;
 
@@ -200,7 +221,12 @@ package {
 			}
 			
 			if (callback.int2.userData.myData is CustomCoin) {
-				_isFlying = !_isFlying;	
+				numCoins++;	
+			}
+			
+			if (callback.int2.userData.myData is CustomPowerup) {
+				downTimer.start();
+				_isFlying = true;//!_isFlying;	
 			}
 			
 			super.handleBeginContact(callback);

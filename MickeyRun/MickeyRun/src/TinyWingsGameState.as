@@ -105,8 +105,13 @@ package {
 		
 		private var fg:GameBackground;
 		
-		private var fallSensor:CustomFallSensor
+		private var fallSensor:CustomFallSensor;
 
+		/** HUD Container. */		
+		private var hud:HUD;
+		
+		/** Time calculation for animation. */
+		private var elapsed:Number;
 		
 		private var _miscTextureAtlas:TextureAtlas;
 		
@@ -173,11 +178,11 @@ package {
 //			add( fallSensor );
 			
 			// small safety platform that follows Mickey
-//			var fallSensor:CustomPlatform = new CustomPlatform("fallSensor", {x:_hero.x, y: stage.stageHeight * 0.85, width:400,
-//				height: 20}, _hero);
-//			fallSensor.view = new Quad( fallSensor.width, fallSensor.height, 0x88dd11);
-//			//fallSensor.onBeginContact.add(_fallSensorTouched);
-//			add( fallSensor );
+			var fallSensor:CustomPlatform = new CustomPlatform("fallSensor", {x:_hero.x, y: stage.stageHeight * 0.85, width:400,
+				height: 20}, _hero);
+			fallSensor.view = new Quad( fallSensor.width, fallSensor.height, 0x88dd11);
+			//fallSensor.onBeginContact.add(_fallSensorTouched);
+			add( fallSensor );
 				
 
 //			_hills = new CustomHills("hills", 
@@ -230,6 +235,14 @@ package {
 			
 			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).start(30);
 //			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).start(60);
+			
+			hud = new HUD();
+			this.addChild(hud);
+			
+			// Reset hud values and text fields.
+			hud.foodScore = 0;
+			hud.distance = 0;
+//			hud.lives = 0;
 		}
 		
 		private function _fallSensorTouched(callback:InteractionCallback):void
@@ -297,6 +310,20 @@ package {
 			coins.push( physicObject );
 		}
 		
+		private function addPowerup( coinX:int, coinY:int ):void {
+			var image:Image;
+			var width:int; var height:int;
+			
+			image = new Image(Texture.fromBitmap(new _cratePng()));
+//			image = new Image( _miscTextureAtlas.getTexture("coin") );
+			width = 35; height = 38;
+			
+			var physicObject:Coin = new CustomPowerup("powerup", { x:coinX, y:coinY, width:width, height:height, view:image}, _hero );
+			add(physicObject);	
+			
+			//coins.push( physicObject );
+		}
+		
 		private var platformY:int = 0;
 		private var particleCoffee:CitrusSprite;
 		private var particleMushroom:CitrusSprite;
@@ -324,10 +351,18 @@ package {
 			
 			if ( floor.y < _hero.y - 700 ) platformY = 0;
 			
-			var coinX:int = floor.x - floor.width/2;
+			var coinX:int = floor.x - ( Math.random() * floor.width ) + 100;// floor.width/2;
 //			addCoin( coinX + 100, floor.y - 50 );
 //			addCoin( coinX + 200, floor.y - 50 );
-			if ( Math.random() > 0.9 ) addCoin( coinX + 300, floor.y - 50 );
+			if ( Math.random() > 0.5 )  { 
+
+				for ( var i:int = 0; i<10; i++ ) {
+					addCoin( coinX + 200, floor.y - 50 ); 
+					coinX += 45;
+				}
+			}
+			else 
+				if ( Math.random() > 0.9 ) addPowerup( coinX + 300, floor.y - 50 );
 			
 			return floor;
 		}
@@ -376,7 +411,7 @@ package {
 			if ( initialPosX < 0 || initialPosX - prevPlatform1X > 150 ) {
 				
 				//add a new platform
-				prevPlatform1 = addPlatform( initialPosX + 500, 
+				prevPlatform1 = addPlatform( initialPosX + 400, 
 					( Math.random() > 0.8 ) ? 1000 : 800, 
 					prevPlatform1Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform1X = prevPlatform1.x + prevPlatform1.width/2;
@@ -384,8 +419,8 @@ package {
 				
 				prevPlatform2X = prevPlatform1X - 200;
 				//add a new platform
-				prevPlatform2 = addPlatform( initialPosX + 250, 
-					( Math.random() > 0.8 ) ? 800 : 500, 
+				prevPlatform2 = addPlatform( initialPosX + 150, 
+					( Math.random() > 0.8 ) ? 900 : 600, 
 					prevPlatform2Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform2X = prevPlatform2.x + prevPlatform2.width/2;
 				prevPlatform2Y = prevPlatform2.y;
@@ -395,8 +430,8 @@ package {
 				//prevPlatform3X = -250;
 //				if ( camPosX + camLensWidth > prevPlatform3X ) {
 					//add a new platform
-				prevPlatform3 = addPlatform( initialPosX + 150, 
-					( Math.random() > 0.8 ) ? 500 : 300, 
+				prevPlatform3 = addPlatform( initialPosX + 50, 
+					( Math.random() > 0.8 ) ? 700 : 400, 
 					prevPlatform3Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform3X = prevPlatform3.x + prevPlatform3.width/2;
 				prevPlatform3Y = prevPlatform3.y;	
@@ -417,8 +452,11 @@ package {
 		private var numLives:int = 3;
 		private var gameOver:Boolean = false;
 		private var tempCoin:Coin;
+		private var scoreDistance:Number = 0;
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
+			
+			elapsed = timeDelta;
 			
 			// update the hills here to remove the displacement made by StarlingArt. Called after all operations done.
 			_hillsTexture.update();
@@ -495,6 +533,13 @@ package {
 			//bg.speed = _hero.velocity.x;
 //			bg.y = _hero.y;
 //			bg.x = _hero.x;
+			
+			// update HUD
+//			scoreDistance += (_hero.velocityX * elapsed) * 0.1;
+//			hud.distance = Math.round(scoreDistance);
+			hud.distance = _hero.x * 0.1;
+			
+			hud.foodScore = _hero.numCoinsCollected;
 		}
 	}
 }
