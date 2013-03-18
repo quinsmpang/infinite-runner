@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:13c1e5b7e479edce11e752042a8c2a33$ -->
+<!-- $TexturePacker:SmartUpdate:b06a6ea6c0d7a82a16d16f5f025bb230$ -->
 <TextureAtlas imagePath="misc.png">
-    <SubTexture name="coin" x="496" y="2" width="40" height="40"/>
-    <SubTexture name="platformGreen" x="496" y="44" width="279" height="36" frameX="-2" frameY="-2" frameWidth="285" frameHeight="50"/>
-    <SubTexture name="platformGreen100" x="538" y="2" width="98" height="36" frameX="-1" frameY="-2" frameWidth="100" frameHeight="50"/>
+    <SubTexture name="coin" x="1300" y="42" width="40" height="40"/>
+    <SubTexture name="platformGreen" x="1298" y="2" width="285" height="38" frameX="0" frameY="-6" frameWidth="285" frameHeight="50"/>
+    <SubTexture name="platformGreen100" x="1300" y="84" width="96" height="28" frameX="-3" frameY="-10" frameWidth="100" frameHeight="50"/>
     <SubTexture name="platformMonsters" x="2" y="2" width="492" height="119"/>
+    <SubTexture name="platformNew300" x="998" y="54" width="300" height="50"/>
+    <SubTexture name="platformNew500" x="496" y="54" width="500" height="50"/>
+    <SubTexture name="platformNew800" x="496" y="2" width="800" height="50"/>
 </TextureAtlas>

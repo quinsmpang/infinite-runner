@@ -16,6 +16,8 @@ package {
 	import nape.callbacks.PreFlag;
 	import nape.callbacks.PreListener;
 	import nape.geom.Vec2;
+	
+	import starling.extensions.particles.PDParticleSystem;
 
 	/**
 	 * @author Aymeric
@@ -71,6 +73,7 @@ package {
 			// TODO Auto-generated method stub
 			_isFlying = false;
 			downTimer.stop();
+			if ( _flyingPD ) _flyingPD.stop();
 		}
 		
 		override public function destroy():void {
@@ -176,6 +179,11 @@ package {
 
 			_updateAnimation();
 		}
+		
+		private var _flyingPD:PDParticleSystem;
+		public function setFlyingPD( pd:PDParticleSystem ):void {
+			_flyingPD = pd;
+		}
 
 		private function _updateAnimation():void {
 
@@ -226,7 +234,8 @@ package {
 			
 			if (callback.int2.userData.myData is CustomPowerup) {
 				downTimer.start();
-				_isFlying = true;//!_isFlying;	
+				_isFlying = true;//!_isFlying;
+				if ( _flyingPD ) _flyingPD.start();
 			}
 			
 			super.handleBeginContact(callback);

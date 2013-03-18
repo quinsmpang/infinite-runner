@@ -178,9 +178,10 @@ package {
 //			add( fallSensor );
 			
 			// small safety platform that follows Mickey
-			var fallSensor:CustomPlatform = new CustomPlatform("fallSensor", {x:_hero.x, y: stage.stageHeight * 0.85, width:400,
+			var fallSensor:CustomPlatform = new CustomPlatform("fallSensor", {x:_hero.x, y: stage.stageHeight * 0.85, width:500,
 				height: 20}, _hero);
-			fallSensor.view = new Quad( fallSensor.width, fallSensor.height, 0x88dd11);
+//			fallSensor.view = new Quad( fallSensor.width, fallSensor.height, 0x88dd11);
+			fallSensor.view = new Image( _miscTextureAtlas.getTexture("platformNew500") );
 			//fallSensor.onBeginContact.add(_fallSensorTouched);
 			add( fallSensor );
 				
@@ -215,6 +216,11 @@ package {
 			particleMushroom = new CitrusSprite("particleMushroom", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleMushroomXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
 			add(particleMushroom);
 			
+			if ( particleCoffeePD == null ) 
+				particleCoffeePD = ((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem);
+			
+			_hero.setFlyingPD( particleCoffeePD );
+			
 //			var pePlatform:PhyEPlatform285 = new PhyEPlatform285( "customPlat", { x: stage.stageWidth, y: 500, width: 285, height: 50 }, _hero );
 //			pePlatform.view = new Image( _miscTextureAtlas.getTexture("platformGreen") );
 //			add( pePlatform );
@@ -230,10 +236,10 @@ package {
 
 			//stage.addEventListener(TouchEvent.TOUCH, _addObject);
 			
-			addPlatform( _ce.state.view.camera.camPos + 1000, 2500, stage.stageHeight - 100 );
+			addPlatform( _ce.state.view.camera.camPos + 1000, 800, stage.stageHeight - 100 );
 			
 			
-			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).start(30);
+//			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).start(30);
 //			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).start(60);
 			
 			hud = new HUD();
@@ -326,12 +332,16 @@ package {
 		
 		private var platformY:int = 0;
 		private var particleCoffee:CitrusSprite;
+		private var particleCoffeePD:PDParticleSystem;
+		
 		private var particleMushroom:CitrusSprite;
+		private var particleMushroomPD:PDParticleSystem;
 		
 		private function addPlatform( platformX:int=0, platWidth:int=0, platformY:int=0 ):Platform {
 			var platformWidth:int = platWidth > 0 ? platWidth : 285;//Math.random() * 400 + 300;
 			
-			var textureName:String = platWidth == 100 ? "platformGreen100" : "platformGreen";
+			var textureName:String = "platformNew" + platWidth;
+//			var textureName:String = platWidth == 100 ? "platformGreen100" : "platformGreen";
 			
 			var floor:Platform = new SmallPlatform("floor", {
 				x: platformX,// == 0 ? _hero.x + stage.stageWidth : platformX, 
@@ -340,8 +350,8 @@ package {
 				width:platformWidth, height: 30}, _hero);
 			floor.view = //platformWidth == 285 ? 
 //				new Image(Texture.fromBitmap(new platformMonsters())) : 
-				//new Image( _miscTextureAtlas.getTexture(textureName) )// :
-				new Quad( platformWidth, 20, 0x08CC18 );
+				new Image( _miscTextureAtlas.getTexture(textureName) )// :
+//				new Quad( platformWidth, 20, 0x08CC18 );
 			floor.oneWay = true;
 			add(floor);
 			
@@ -412,7 +422,7 @@ package {
 				
 				//add a new platform
 				prevPlatform1 = addPlatform( initialPosX + 400, 
-					( Math.random() > 0.8 ) ? 1000 : 800, 
+					800,//( Math.random() > 0.8 ) ? 1000 : 800, 
 					prevPlatform1Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform1X = prevPlatform1.x + prevPlatform1.width/2;
 				prevPlatform1Y = prevPlatform1.y;
@@ -420,7 +430,7 @@ package {
 				prevPlatform2X = prevPlatform1X - 200;
 				//add a new platform
 				prevPlatform2 = addPlatform( initialPosX + 150, 
-					( Math.random() > 0.8 ) ? 900 : 600, 
+					500,//( Math.random() > 0.8 ) ? 900 : 600, 
 					prevPlatform2Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform2X = prevPlatform2.x + prevPlatform2.width/2;
 				prevPlatform2Y = prevPlatform2.y;
@@ -431,7 +441,7 @@ package {
 //				if ( camPosX + camLensWidth > prevPlatform3X ) {
 					//add a new platform
 				prevPlatform3 = addPlatform( initialPosX + 50, 
-					( Math.random() > 0.8 ) ? 700 : 400, 
+					300,//( Math.random() > 0.8 ) ? 700 : 400, 
 					prevPlatform3Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform3X = prevPlatform3.x + prevPlatform3.width/2;
 				prevPlatform3Y = prevPlatform3.y;	
@@ -461,7 +471,7 @@ package {
 			// update the hills here to remove the displacement made by StarlingArt. Called after all operations done.
 			_hillsTexture.update();
 			
-			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).emitterX = _hero.x + _hero.width * 0.5 * 0.5;
+			particleCoffeePD.emitterX = _hero.x + _hero.width + 5;
 			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).emitterY = _hero.y;
 			
 			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterX = _hero.x + _hero.width * 0.5 * 0.5;
