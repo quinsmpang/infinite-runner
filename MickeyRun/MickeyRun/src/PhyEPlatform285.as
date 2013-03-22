@@ -42,8 +42,10 @@ package {
 			
 			super.update(timeDelta);
 			
+			this.x = _hero.x + 100;
+			
 			if ( _hero != null ) {
-				if (_hero.x - this.x > 200 ) {
+				if (_hero.x - this.x > 500 ) {
 					this._ce.state.remove(this);
 					this.destroy();
 					//				trace( "removed body" + this.x );
@@ -57,7 +59,7 @@ package {
 			
 			_createVertices();
 			
-			_body = new Body(BodyType.STATIC);
+			_body = new Body(BodyType.KINEMATIC);
 			_body.userData.myData = this;
 			
 			for (var i:uint = 0; i < _tab.length; ++i) {

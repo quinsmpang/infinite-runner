@@ -32,7 +32,7 @@ package {
 		private var _contactBeginListener:Listener;
 		
 		private var _minSpeed:uint = 190;
-		private var _maxSpeed:uint = 400;
+		private var _maxSpeed:uint = 250;
 		
 		public var _isFlying:Boolean = false;
 		
@@ -45,6 +45,7 @@ package {
 		private var numJump:int = 0;
 		
 		private var downTimer:Timer;
+		private var speedTimer:Timer;
 		private var numCoins:Number = 0;
 
 		public function MickeyHero(name:String, params:Object = null) {
@@ -63,9 +64,21 @@ package {
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
 			
-			downTimer = new Timer( 10000 );
+			downTimer = new Timer( 15000 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 			
+			speedTimer = new Timer( 1000 );
+			speedTimer.addEventListener( TimerEvent.TIMER, handleSpeedTimer );
+			speedTimer.start();
+		}
+		
+		protected function handleSpeedTimer(event:TimerEvent):void
+		{
+			// TODO Auto-generated method stub
+			if ( _isFlying ) 
+				_minSpeed += 30;
+			else
+				_minSpeed += 10;
 		}
 		
 		protected function handleTimeEvent(event:TimerEvent):void
@@ -152,7 +165,7 @@ package {
 				if ( !_isFlying ) {
 					if (velocity.y < 0) velocity.y *= 0.9;
 				} else {
-					if ( velocity.y > 0 ) velocity.y *= 0.8;
+					if ( velocity.y > 0 ) velocity.y *= 0.9;
 				}
 				//else velocity.y *= 1.01;
 
@@ -166,14 +179,20 @@ package {
 //				}
 			}
 
-//			if ( velocity.x < _maxSpeed ) velocity.x *= 1.015;
 			//velocity.x = 0;
 			
 			if ( _isFlying ) {
 				velocity.x = _minSpeed + 60;
+				if ( velocity.x > _maxSpeed + 100 ) velocity.x = _maxSpeed + 100;
 			} else {
 				velocity.x = _minSpeed;
+				if ( velocity.x > _maxSpeed ) {
+//					_isFlying = true;	
+//					if ( _flyingPD ) _flyingPD.start();
+					velocity.x = _maxSpeed;
+				}
 			}
+			
 			
 			_body.velocity = velocity;
 
@@ -226,6 +245,9 @@ package {
 			
 			if (callback.int2.userData.myData is CrateObject) {
 				_isPushing = true;	
+				_minSpeed = 190;
+				_isFlying = false;
+				if ( _flyingPD ) _flyingPD.stop();
 			}
 			
 			if (callback.int2.userData.myData is CustomCoin) {
@@ -254,8 +276,9 @@ package {
 			
 			if ( _isFlying ) {
 				
-				if ( !(callback.int2.userData.myData is CustomHills) )
-					return PreFlag.IGNORE;
+//				if ( !(callback.int2.userData.myData is CustomHills)
+//					&& (callback.int1.userData.myData is MickeyHero) )
+//					return PreFlag.IGNORE;
 			}
 			
 			if (callback.int2.userData.myData is Platform ||

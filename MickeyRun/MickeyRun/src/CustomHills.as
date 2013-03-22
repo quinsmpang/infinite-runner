@@ -85,19 +85,19 @@ package {
 			// Every time a new hill has to be created this algorithm predicts where the slices will be positioned
 			if (_indexSliceInCurrentHill >= _slicesInCurrentHill) {
 				_slicesInCurrentHill = 44;//Math.random() * 40 + 10;
-				_currentAmplitude = Math.random() * 10 + 10;
+				_currentAmplitude = 30;//Math.random() * 60 - 20;
 				_indexSliceInCurrentHill = 0;
-				_currentXPoint = 0;
+//				_currentXPoint = 0;
 			}
 			// Calculate the position of the next slice
 			//sin(x) + 3.5 * sin(x/2*pi) + 2 * cos(x/pi)
 //			_nextYPoint = Math.sin(((Math.PI / 180) * (-1)));// + (3.5 * Math.sin(currentYPoint/2* Math.PI * (Math.PI/180))) + (Math.cos(180 * (currentYPoint))) ;
-//			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / _slicesInCurrentHill) * _indexSliceInCurrentHill)) * _currentAmplitude);
+			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / _slicesInCurrentHill) * _indexSliceInCurrentHill)) * _currentAmplitude);
 
 //			_nextYPoint = currentYPoint;// + (Math.sin((( ( Math.PI / 180 ) * currentYPoint) * _indexSliceInCurrentHill)) * _currentAmplitude);
 			
 			// generates 'sine wave' hills:
-			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / 180 * _slicesInCurrentHill * 4) * _indexSliceInCurrentHill * 4)) * _currentAmplitude);
+//			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / 180 * _slicesInCurrentHill * 4) * _indexSliceInCurrentHill * 4)) * _currentAmplitude);
 			
 //			_nextYPoint = currentYPoint + (Math.sin( (Math.PI / 180 * 10) * _indexSliceInCurrentHill ) * _currentAmplitude);
 			
