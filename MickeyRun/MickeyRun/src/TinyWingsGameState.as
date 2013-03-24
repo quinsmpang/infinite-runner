@@ -16,6 +16,7 @@ package {
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.Nape;
+	import citrus.view.ACitrusCamera;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	import citrus.view.starlingview.StarlingView;
@@ -62,17 +63,7 @@ package {
 //		[Embed(source="/../embed/mickey/mickeyrunshoebox.png")]
 //		public static const MickeyRunPng:Class;
 		
-		[Embed(source="/../embed/mickey/mickeyall.xml", mimeType="application/octet-stream")]
-		public static const MickeyConfig:Class;
-		
-		[Embed(source="/../embed/mickey/mickeyall.png")]
-		public static const MickeyPng:Class;
-		
-		[Embed(source="/../embed/mickey/misc.xml", mimeType="application/octet-stream")]
-		public static const MiscConfig:Class;
-		
-		[Embed(source="/../embed/mickey/misc.png")]
-		public static const MiscPng:Class;
+
 		
 
 		
@@ -81,6 +72,9 @@ package {
 		
 		[Embed(source="/../embed/large_crate.png")]
 		private var _largeCratePng:Class;
+		
+		[Embed(source="/../embed/very_large_crate.png")]
+		private var _veryLargeCratePng:Class;
 		
 //		[Embed(source="/../embed/coin.png")]
 //		private var _coinPng:Class;
@@ -93,6 +87,7 @@ package {
 		
 		private var _nape:Nape;
 		private var _hero:MickeyHero;
+		private var _enemy:CustomEnemy;
 		
 		private var _hillsTexture:HillsTexture;
 		
@@ -115,7 +110,16 @@ package {
 		
 		private var _miscTextureAtlas:TextureAtlas;
 		
-		public function TinyWingsGameState() {
+		private var enemyAnim:AnimationSequence;
+		private var sTextureAtlas:TextureAtlas;
+		
+		private var downTimer:Timer;
+		
+		private var _context:GameContext;
+		
+		public function TinyWingsGameState( context:GameContext ) {
+			_context = context;
+			
 			super();
 		}
 
@@ -135,23 +139,21 @@ package {
 //			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["fly", "descent", "stop", "ascent", "throughPortal", "jump", "ground"], "fly", 30, true);
 //			StarlingArt.setLoopAnimations(["fly"]);
 			
-//			// Draw background.
-//			bg = new GameBackground("background", null, _hero, true);
-//			add(bg);
 			
-			
-			var bitmap:Bitmap = new MickeyPng();
+//			var bitmap:Bitmap = new _context.MickeyPng();
 			//bitmap.smoothing = TextureSmoothing.BILINEAR;
-			var texture:Texture = Texture.fromBitmap(bitmap, false, false, 1);
-			var xml:XML = XML(new MickeyConfig());
-			var sTextureAtlas:TextureAtlas = new TextureAtlas(texture, xml);
+//			var texture:Texture = Texture.fromBitmap(bitmap, false, false, 1);
+//			var xml:XML = XML(new _context.MickeyConfig());
+			sTextureAtlas = Assets.getMickeyAtlas();//new TextureAtlas(texture, xml);
 			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump2_", "mickeythrow_", "mickeypush_", "mickeycarpet_", "mickeybubble_"], "slice_", 15, true, "none");
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", "mickeycarpet_", "mickeybubble_"]);
 			
-			bitmap = new MiscPng();
-			texture = Texture.fromBitmap( bitmap, false, false, 1 );
-			xml = XML( new MiscConfig() );
-			_miscTextureAtlas = new TextureAtlas( texture, xml );
+			enemyAnim = new AnimationSequence(sTextureAtlas, ["slice_"], "slice_", 15, true, "none");
+			
+//			bitmap = new _context.MiscPng();
+//			texture = Texture.fromBitmap( bitmap, false, false, 1 );
+//			xml = XML( new _context.MiscConfig() );
+			_miscTextureAtlas = Assets.getMiscAtlas() ;//new TextureAtlas( texture, xml );
 			
 //			var filter:BlurFilter;// = new BlurFilter(1, 1, 1);
 //			filter = BlurFilter.createGlow(0x000000);//0x000000, 1, 0.2, 1);
@@ -161,11 +163,12 @@ package {
 			
 //			heroAnim.filter = filter;
 			
-			_hero = new MickeyHero("hero", {x:stage.stageWidth * 0.2, radius:40, view:heroAnim, group:1});
+			_hero = new MickeyHero("hero", {x:stage.stageWidth * 0.2, radius:40, view:heroAnim, group:1}, 
+				_context);
 			add(_hero);
 			
-			bg = new GameBackground("background", null, _hero, true);
-			add(bg);
+//			bg = new GameBackground("background", null, _hero, true);
+//			add(bg);
 			
 //			bg.setHero( _hero );
 			
@@ -187,9 +190,10 @@ package {
 				
 
 			_hills = new CustomHills("hills", 
-				{rider:_hero, sliceHeight:300, sliceWidth:100, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
+				{rider:_hero, sliceHeight:400, sliceWidth:100, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
 					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
-					registration:"topLeft", view:_hillsTexture});
+					registration:"topLeft", view:_hillsTexture},
+				_context );
 			add(_hills);
 			
 //			var floor:Platform = new Platform("floor", {x:-100, y:stage.stageHeight - 100, width:5000, height: 250});
@@ -206,9 +210,10 @@ package {
 			
 			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.05, stage.stageHeight * 0.45), 
-				_cameraBounds, new MathVector(0.25, 0.05));
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.50), 
+				_cameraBounds, new MathVector(1.00, 0.08));
 			view.camera.allowZoom = true;
+			
 			
 			// particle effects
 			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleCoffeeXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
@@ -227,11 +232,12 @@ package {
 //			add( pePlatform );
 			
 			
-			var downTimer:Timer = new Timer( 2500 );
+			downTimer= new Timer( 2500 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 			downTimer.start();
 			
-//			view.camera.zoom( 0.1 );
+			view.camera.zoom( 1.0 );
+			view.camera.zoomEasing = 0.5;
 			
 			//view.camera.zoomFit( stage.stageWidth, stage.stageHeight );
 
@@ -250,6 +256,13 @@ package {
 			hud.foodScore = 0;
 			hud.distance = 0;
 //			hud.lives = 0;
+			
+			_context.initNewLevel();
+			_context.gameEndedSig.add( gameEndedControl );
+			
+			setTimeout( addGameEndedSensor, _context.getAndIncGameDuration() );
+			
+			_ce.playing = true;
 		}
 		
 		private function _fallSensorTouched(callback:InteractionCallback):void
@@ -267,14 +280,36 @@ package {
 			//addPlatform();
 			crateTimer++;
 		
-			if ( Math.random() > 0.9 ) addPowerup( view.camera.camPos.x + view.camera.cameraLensWidth,
+			if ( Math.random() > 0.5 ) 
+				addPowerup( view.camera.camPos.x + view.camera.cameraLensWidth,
 				_hills.currentYPoint - 100 );
+			else
+				addEnemy();
 			
 			if ( crateTimer > 4 ) {
-				addCrate( false );
+				addCrate( false );//, Math.random() > 0.5 );
 				crateTimer = 0;
 			}
 			
+		}
+		
+		private function gameEndedControl():void
+		{
+			_context.hasGameEnded = true;
+			view.camera.bounds = new Rectangle( 0, -500, 
+				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
+					, int.MAX_VALUE );
+		}
+		
+		private function onGameEnded():void
+		{
+			this._ce.playing = false;
+//			bg.gamePaused = true;
+			
+			downTimer.stop();
+			downTimer.removeEventListener( TimerEvent.TIMER, handleTimeEvent );
+			
+			_ce.state = new TinyWingsGameState( _context );
 		}
 		
 //		private function _addObject(tEvt:TouchEvent):void {
@@ -291,17 +326,36 @@ package {
 //			
 //		}
 		
-		private function addCurvedPlatform():void {
-			
+		private function addEnemy():void {
+			enemyAnim = new AnimationSequence(sTextureAtlas, ["slice_"], "slice_", 15, true, "none");
+			_enemy = new CustomEnemy("enemy", {x:_hero.x + stage.stageWidth, y: _hero.y,
+				radius:40, view:enemyAnim, group:1}, _hero);
+			add(_enemy);
 		}
 		
-		private function addCrate(addSmallCrate:Boolean):void {
+		private function addGameEndedSensor():void {
+			var image:Image;
+			var width:int; var height:int;
+			
+			image = new Image(Texture.fromBitmap(new _veryLargeCratePng()));
+			width = 140; height = 152;
+			
+			var sensor:CustomGameEndSensor = new CustomGameEndSensor("gameEndedSensor", 
+				{ x:_hero.x + stage.stageWidth, y:_hero.y - 200, width:width, height:height, view:image}, 
+				_hero );
+			add(sensor);	
+		}
+		
+		private function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false ):void {
 			var image:Image;
 			var width:int; var height:int;
 			
 			if ( addSmallCrate ) {
 				image = new Image(Texture.fromBitmap(new _cratePng()));
 				width = 35; height = 38;
+			} else if ( veryLargeCrate ) {
+				image = new Image(Texture.fromBitmap(new _veryLargeCratePng()));
+				width = 140; height = 152;
 			} else {
 				image = new Image(Texture.fromBitmap(new _largeCratePng()));
 				width = 70; height = 76;
@@ -323,7 +377,7 @@ package {
 			var physicObject:Coin = new CustomCoin("physicobject", { x:coinX, y:coinY, width:width, height:height, view:image}, _hero );
 			add(physicObject);	
 			
-			coins.push( physicObject );
+//			coins.push( physicObject );
 		}
 		
 		private function addPowerup( coinX:int, coinY:int ):void {
@@ -440,7 +494,7 @@ package {
 				
 				//add a new platform
 				prevPlatform1 = addPlatform( initialPosX + 400, 
-					800,//( Math.random() > 0.8 ) ? 1000 : 800, 
+					500,//( Math.random() > 0.8 ) ? 1000 : 800, 
 					prevPlatform1Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform1X = prevPlatform1.x + prevPlatform1.width/2;
 				prevPlatform1Y = prevPlatform1.y;
@@ -493,6 +547,8 @@ package {
 		private var gameOver:Boolean = false;
 		private var tempCoin:Coin;
 		private var scoreDistance:Number = 0;
+		private var viewCamPosX:Number = -1;
+		private var viewCamLensWidth:Number = -1;
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			
@@ -534,13 +590,27 @@ package {
 				_hero.y -= 1;
 			}
 			
+//			var z:Number = view.camera.zoomEasing;
+			
+			if ( !_context.hasGameEnded ) {
+				if ( _hero._isFlying ) {
+					if ( view.camera.getZoom() > 0.8 ) {
+						view.camera.setZoom( view.camera.getZoom() * 0.995 );
+					}
+				} else {
+					if ( view.camera.getZoom() < 1.0 ) {
+						view.camera.setZoom( view.camera.getZoom() * 1.005 );
+					}
+				}
+			}
+			
 			if ( Math.random() > 0.95 ) addCoin( view.camera.camPos.x + view.camera.cameraLensWidth, 
-				_hills.currentYPoint - 100 );
+				_hills.currentYPoint - 400 );
 			
 //			if ( Math.random() > 0.995 ) addPowerup( view.camera.camPos.x + view.camera.cameraLensWidth,
 //				_hills.currentYPoint - 100 );
 			
-//			if ( Math.random() > 0.9 ) createCustomShape();
+//			if ( Math.random() > 0.99 ) addEnemy();
 			
 //			if ( Math.random() > 0.999 ) addCrate( false );
 			
@@ -584,6 +654,17 @@ package {
 			hud.distance = _hero.x * 0.1;
 			
 			hud.foodScore = _hero.numCoinsCollected;
+			
+			if ( _context.hasGameEnded ) {
+				if ( viewCamPosX == -1 ) viewCamPosX = view.camera.camPos.x;
+				if ( viewCamLensWidth == -1 ) 
+					viewCamLensWidth = view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() );
+				
+				if ( _hero.x - 200 > 
+					viewCamPosX + ( viewCamLensWidth ) ) {
+					onGameEnded();
+				}
+			}
 		}
 	}
 }

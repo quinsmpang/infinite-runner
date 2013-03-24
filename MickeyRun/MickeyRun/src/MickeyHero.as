@@ -3,8 +3,11 @@ package {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import citrus.objects.NapePhysicsObject;
+	import citrus.objects.platformer.nape.Enemy;
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Platform;
+	import citrus.physics.nape.NapeUtils;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingView;
 	
@@ -31,8 +34,8 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 190;
-		private var _maxSpeed:uint = 250;
+		private var _minSpeed:uint = 250;
+		private var _maxSpeed:uint = 350;
 		
 		public var _isFlying:Boolean = false;
 		
@@ -47,15 +50,21 @@ package {
 		private var downTimer:Timer;
 		private var speedTimer:Timer;
 		private var numCoins:Number = 0;
+		
+		private var _context:GameContext;
 
-		public function MickeyHero(name:String, params:Object = null) {
+		public function MickeyHero(name:String, params:Object = null, context:GameContext = null ) {
 
 			super(name, params);
+			
+			_context = context;
 
-			//jumpAcceleration += 20;
-			jumpHeight += 180;
+//			jumpAcceleration += 5;
+//			jumpHeight += 25;
+//			jumpHeight += 180;
 			
 			this._body.gravMass = 4.8;
+//			this._body.gravMass = 4.8;
 			
 //			this.dynamicFriction = 0;
 //			this.staticFriction = 0;
@@ -64,7 +73,7 @@ package {
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
 			
-			downTimer = new Timer( 15000 );
+			downTimer = new Timer( 12000 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 			
 			speedTimer = new Timer( 1000 );
@@ -76,9 +85,9 @@ package {
 		{
 			// TODO Auto-generated method stub
 			if ( _isFlying ) 
-				_minSpeed += 30;
+				_minSpeed *= 1.2;
 			else
-				_minSpeed += 10;
+				_minSpeed *= 1.1;
 		}
 		
 		protected function handleTimeEvent(event:TimerEvent):void
@@ -163,7 +172,7 @@ package {
 				
 			} else {
 				if ( !_isFlying ) {
-					if (velocity.y < 0) velocity.y *= 0.9;
+//					if (velocity.y < 0) velocity.y *= 0.9;
 				} else {
 					if ( velocity.y > 0 ) velocity.y *= 0.9;
 				}
@@ -182,8 +191,8 @@ package {
 			//velocity.x = 0;
 			
 			if ( _isFlying ) {
-				velocity.x = _minSpeed + 60;
-				if ( velocity.x > _maxSpeed + 100 ) velocity.x = _maxSpeed + 100;
+//				velocity.x = _minSpeed + 40;
+				if ( velocity.x > _maxSpeed + 20 ) velocity.x = _maxSpeed + 20;
 			} else {
 				velocity.x = _minSpeed;
 				if ( velocity.x > _maxSpeed ) {
@@ -242,13 +251,35 @@ package {
 		
 		override public function handleBeginContact(callback:InteractionCallback):void {
 			
+			var collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
 			
-			if (callback.int2.userData.myData is CrateObject) {
-				_isPushing = true;	
-				_minSpeed = 190;
-				_isFlying = false;
-				if ( _flyingPD ) _flyingPD.stop();
+			if (callback.arbiters.length > 0 && callback.arbiters.at(0).collisionArbiter) {
+				
+				var collisionAngle:Number = callback.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
+				
+				if ( collider is CrateObject || collider is CustomEnemy ) {
+					if ( collisionAngle > 45 && collisionAngle < 135 ) {
+					
+					} else {
+						_minSpeed = 200;
+						_isFlying = false;
+						if ( _flyingPD ) _flyingPD.stop();
+					}
+				} 
 			}
+			
+//			if ( (callback.int2.userData.myData is CrateObject) ) {
+////				_isPushing = true;	
+//				_minSpeed = 200;
+//				_isFlying = false;
+//				if ( _flyingPD ) _flyingPD.stop();
+//			}
+//			
+//			if ( (callback.int2.userData.myData is CustomEnemy) ) {
+//				_minSpeed = 200;
+//				_isFlying = false;
+//				if ( _flyingPD ) _flyingPD.stop();
+//			}
 			
 			if (callback.int2.userData.myData is CustomCoin) {
 				numCoins++;	
@@ -274,11 +305,16 @@ package {
 		override public function handlePreContact(callback:PreCallback):PreFlag {
 			//_isPushing = false;
 			
+			if ( (callback.int2.userData.myData is CustomGameEndSensor) ) {
+				_context.gameEnded();
+				return PreFlag.ACCEPT;
+			}
+			
 			if ( _isFlying ) {
 				
-//				if ( !(callback.int2.userData.myData is CustomHills)
-//					&& (callback.int1.userData.myData is MickeyHero) )
-//					return PreFlag.IGNORE;
+				if ( !(callback.int2.userData.myData is CustomHills)
+					&& (callback.int1.userData.myData is MickeyHero) )
+					return PreFlag.IGNORE;
 			}
 			
 			if (callback.int2.userData.myData is Platform ||

@@ -17,7 +17,7 @@
   <startColorVariance red="0" green="0" blue="0" alpha="0"/>
   <finishColor red="1" green="0" blue="0" alpha="0"/>
   <finishColorVariance red="0" green="0" blue="0" alpha="0"/>
-  <maxParticles value="50"/>
+  <maxParticles value="100"/>
   <startParticleSize value="70"/>
   <startParticleSizeVariance value="0"/>
   <finishParticleSize value="10"/>

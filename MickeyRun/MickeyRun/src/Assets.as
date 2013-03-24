@@ -44,6 +44,21 @@ package {
 		[Embed(source="/../embed/bgLayer1.png")]
 		public static const BgLayer1:Class;
 		
+		/**
+		 * Mickey Assets
+		 */
+		[Embed(source="/../embed/mickey/mickeyall.xml", mimeType="application/octet-stream")]
+		public static const MickeyConfig:Class;
+		
+		[Embed(source="/../embed/mickey/mickeyall.png")]
+		public static const MickeyPng:Class;
+		
+		[Embed(source="/../embed/mickey/misc.xml", mimeType="application/octet-stream")]
+		public static const MiscConfig:Class;
+		
+		[Embed(source="/../embed/mickey/misc.png")]
+		public static const MiscPng:Class;
+		
 //		[Embed(source="/../embed/games/hungryhero//graphics/bgWelcome.jpg")]
 //		public static const BgWelcome:Class;
 		
@@ -52,6 +67,8 @@ package {
 		 */
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
+		private static var mickeyTextureAtlas:TextureAtlas;
+		private static var miscTextureAtlas:TextureAtlas;
 		
 		/**
 		 * Returns the Texture atlas instance.
@@ -67,6 +84,30 @@ package {
 			}
 			
 			return gameTextureAtlas;
+		}
+		
+		public static function getMickeyAtlas():TextureAtlas
+		{
+			if (mickeyTextureAtlas == null)
+			{
+				var texture:Texture = getTexture("MickeyPng");
+				var xml:XML = XML(new MickeyConfig());
+				mickeyTextureAtlas=new TextureAtlas(texture, xml);
+			}
+			
+			return mickeyTextureAtlas;
+		}
+		
+		public static function getMiscAtlas():TextureAtlas
+		{
+			if (miscTextureAtlas == null)
+			{
+				var texture:Texture = getTexture("MiscPng");
+				var xml:XML = XML(new MiscConfig());
+				miscTextureAtlas=new TextureAtlas(texture, xml);
+			}
+			
+			return miscTextureAtlas;
 		}
 		
 		/**

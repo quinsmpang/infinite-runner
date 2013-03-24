@@ -48,8 +48,12 @@ package {
 		protected var _slices:Vector.<Body>;
 		protected var _sliceVectorConstructor:Vector.<Vec2>;
 		
-		public function CustomHills(name:String, params:Object = null) {
+		private var _context:GameContext;
+		
+		public function CustomHills(name:String, params:Object = null, context:GameContext = null ) {
 			super(name, params);
+			
+			_context = context;
 		}
 		
 		override public function initialize(poolObjectParams:Object = null):void {
@@ -84,8 +88,11 @@ package {
 			
 			// Every time a new hill has to be created this algorithm predicts where the slices will be positioned
 			if (_indexSliceInCurrentHill >= _slicesInCurrentHill) {
-				_slicesInCurrentHill = 44;//Math.random() * 40 + 10;
-				_currentAmplitude = 30;//Math.random() * 60 - 20;
+				_slicesInCurrentHill = Math.random() * 40 + 10;
+				// a slope that goes downward forever
+//				_currentAmplitude = 30;//Math.random() * 60 - 20;
+				_currentAmplitude = Math.random() * 30 - 10;
+				if ( Math.random() > 0.8 ) _currentAmplitude = 60;
 				_indexSliceInCurrentHill = 0;
 //				_currentXPoint = 0;
 			}
@@ -138,9 +145,11 @@ package {
 				
 				if (rider.body.position.x - _slices[i].position.x > widthHills * 0.5 + 100) {
 					
-					_deleteHill(i);
-					--i;
-					_createSlice();
+					if ( !_context.hasGameEnded ) {
+						_deleteHill(i);
+						--i;
+						_createSlice();
+					}
 					
 				} else
 					break;

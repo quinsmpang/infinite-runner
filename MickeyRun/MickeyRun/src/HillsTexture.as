@@ -84,7 +84,7 @@ package {
 			
 			var matrix:Matrix = image.transformationMatrix;
             matrix.translate(rider.position.x, rider.position.y);
-            matrix.a = 1.04;
+            matrix.a = 1.01;
             matrix.b = (nextYPoint - currentYPoint) / _sliceWidth;
             image.transformationMatrix.copyFrom(matrix); 
 		}
