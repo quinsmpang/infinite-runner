@@ -30,6 +30,7 @@ package {
 		 */
 		public var currentYPoint:Number = 200;
 		
+		public var currentXPoint:Number = 0;
 		/**
 		 * This is the width of the hills visible. Most of the time your stage width. 
 		 */
@@ -83,18 +84,18 @@ package {
 			}
 		}
 		
-		private var _currentXPoint:uint = 0;
 		protected function _createSlice():void {
 			
 			// Every time a new hill has to be created this algorithm predicts where the slices will be positioned
 			if (_indexSliceInCurrentHill >= _slicesInCurrentHill) {
 				_slicesInCurrentHill = Math.random() * 40 + 10;
 				// a slope that goes downward forever
-//				_currentAmplitude = 30;//Math.random() * 60 - 20;
+//				_currentAmplitude = Math.random() * 60;
+//				_currentAmplitude = Math.random() * 60 - 20;
 				_currentAmplitude = Math.random() * 30 - 10;
 				if ( Math.random() > 0.8 ) _currentAmplitude = 60;
 				_indexSliceInCurrentHill = 0;
-//				_currentXPoint = 0;
+				currentXPoint = 0;
 			}
 			// Calculate the position of the next slice
 			//sin(x) + 3.5 * sin(x/2*pi) + 2 * cos(x/pi)
@@ -117,7 +118,7 @@ package {
 			_body.position.y = currentYPoint;
 			_body.space = _nape.space;
 			
-			_currentXPoint += _body.position.x;
+			currentXPoint = _body.position.x;
 			
 			_pushHill();
 		}

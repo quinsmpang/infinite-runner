@@ -20,6 +20,7 @@ package {
 	import nape.callbacks.PreListener;
 	import nape.geom.Vec2;
 	
+	import starling.display.MovieClip;
 	import starling.extensions.particles.PDParticleSystem;
 
 	/**
@@ -34,10 +35,11 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 250;
-		private var _maxSpeed:uint = 350;
+		private var _minSpeed:uint = 200;
+		private var _maxSpeed:uint = 280;
 		
 		public var _isFlying:Boolean = false;
+		private var _flyingJumpHeight:uint = 400;
 		
 		private var _zoomModified:Boolean = false;
 		
@@ -52,22 +54,29 @@ package {
 		private var numCoins:Number = 0;
 		
 		private var _context:GameContext;
+		
+		private var _heroAnim:AnimationSequence;
 
-		public function MickeyHero(name:String, params:Object = null, context:GameContext = null ) {
+		public function MickeyHero(name:String, params:Object = null, context:GameContext = null, heroAnim:AnimationSequence = null ) {
 
 			super(name, params);
 			
 			_context = context;
-
-//			jumpAcceleration += 5;
-//			jumpHeight += 25;
-//			jumpHeight += 180;
 			
-			this._body.gravMass = 4.8;
+			_heroAnim = heroAnim;
+
+			jumpAcceleration += 10;
+//			jumpHeight += 80;
+			jumpHeight += 200;
+			
+//			this._body.gravMass = 4.8;
+			this._body.gravMass = 6.8;
 //			this._body.gravMass = 4.8;
 			
 //			this.dynamicFriction = 0;
 //			this.staticFriction = 0;
+			
+			// working combo: jumAcc += 6; body.gravMass = 6.8; jumpHeight += 200;
 
 			
 			_mobileInput = new TouchInput();
@@ -81,13 +90,18 @@ package {
 			speedTimer.start();
 		}
 		
+		private function setAnimFPS( anim:String, fps:Number ):void
+		{
+			(_heroAnim.mcSequences[anim] as MovieClip).fps = fps;
+		}
+		
 		protected function handleSpeedTimer(event:TimerEvent):void
 		{
 			// TODO Auto-generated method stub
 			if ( _isFlying ) 
 				_minSpeed *= 1.2;
 			else
-				_minSpeed *= 1.1;
+				_minSpeed *= 1.05;
 		}
 		
 		protected function handleTimeEvent(event:TimerEvent):void
@@ -116,6 +130,9 @@ package {
 			return numCoins;
 		}
 
+		private var _doubleJumpAvailable:Boolean = true;
+		private var screenTouchedOnce:Boolean = false;
+		private var screenTapped:Boolean = false;
 		override public function update(timeDelta:Number):void {
 
 			var velocity:Vec2 = _body.velocity;
@@ -125,11 +142,13 @@ package {
 			
 			if (_mobileInput.screenTouched) {
 				
+				screenTouchedOnce = true;
+				
 				if ( _isFlying ) {
 					if ( _mobileInput.touchPoint ) {
 //						this.y = _mobileInput.touchPoint.y;
 //						this.y -= ( this.y - _mobileInput.touchPoint.y ) * 0.1;	
-						velocity.y = -200;
+						velocity.y = -_flyingJumpHeight;
 						
 					}
 				} else {
@@ -150,7 +169,7 @@ package {
 	
 	//					numJump = 0;
 						//if (Math.random() > 0.5)
-							//this._ce.state.view.camera.setZoom( 0.8 );
+						this._ce.state.view.camera.setZoom( 0.8 );
 						//else
 							//this._ce.state.view.camera.setZoom( 1.0 );
 						
@@ -159,11 +178,17 @@ package {
 						velocity.y = -jumpHeight;
 						_onGround = false;
 						
+//						trace( "onGround" );
+						
 						_animation = "slice_";
 	
-					} else if (velocity.y < 0)
+					} else if ( screenTapped && _doubleJumpAvailable ) {
+						velocity.y = -jumpHeight;
+//						trace( "double jump" );
+						_doubleJumpAvailable = false;
+					} else if (velocity.y < 0) {
 						velocity.y -= jumpAcceleration;
-					else {
+					} else {
 						;//velocity.y += jumpAcceleration;
 						
 					}
@@ -171,10 +196,13 @@ package {
 				} // isFlying
 				
 			} else {
+				
+				if ( screenTouchedOnce ) screenTapped = true;
+				
 				if ( !_isFlying ) {
 //					if (velocity.y < 0) velocity.y *= 0.9;
 				} else {
-					if ( velocity.y > 0 ) velocity.y *= 0.9;
+					if ( velocity.y > 0 ) velocity.y *= 0.85;
 				}
 				//else velocity.y *= 1.01;
 
@@ -219,7 +247,10 @@ package {
 
 //				_animation = _body.velocity.y < 0 ? "jump" : "ascent";
 				if ( _isFlying ) _animation = true ? "mickeycarpet_" : "mickeybubble_";
-				else _animation = "mickeyjump2_";//_body.velocity.y < 0 ? "mickeyjump2_" : "mickeythrow_";
+				else if ( _onGround )
+					_animation = "slice_";
+				else
+					_animation = "mickeyjump2_";//_body.velocity.y < 0 ? "mickeyjump2_" : "mickeythrow_";
 
 			} 
 			else {
@@ -235,6 +266,9 @@ package {
 			}
 //			else
 //				_animation = "mickeythrow_";
+			if ( _animation == "slice_" ) {
+				setAnimFPS( _animation, Math.round( this.body.velocity.x / 13 ) );
+			}
 		}
 
 		override protected function createConstraint():void {
@@ -318,14 +352,19 @@ package {
 			}
 			
 			if (callback.int2.userData.myData is Platform ||
-				callback.int2.userData.myData is PhyEPlatform285) {
+				callback.int2.userData.myData is CustomHills ||
+				callback.int2.userData.myData is PhyEPlatform285
+			) {
 				_onGround = true;
+				_doubleJumpAvailable = true;
+				screenTapped = false;
+				screenTouchedOnce = false;
 				//_animation = "slice_";
 				
-//				if ( _zoomModified ) {
-//					this._ce.state.view.camera.setZoom( 1 );
-//					_zoomModified = false;
-//				}
+				if ( _zoomModified ) {
+//					this._ce.state.view.camera.setZoom( 1.0 );
+					_zoomModified = false;
+				}
 			} 
 //			else if (callback.int2.userData.myData is CrateObject) {
 //				return PreFlag.IGNORE;	

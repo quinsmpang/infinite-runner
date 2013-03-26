@@ -23,7 +23,7 @@ package
 			gameEndedSig.dispatch();
 		}
 		
-		private var gameDuration:int = 30000;
+		private var gameDuration:int = 10000;
 		public function getAndIncGameDuration():int 
 		{
 			gameDuration += 15000;

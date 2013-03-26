@@ -30,6 +30,7 @@ package {
 	import nape.shape.Polygon;
 	
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.display.Quad;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -110,6 +111,7 @@ package {
 		
 		private var _miscTextureAtlas:TextureAtlas;
 		
+		private var heroAnim:AnimationSequence;
 		private var enemyAnim:AnimationSequence;
 		private var sTextureAtlas:TextureAtlas;
 		
@@ -145,7 +147,7 @@ package {
 //			var texture:Texture = Texture.fromBitmap(bitmap, false, false, 1);
 //			var xml:XML = XML(new _context.MickeyConfig());
 			sTextureAtlas = Assets.getMickeyAtlas();//new TextureAtlas(texture, xml);
-			var heroAnim:AnimationSequence = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump2_", "mickeythrow_", "mickeypush_", "mickeycarpet_", "mickeybubble_"], "slice_", 15, true, "none");
+			heroAnim = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump2_", "mickeythrow_", "mickeypush_", "mickeycarpet_", "mickeybubble_"], "slice_", 15, true, "none");
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", "mickeycarpet_", "mickeybubble_"]);
 			
 			enemyAnim = new AnimationSequence(sTextureAtlas, ["slice_"], "slice_", 15, true, "none");
@@ -163,8 +165,8 @@ package {
 			
 //			heroAnim.filter = filter;
 			
-			_hero = new MickeyHero("hero", {x:stage.stageWidth * 0.2, radius:40, view:heroAnim, group:1}, 
-				_context);
+			_hero = new MickeyHero( "hero", {x:stage.stageWidth * 0.2, radius:40, view:heroAnim, group:1}, 
+				_context, heroAnim );
 			add(_hero);
 			
 //			bg = new GameBackground("background", null, _hero, true);
@@ -210,7 +212,7 @@ package {
 			
 			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.50), 
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.65), 
 				_cameraBounds, new MathVector(1.00, 0.08));
 			view.camera.allowZoom = true;
 			
@@ -232,12 +234,12 @@ package {
 //			add( pePlatform );
 			
 			
-			downTimer= new Timer( 2500 );
+			downTimer= new Timer( 250 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 			downTimer.start();
 			
 			view.camera.zoom( 1.0 );
-			view.camera.zoomEasing = 0.5;
+			view.camera.zoomEasing = 0.05;
 			
 			//view.camera.zoomFit( stage.stageWidth, stage.stageHeight );
 
@@ -280,17 +282,43 @@ package {
 			//addPlatform();
 			crateTimer++;
 		
-			if ( Math.random() > 0.5 ) 
-				addPowerup( view.camera.camPos.x + view.camera.cameraLensWidth,
-				_hills.currentYPoint - 100 );
-			else
-				addEnemy();
-			
-			if ( crateTimer > 4 ) {
-				addCrate( false );//, Math.random() > 0.5 );
+			if ( crateTimer > 10 ) {
+				if ( Math.random() > 0.5 ) {
+	//				addPowerup( view.camera.camPos.x + view.camera.cameraLensWidth,
+	//				_hills.currentYPoint - 100 );
+					addCoinFormation();
+					addCrate( false, false, view.camera.camPos.x + view.camera.cameraLensWidth + 200,
+						_hills.currentYPoint - 100 );//, Math.random() > 0.5 );
+				}
+				else
+				{
+//					addPlatform( _hills.currentXPoint + 30, 500, _hills.currentYPoint - 300 );
+				}
+	//			else
+	//				addEnemy();
+				
 				crateTimer = 0;
+			} else {
+				addCoin( _hills.currentXPoint + 30, _hills.currentYPoint - 70 );
 			}
 			
+		}
+		
+		private function addCoinFormation():void {
+			addCoin( view.camera.camPos.x + view.camera.cameraLensWidth,
+			_hills.currentYPoint - 200 );
+			addCoin( view.camera.camPos.x + view.camera.cameraLensWidth + 60,
+			_hills.currentYPoint - 260 );
+			addCoin( view.camera.camPos.x + view.camera.cameraLensWidth + 120,
+			_hills.currentYPoint - 320 );
+			addCoin( view.camera.camPos.x + view.camera.cameraLensWidth + 180,
+			_hills.currentYPoint - 380 );
+			addCoin( view.camera.camPos.x + view.camera.cameraLensWidth + 240,
+			_hills.currentYPoint - 320 );
+			addCoin( view.camera.camPos.x + view.camera.cameraLensWidth + 300,
+			_hills.currentYPoint - 260 );
+			addCoin( view.camera.camPos.x + view.camera.cameraLensWidth + 360,
+			_hills.currentYPoint - 200 );
 		}
 		
 		private function gameEndedControl():void
@@ -309,7 +337,7 @@ package {
 			downTimer.stop();
 			downTimer.removeEventListener( TimerEvent.TIMER, handleTimeEvent );
 			
-			_ce.state = new TinyWingsGameState( _context );
+//			_ce.state = new TinyWingsGameState( _context );
 		}
 		
 //		private function _addObject(tEvt:TouchEvent):void {
@@ -346,7 +374,7 @@ package {
 			add(sensor);	
 		}
 		
-		private function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false ):void {
+		private function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false, x:int=-1, y:int=-1 ):void {
 			var image:Image;
 			var width:int; var height:int;
 			
@@ -361,7 +389,10 @@ package {
 				width = 70; height = 76;
 			}
 			
-			var physicObject:CrateObject = new CrateObject("physicobject", { x:_hero.x + stage.stageWidth, y:_hero.y - 100, width:width, height:height, view:image}, _hero );
+			if ( x == -1 ) x = _hero.x + stage.stageWidth;
+			if ( y == -1 ) y = _hero.y - 100;
+			
+			var physicObject:CrateObject = new CrateObject("physicobject", { x:x, y:y, width:width, height:height, view:image}, _hero );
 			add(physicObject);	
 		}
 		
@@ -430,21 +461,22 @@ package {
 //			addCoin( coinX + 200, floor.y - 50 );
 
 			var i:int = 0;
-			for ( i = 0; i<10; i++ ) {
-				addCoin( coinX + 200, -400 ); 
-				coinX += 45;
-			}
+//			for ( i = 0; i<10; i++ ) {
+//				addCoin( coinX + 200, -400 ); 
+//				coinX += 45;
+//			}
 			
 			if ( Math.random() > 0.5 )  { 
 
-				coinX = floor.x - ( Math.random() * floor.width ) + 100;// floor.width/2;
+				coinX = floor.x - floor.width/2 + 50;
 				for ( i = 0; i<10; i++ ) {
-					addCoin( coinX + 200, floor.y - 50 ); 
+					addCoin( coinX, floor.y - 50 ); 
 					coinX += 45;
 				}
 			}
 			else 
-				if ( Math.random() > 0.9 ) addPowerup( coinX + 300, floor.y - 50 );
+				if ( Math.random() > 0.8 )
+					addPowerup( coinX + 300, floor.y - 50 );
 			
 			return floor;
 		}
@@ -494,7 +526,7 @@ package {
 				
 				//add a new platform
 				prevPlatform1 = addPlatform( initialPosX + 400, 
-					500,//( Math.random() > 0.8 ) ? 1000 : 800, 
+					800,//( Math.random() > 0.8 ) ? 1000 : 800, 
 					prevPlatform1Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform1X = prevPlatform1.x + prevPlatform1.width/2;
 				prevPlatform1Y = prevPlatform1.y;
@@ -503,7 +535,7 @@ package {
 //				if ( Math.random() > 0.8 ) {
 //					createCustomShape();
 //				}
-				if ( false && Math.random() > 0.8 ) {
+				if ( Math.random() > 0.2 ) {
 
 					prevPlatform2X = prevPlatform1X - 200;
 					//add a new platform
@@ -527,7 +559,8 @@ package {
 //				}
 			}
 			
-			initialPosX = camPosX + camLensWidth;
+			initialPosX = _hills.currentXPoint;
+//			initialPosX = camPosX + camLensWidth;
 		}
 		
 //		private var pePlatform:PhyEPlatform285;
@@ -564,7 +597,7 @@ package {
 			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterY = _hero.y;
 			
 			// generate platforms
-//			platformGenerator();
+			platformGenerator();
 			
 			if ( _hero.y > stage.stageHeight + 500 ) {
 //				if ( !gameOver ) _hero.y = stage.stageHeight + 500;
@@ -594,18 +627,20 @@ package {
 			
 			if ( !_context.hasGameEnded ) {
 				if ( _hero._isFlying ) {
-					if ( view.camera.getZoom() > 0.8 ) {
-						view.camera.setZoom( view.camera.getZoom() * 0.995 );
-					}
+					view.camera.setZoom( 0.8 );
+//					if ( view.camera.getZoom() > 0.8 ) {
+//						view.camera.setZoom( view.camera.getZoom() * 0.995 );
+//					}
 				} else {
-					if ( view.camera.getZoom() < 1.0 ) {
-						view.camera.setZoom( view.camera.getZoom() * 1.005 );
-					}
+					view.camera.setZoom( 1.0 );
+//					if ( view.camera.getZoom() < 1.0 ) {
+//						view.camera.setZoom( view.camera.getZoom() * 1.005 );
+//					}
 				}
 			}
 			
-			if ( Math.random() > 0.95 ) addCoin( view.camera.camPos.x + view.camera.cameraLensWidth, 
-				_hills.currentYPoint - 400 );
+//			if ( Math.random() > 0.95 ) addCoin( view.camera.camPos.x + view.camera.cameraLensWidth, 
+//				_hills.currentYPoint - 400 );
 			
 //			if ( Math.random() > 0.995 ) addPowerup( view.camera.camPos.x + view.camera.cameraLensWidth,
 //				_hills.currentYPoint - 100 );
