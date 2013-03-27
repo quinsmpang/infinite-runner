@@ -1,8 +1,6 @@
 package {
 
-	import flash.display.Bitmap;
 	import flash.events.TimerEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 	import flash.utils.setTimeout;
@@ -10,36 +8,19 @@ package {
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
-	import citrus.objects.NapePhysicsObject;
 	import citrus.objects.platformer.nape.Coin;
-	import citrus.objects.platformer.nape.MovingPlatform;
 	import citrus.objects.platformer.nape.Platform;
-	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.Nape;
-	import citrus.view.ACitrusCamera;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
-	import citrus.view.starlingview.StarlingView;
-	
-	import games.hungryhero.ParticleAssets;
 	
 	import nape.callbacks.InteractionCallback;
-	import nape.geom.Vec2;
-	import nape.phys.Body;
-	import nape.phys.BodyType;
-	import nape.shape.Polygon;
 	
 	import starling.display.Image;
-	import starling.display.MovieClip;
 	import starling.display.Quad;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 	import starling.extensions.particles.PDParticleSystem;
-	import starling.filters.BlurFilter;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
-	import starling.textures.TextureSmoothing;
 
 	/**
 	 * @author Aymeric
@@ -213,7 +194,7 @@ package {
 			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 
 			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.65), 
-				_cameraBounds, new MathVector(1.00, 0.08));
+				_cameraBounds, new MathVector(0.20, 0.06));
 			view.camera.allowZoom = true;
 			
 			
@@ -238,8 +219,9 @@ package {
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 			downTimer.start();
 			
-			view.camera.zoom( 1.0 );
+//			view.camera.zoom( 1.0 );
 			view.camera.zoomEasing = 0.05;
+			view.camera.setZoom( 0.8 );
 			
 			//view.camera.zoomFit( stage.stageWidth, stage.stageHeight );
 
@@ -282,13 +264,19 @@ package {
 			//addPlatform();
 			crateTimer++;
 		
-			if ( crateTimer > 10 ) {
+			if ( crateTimer > 7 ) {
 				if ( Math.random() > 0.5 ) {
 	//				addPowerup( view.camera.camPos.x + view.camera.cameraLensWidth,
 	//				_hills.currentYPoint - 100 );
 					addCoinFormation();
-					addCrate( false, false, view.camera.camPos.x + view.camera.cameraLensWidth + 200,
-						_hills.currentYPoint - 100 );//, Math.random() > 0.5 );
+					
+					if ( Math.random() > 0.5 ) {
+						addCrate( false, true, view.camera.camPos.x + view.camera.cameraLensWidth + 200,
+							_hills.currentYPoint - 200 );//, Math.random() > 0.5 );
+					} else {
+						addCoin( _hills.currentXPoint - 150,
+							_hills.currentYPoint - 100, true );//, Math.random() > 0.5 );
+					}
 				}
 				else
 				{
@@ -324,7 +312,7 @@ package {
 		private function gameEndedControl():void
 		{
 			_context.hasGameEnded = true;
-			view.camera.bounds = new Rectangle( 0, -500, 
+			view.camera.bounds = new Rectangle( 0, -int.MAX_VALUE, 
 				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
 					, int.MAX_VALUE );
 		}
@@ -397,13 +385,20 @@ package {
 		}
 		
 		private var coins:Vector.<Coin> = new Vector.<Coin>();
-		private function addCoin( coinX:int, coinY:int ):void {
+		private function addCoin( coinX:int, coinY:int, largeCoin:Boolean=false ):void {
 			var image:Image;
 			var width:int; var height:int;
 			
 //			image = new Image(Texture.fromBitmap(new _coinPng()));
+			
 			image = new Image( _miscTextureAtlas.getTexture("coin") );
-			width = 40; height = 40;
+			
+			if ( !largeCoin ) {
+				width = 40; height = 40;
+			} else {
+				image.scaleX = image.scaleY = 2;
+				width = 80; height = 80;
+			}
 
 			var physicObject:Coin = new CustomCoin("physicobject", { x:coinX, y:coinY, width:width, height:height, view:image}, _hero );
 			add(physicObject);	
@@ -526,7 +521,7 @@ package {
 				
 				//add a new platform
 				prevPlatform1 = addPlatform( initialPosX + 400, 
-					800,//( Math.random() > 0.8 ) ? 1000 : 800, 
+					( Math.random() > 0.8 ) ? 800 : 500, 
 					prevPlatform1Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
 				prevPlatform1X = prevPlatform1.x + prevPlatform1.width/2;
 				prevPlatform1Y = prevPlatform1.y;
@@ -535,7 +530,7 @@ package {
 //				if ( Math.random() > 0.8 ) {
 //					createCustomShape();
 //				}
-				if ( Math.random() > 0.2 ) {
+				if ( Math.random() > 0.7 ) {
 
 					prevPlatform2X = prevPlatform1X - 200;
 					//add a new platform
@@ -545,16 +540,18 @@ package {
 					prevPlatform2X = prevPlatform2.x + prevPlatform2.width/2;
 					prevPlatform2Y = prevPlatform2.y;
 					
-					//lowermost platform
-					prevPlatform3X = prevPlatform2X - 200;
-					//prevPlatform3X = -250;
-	//				if ( camPosX + camLensWidth > prevPlatform3X ) {
-						//add a new platform
-					prevPlatform3 = addPlatform( initialPosX + 50, 
-						300,//( Math.random() > 0.8 ) ? 700 : 400, 
-						prevPlatform3Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
-					prevPlatform3X = prevPlatform3.x + prevPlatform3.width/2;
-					prevPlatform3Y = prevPlatform3.y;	
+					if ( Math.random() > 0.5 ) {
+						//lowermost platform
+						prevPlatform3X = prevPlatform2X - 200;
+						//prevPlatform3X = -250;
+		//				if ( camPosX + camLensWidth > prevPlatform3X ) {
+							//add a new platform
+						prevPlatform3 = addPlatform( initialPosX + 50, 
+							300,//( Math.random() > 0.8 ) ? 700 : 400, 
+							prevPlatform3Y + ( ( Math.random() * 100 ) * ( Math.random() > 0.5 ? -1 : 1 ) ) );
+						prevPlatform3X = prevPlatform3.x + prevPlatform3.width/2;
+						prevPlatform3Y = prevPlatform3.y;	
+					}
 				}
 //				}
 			}
@@ -617,7 +614,7 @@ package {
 				}
 			}
 			
-			if ( _hero.y < -400 ) _hero.y = -400;
+//			if ( _hero.y < -400 ) _hero.y = -400;
 			
 			if ( _hero.velocity.x == 0 ) {
 				_hero.y -= 1;
@@ -632,7 +629,7 @@ package {
 //						view.camera.setZoom( view.camera.getZoom() * 0.995 );
 //					}
 				} else {
-					view.camera.setZoom( 1.0 );
+//					view.camera.setZoom( 1.0 );
 //					if ( view.camera.getZoom() < 1.0 ) {
 //						view.camera.setZoom( view.camera.getZoom() * 1.005 );
 //					}

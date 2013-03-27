@@ -25,5 +25,10 @@ package
 				//trace( "removed body" + this.x );
 			}
 		}
+		
+		public function destroyThis():void {
+			this._ce.state.remove( this );
+			this.destroy();
+		}
 	}
 }

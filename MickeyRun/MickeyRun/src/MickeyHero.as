@@ -36,7 +36,7 @@ package {
 		private var _contactBeginListener:Listener;
 		
 		private var _minSpeed:uint = 200;
-		private var _maxSpeed:uint = 280;
+		private var _maxSpeed:uint = 350;
 		
 		public var _isFlying:Boolean = false;
 		private var _flyingJumpHeight:uint = 400;
@@ -67,7 +67,7 @@ package {
 
 			jumpAcceleration += 10;
 //			jumpHeight += 80;
-			jumpHeight += 200;
+			jumpHeight += 150;
 			
 //			this._body.gravMass = 4.8;
 			this._body.gravMass = 6.8;
@@ -101,7 +101,7 @@ package {
 			if ( _isFlying ) 
 				_minSpeed *= 1.2;
 			else
-				_minSpeed *= 1.05;
+				;//_minSpeed *= 1.05;
 		}
 		
 		protected function handleTimeEvent(event:TimerEvent):void
@@ -267,7 +267,7 @@ package {
 //			else
 //				_animation = "mickeythrow_";
 			if ( _animation == "slice_" ) {
-				setAnimFPS( _animation, Math.round( this.body.velocity.x / 13 ) );
+				setAnimFPS( _animation, Math.round( this.body.velocity.x / 26 ) );
 			}
 		}
 
@@ -295,11 +295,15 @@ package {
 					if ( collisionAngle > 45 && collisionAngle < 135 ) {
 					
 					} else {
-						_minSpeed = 200;
-						_isFlying = false;
-						if ( _flyingPD ) _flyingPD.stop();
+//						_maxSpeed += 100;
+//						_minSpeed = 200;
+//						_isFlying = false;
+//						if ( _flyingPD ) _flyingPD.stop();
+//						_context.onCrateHit();
 					}
-				} 
+				}
+				
+				if ( collider is CrateObject ) ( collider as CrateObject ).destroyThis();
 			}
 			
 //			if ( (callback.int2.userData.myData is CrateObject) ) {
@@ -350,6 +354,21 @@ package {
 					&& (callback.int1.userData.myData is MickeyHero) )
 					return PreFlag.IGNORE;
 			}
+
+			// ignore platform sides - don't stop when colliding with the sides.
+			var collider:NapePhysicsObject = callback.int2.userData.myData as NapePhysicsObject;
+			
+			if (callback.arbiter && callback.arbiter.collisionArbiter) {
+				
+				var collisionAngle:Number = callback.arbiter.collisionArbiter.normal.angle * 180 / Math.PI;
+				
+				if ( collider is Platform ) {
+					//					trace( "collision angle: " + collisionAngle );
+					if ( collisionAngle < 45 || collisionAngle > 135 ) {
+						return PreFlag.IGNORE;	
+					}
+				}
+			}
 			
 			if (callback.int2.userData.myData is Platform ||
 				callback.int2.userData.myData is CustomHills ||
@@ -360,6 +379,7 @@ package {
 				screenTapped = false;
 				screenTouchedOnce = false;
 				//_animation = "slice_";
+				_minSpeed *= 1.09;
 				
 				if ( _zoomModified ) {
 //					this._ce.state.view.camera.setZoom( 1.0 );
@@ -369,6 +389,8 @@ package {
 //			else if (callback.int2.userData.myData is CrateObject) {
 //				return PreFlag.IGNORE;	
 //			}
+			
+
 
 			return PreFlag.ACCEPT;
 		}

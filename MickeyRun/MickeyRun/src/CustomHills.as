@@ -88,12 +88,15 @@ package {
 			
 			// Every time a new hill has to be created this algorithm predicts where the slices will be positioned
 			if (_indexSliceInCurrentHill >= _slicesInCurrentHill) {
-				_slicesInCurrentHill = Math.random() * 40 + 10;
+				_slicesInCurrentHill = Math.random() * 30 + 30;
 				// a slope that goes downward forever
-//				_currentAmplitude = Math.random() * 60;
-//				_currentAmplitude = Math.random() * 60 - 20;
-				_currentAmplitude = Math.random() * 30 - 10;
-				if ( Math.random() > 0.8 ) _currentAmplitude = 60;
+//				_currentAmplitude = Math.random() * 50 + 80;
+				_currentAmplitude = Math.random() * 50 - 10;
+//				_currentAmplitude = Math.random() * 30 - 10;
+				if ( Math.random() > 0.6 ) {
+//					_currentAmplitude = -10;
+//					_slicesInCurrentHill = 10;
+				}
 				_indexSliceInCurrentHill = 0;
 				currentXPoint = 0;
 			}
