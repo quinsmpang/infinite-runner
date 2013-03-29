@@ -25,7 +25,7 @@ package {
 //		[Embed(source="/../embed/noise.png")]
 //		private static const Noise:Class;
 //		
-		[Embed(source="/../embed/greengradient2.png")]
+		[Embed(source="/../embed/greengradient.png")]
 		private static const GreenGradient:Class;
 		
 //		

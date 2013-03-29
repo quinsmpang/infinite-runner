@@ -75,6 +75,8 @@ package {
 				image1 = new Image(Assets.getTexture("BgLayer" + _layer));
 				image1.blendMode = BlendMode.NONE;
 				image1.touchable = false;
+				image1.scaleX = image1.scaleY = 1.5;
+				image1.x = image1.y = 0;
 //				image2 = new Image(Assets.getTexture("BgLayer" + _layer));
 //				image2.blendMode = BlendMode.NONE;
 //				image2.touchable = false;
@@ -105,7 +107,7 @@ package {
 			}
 			
 			image1.x = 0;
-			image1.y = stage.stageHeight - image1.height;
+			image1.y = 0;//stage.stageHeight - image1.height;
 			
 			this.addChild(image1);
 			

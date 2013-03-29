@@ -1,5 +1,7 @@
 package {
 	
+	import flash.display3D.IndexBuffer3D;
+	
 	import citrus.objects.NapePhysicsObject;
 	
 	import nape.geom.Vec2;
@@ -88,12 +90,14 @@ package {
 			
 			// Every time a new hill has to be created this algorithm predicts where the slices will be positioned
 			if (_indexSliceInCurrentHill >= _slicesInCurrentHill) {
-				_slicesInCurrentHill = Math.random() * 30 + 30;
+				_slicesInCurrentHill = Math.random() * 40 + 10;
+				_currentAmplitude = Math.random() * 60 - 20;
+//				_slicesInCurrentHill = Math.random() * 30 + 30;
 				// a slope that goes downward forever
 //				_currentAmplitude = Math.random() * 50 + 80;
-				_currentAmplitude = Math.random() * 50 - 10;
+//				_currentAmplitude = ( Math.random() * 60 ) - 10;
 //				_currentAmplitude = Math.random() * 30 - 10;
-				if ( Math.random() > 0.6 ) {
+				if ( Math.random() > 0.8 ) {
 //					_currentAmplitude = -10;
 //					_slicesInCurrentHill = 10;
 				}
@@ -103,7 +107,11 @@ package {
 			// Calculate the position of the next slice
 			//sin(x) + 3.5 * sin(x/2*pi) + 2 * cos(x/pi)
 //			_nextYPoint = Math.sin(((Math.PI / 180) * (-1)));// + (3.5 * Math.sin(currentYPoint/2* Math.PI * (Math.PI/180))) + (Math.cos(180 * (currentYPoint))) ;
+			
+			// the standard equation:
 			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / _slicesInCurrentHill) * _indexSliceInCurrentHill)) * _currentAmplitude);
+			
+//			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / _slicesInCurrentHill) * _indexSliceInCurrentHill)) * _currentAmplitude);
 
 //			_nextYPoint = currentYPoint;// + (Math.sin((( ( Math.PI / 180 ) * currentYPoint) * _indexSliceInCurrentHill)) * _currentAmplitude);
 			

@@ -1,5 +1,6 @@
 package {
 
+	import flash.display.Sprite;
 	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
@@ -16,8 +17,10 @@ package {
 	
 	import nape.callbacks.InteractionCallback;
 	
+	import starling.display.Button;
 	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.events.Event;
 	import starling.extensions.particles.PDParticleSystem;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -99,6 +102,7 @@ package {
 		private var downTimer:Timer;
 		
 		private var _context:GameContext;
+		private var startButton:Button;
 		
 		public function TinyWingsGameState( context:GameContext ) {
 			_context = context;
@@ -150,8 +154,8 @@ package {
 				_context, heroAnim );
 			add(_hero);
 			
-//			bg = new GameBackground("background", null, _hero, true);
-//			add(bg);
+			bg = new GameBackground("background", null, _hero, true);
+			add(bg);
 			
 //			bg.setHero( _hero );
 			
@@ -193,8 +197,8 @@ package {
 			
 			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.65), 
-				_cameraBounds, new MathVector(0.20, 0.06));
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.55), 
+				_cameraBounds, new MathVector(0.20, 0.10));
 			view.camera.allowZoom = true;
 			
 			
@@ -220,8 +224,8 @@ package {
 			downTimer.start();
 			
 //			view.camera.zoom( 1.0 );
-			view.camera.zoomEasing = 0.05;
-			view.camera.setZoom( 0.8 );
+			view.camera.zoomEasing = 0.01;
+//			view.camera.setZoom( 0.8 );
 			
 			//view.camera.zoomFit( stage.stageWidth, stage.stageHeight );
 
@@ -244,9 +248,25 @@ package {
 			_context.initNewLevel();
 			_context.gameEndedSig.add( gameEndedControl );
 			
-			setTimeout( addGameEndedSensor, _context.getAndIncGameDuration() );
+//			setTimeout( addGameEndedSensor, _context.getAndIncGameDuration() );
+			gameDistance = _context.getAndIncGameDistance();
 			
 			_ce.playing = true;
+			
+			startButton = new Button(Assets.getAtlas().getTexture("startButton"));
+			startButton.fontColor = 0xffffff;
+			startButton.x = stage.stageWidth/2 - startButton.width/2;
+			startButton.y = stage.stageHeight/2 - startButton.height/2;
+			startButton.addEventListener(Event.TRIGGERED, onStartButtonClick);
+			this.addChild(startButton);
+			startButton.visible = false;
+		}
+		
+		private var gameDistance:int = 0;
+		
+		private function onStartButtonClick(event:Event):void
+		{
+			_ce.state = new TinyWingsGameState( _context );
 		}
 		
 		private function _fallSensorTouched(callback:InteractionCallback):void
@@ -264,8 +284,8 @@ package {
 			//addPlatform();
 			crateTimer++;
 		
-			if ( crateTimer > 7 ) {
-				if ( Math.random() > 0.5 ) {
+			if ( crateTimer > 5 ) {
+				if ( true || Math.random() > 0.5 ) {
 	//				addPowerup( view.camera.camPos.x + view.camera.cameraLensWidth,
 	//				_hills.currentYPoint - 100 );
 					addCoinFormation();
@@ -312,7 +332,7 @@ package {
 		private function gameEndedControl():void
 		{
 			_context.hasGameEnded = true;
-			view.camera.bounds = new Rectangle( 0, -int.MAX_VALUE, 
+			view.camera.bounds = new Rectangle( 0, -500, 
 				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
 					, int.MAX_VALUE );
 		}
@@ -325,7 +345,12 @@ package {
 			downTimer.stop();
 			downTimer.removeEventListener( TimerEvent.TIMER, handleTimeEvent );
 			
-//			_ce.state = new TinyWingsGameState( _context );
+//			var scrim:Sprite = new Sprite();
+//			scrim.alpha = 0.3;
+			
+			startButton.visible = true;
+			
+			
 		}
 		
 //		private function _addObject(tEvt:TouchEvent):void {
@@ -350,16 +375,17 @@ package {
 		}
 		
 		private function addGameEndedSensor():void {
-			var image:Image;
-			var width:int; var height:int;
-			
-			image = new Image(Texture.fromBitmap(new _veryLargeCratePng()));
-			width = 140; height = 152;
-			
-			var sensor:CustomGameEndSensor = new CustomGameEndSensor("gameEndedSensor", 
-				{ x:_hero.x + stage.stageWidth, y:_hero.y - 200, width:width, height:height, view:image}, 
-				_hero );
-			add(sensor);	
+			_context.gameEnded();
+//			var image:Image;
+//			var width:int; var height:int;
+//			
+//			image = new Image(Texture.fromBitmap(new _veryLargeCratePng()));
+//			width = 140; height = 152;
+//			
+//			var sensor:CustomGameEndSensor = new CustomGameEndSensor("gameEndedSensor", 
+//				{ x:_hero.x + stage.stageWidth, y:_hero.y - 200, width:width, height:height, view:image}, 
+//				_hero );
+//			add(sensor);	
 		}
 		
 		private function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false, x:int=-1, y:int=-1 ):void {
@@ -517,7 +543,7 @@ package {
 			prevPlatform3Y = prevPlatform2Y - 300;
 			
 			
-			if ( initialPosX < 0 || initialPosX - prevPlatform1X > 150 ) {
+			if ( initialPosX < 0 || initialPosX - prevPlatform1X > 1900 ) {
 				
 				//add a new platform
 				prevPlatform1 = addPlatform( initialPosX + 400, 
@@ -530,7 +556,7 @@ package {
 //				if ( Math.random() > 0.8 ) {
 //					createCustomShape();
 //				}
-				if ( Math.random() > 0.7 ) {
+				if ( Math.random() > 0.9 ) {
 
 					prevPlatform2X = prevPlatform1X - 200;
 					//add a new platform
@@ -686,6 +712,11 @@ package {
 			hud.distance = _hero.x * 0.1;
 			
 			hud.foodScore = _hero.numCoinsCollected;
+			
+			// game end distance
+			if ( _hero.x > gameDistance ) {
+				addGameEndedSensor();
+			}
 			
 			if ( _context.hasGameEnded ) {
 				if ( viewCamPosX == -1 ) viewCamPosX = view.camera.camPos.x;

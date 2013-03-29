@@ -35,11 +35,11 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 200;
-		private var _maxSpeed:uint = 350;
+		private var _minSpeed:uint = 280;
+		private var _maxSpeed:uint = 400;
 		
 		public var _isFlying:Boolean = false;
-		private var _flyingJumpHeight:uint = 400;
+		private var _flyingJumpHeight:uint = 250;
 		
 		private var _zoomModified:Boolean = false;
 		
@@ -56,6 +56,8 @@ package {
 		private var _context:GameContext;
 		
 		private var _heroAnim:AnimationSequence;
+		
+		private var _obstacleHit:Boolean = false;
 
 		public function MickeyHero(name:String, params:Object = null, context:GameContext = null, heroAnim:AnimationSequence = null ) {
 
@@ -63,11 +65,13 @@ package {
 			
 			_context = context;
 			
+			_maxSpeed = _context.heroMaxSpeed;
+			
 			_heroAnim = heroAnim;
 
 			jumpAcceleration += 10;
 //			jumpHeight += 80;
-			jumpHeight += 150;
+			jumpHeight += 170;
 			
 //			this._body.gravMass = 4.8;
 			this._body.gravMass = 6.8;
@@ -92,6 +96,7 @@ package {
 		
 		private function setAnimFPS( anim:String, fps:Number ):void
 		{
+			if ( fps < 1 ) return;
 			(_heroAnim.mcSequences[anim] as MovieClip).fps = fps;
 		}
 		
@@ -101,7 +106,7 @@ package {
 			if ( _isFlying ) 
 				_minSpeed *= 1.2;
 			else
-				;//_minSpeed *= 1.05;
+				_minSpeed *= 1.1;
 		}
 		
 		protected function handleTimeEvent(event:TimerEvent):void
@@ -137,7 +142,7 @@ package {
 
 			var velocity:Vec2 = _body.velocity;
 			
-			if (velocity.x < _minSpeed) velocity.x = _minSpeed;
+//			if (velocity.x < _minSpeed) velocity.x = _minSpeed;
 			
 			
 			if (_mobileInput.screenTouched) {
@@ -201,6 +206,12 @@ package {
 				
 				if ( !_isFlying ) {
 //					if (velocity.y < 0) velocity.y *= 0.9;
+					if ( velocity.y > 0 ) { // going downwards
+						if ( _zoomModified ) {
+							this._ce.state.view.camera.setZoom( 1.0 );
+							_zoomModified = false;
+						}
+					}
 				} else {
 					if ( velocity.y > 0 ) velocity.y *= 0.85;
 				}
@@ -219,15 +230,22 @@ package {
 			//velocity.x = 0;
 			
 			if ( _isFlying ) {
-//				velocity.x = _minSpeed + 40;
+				velocity.x = _minSpeed + 40;
 				if ( velocity.x > _maxSpeed + 20 ) velocity.x = _maxSpeed + 20;
 			} else {
-				velocity.x = _minSpeed;
+				velocity.x = _minSpeed + 10;;
 				if ( velocity.x > _maxSpeed ) {
 //					_isFlying = true;	
 //					if ( _flyingPD ) _flyingPD.start();
 					velocity.x = _maxSpeed;
 				}
+			}
+			
+			if ( _obstacleHit ) {
+				velocity.x = -jumpHeight;
+				velocity.y = -jumpHeight;
+				_obstacleHit = false;
+			} else {
 			}
 			
 			
@@ -267,7 +285,7 @@ package {
 //			else
 //				_animation = "mickeythrow_";
 			if ( _animation == "slice_" ) {
-				setAnimFPS( _animation, Math.round( this.body.velocity.x / 26 ) );
+				setAnimFPS( _animation, Math.round( this.body.velocity.x / 18 ) );
 			}
 		}
 
@@ -296,14 +314,15 @@ package {
 					
 					} else {
 //						_maxSpeed += 100;
-//						_minSpeed = 200;
-//						_isFlying = false;
-//						if ( _flyingPD ) _flyingPD.stop();
+						_minSpeed = 200;
+						_obstacleHit = true;
+						_isFlying = false;
+						if ( _flyingPD ) _flyingPD.stop();
 //						_context.onCrateHit();
 					}
 				}
 				
-				if ( collider is CrateObject ) ( collider as CrateObject ).destroyThis();
+//				if ( collider is CrateObject ) ( collider as CrateObject ).destroyThis();
 			}
 			
 //			if ( (callback.int2.userData.myData is CrateObject) ) {
@@ -379,12 +398,12 @@ package {
 				screenTapped = false;
 				screenTouchedOnce = false;
 				//_animation = "slice_";
-				_minSpeed *= 1.09;
+//				_minSpeed *= 1.09;
 				
-				if ( _zoomModified ) {
+//				if ( _zoomModified ) {
 //					this._ce.state.view.camera.setZoom( 1.0 );
-					_zoomModified = false;
-				}
+//					_zoomModified = false;
+//				}
 			} 
 //			else if (callback.int2.userData.myData is CrateObject) {
 //				return PreFlag.IGNORE;	
