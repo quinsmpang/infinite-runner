@@ -37,7 +37,7 @@ package
 			return gameDuration;
 		}
 		
-		private var gameDistance:int = 0;
+		private var gameDistance:int = 10000;
 		public function getAndIncGameDistance():int 
 		{
 			gameDistance += 5000;

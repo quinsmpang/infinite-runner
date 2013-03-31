@@ -51,6 +51,11 @@ package {
 
 		
 
+		[Embed(source="/../embed/ball.png")]
+		private var _ballPng:Class;
+		
+		[Embed(source="/../embed/large_ball.png")]
+		private var _largeBallPng:Class;
 		
 		[Embed(source="/../embed/small_crate.png")]
 		private var _cratePng:Class;
@@ -291,11 +296,13 @@ package {
 					addCoinFormation();
 					
 					if ( Math.random() > 0.5 ) {
-						addCrate( false, true, view.camera.camPos.x + view.camera.cameraLensWidth + 200,
+						addCrate( false, false, view.camera.camPos.x + view.camera.cameraLensWidth + 200,
 							_hills.currentYPoint - 200 );//, Math.random() > 0.5 );
 					} else {
-						addCoin( _hills.currentXPoint - 150,
-							_hills.currentYPoint - 100, true );//, Math.random() > 0.5 );
+						addBall( Math.random() > 0.3, _hills.currentXPoint - 150,
+							_hills.currentYPoint - 100 );//, Math.random() > 0.5 );
+//						addCoin( _hills.currentXPoint - 150,
+//							_hills.currentYPoint - 100, true );//, Math.random() > 0.5 );
 					}
 				}
 				else
@@ -386,6 +393,26 @@ package {
 //				{ x:_hero.x + stage.stageWidth, y:_hero.y - 200, width:width, height:height, view:image}, 
 //				_hero );
 //			add(sensor);	
+		}
+		
+		private function addBall( addLargeBall:Boolean = false, x:int=-1, y:int=-1 ):void {
+			var image:Image;
+			var width:int; var height:int;
+			
+			if ( addLargeBall ) {
+				image = new Image(Texture.fromBitmap(new _ballPng()));
+				width = 50; height = 50;
+			} else {
+				image = new Image(Texture.fromBitmap(new _largeBallPng()));
+				width = 100; height = 100;
+			}
+			
+			if ( x == -1 ) x = _hero.x + stage.stageWidth;
+			if ( y == -1 ) y = _hero.y - 100;
+			
+			var physicObject:CustomBall = new CustomBall("physicobject", 
+				{ x:x, y:y, width:width, height:height, view:image}, _hero );
+			add(physicObject);	
 		}
 		
 		private function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false, x:int=-1, y:int=-1 ):void {

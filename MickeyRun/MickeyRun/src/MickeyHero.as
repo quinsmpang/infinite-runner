@@ -242,7 +242,7 @@ package {
 			}
 			
 			if ( _obstacleHit ) {
-				velocity.x = -jumpHeight;
+				velocity.x = jumpHeight;
 				velocity.y = -jumpHeight;
 				_obstacleHit = false;
 			} else {
@@ -314,7 +314,7 @@ package {
 					
 					} else {
 //						_maxSpeed += 100;
-						_minSpeed = 200;
+//						_minSpeed = 200;
 						_obstacleHit = true;
 						_isFlying = false;
 						if ( _flyingPD ) _flyingPD.stop();
