@@ -7,7 +7,8 @@ package
 		public var gameEndedSig:Signal;
 		public var hasGameEnded:Boolean = false;
 		
-		public var heroMaxSpeed:int = 300;
+		public var heroMinSpeed:int = 160;
+		public var heroMaxSpeed:int = 200;
 		
 		public var numCratesHit:int = 1;
 		
@@ -37,12 +38,12 @@ package
 			return gameDuration;
 		}
 		
-		private var gameDistance:int = 10000;
+		private var gameDistance:int = 0;
 		public function getAndIncGameDistance():int 
 		{
-			gameDistance += 5000;
+			gameDistance = 2600;
 			heroMaxSpeed += 5;
-			if ( gameDistance > 60000 ) gameDistance = 60000;
+			if ( gameDistance > 600000 ) gameDistance = 600000;
 			return gameDistance;
 		}
 		

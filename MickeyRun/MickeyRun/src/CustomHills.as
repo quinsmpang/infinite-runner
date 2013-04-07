@@ -7,6 +7,7 @@ package {
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 	import nape.phys.BodyType;
+	import nape.phys.Material;
 	import nape.shape.Polygon;
 	
 	/**
@@ -90,17 +91,24 @@ package {
 			
 			// Every time a new hill has to be created this algorithm predicts where the slices will be positioned
 			if (_indexSliceInCurrentHill >= _slicesInCurrentHill) {
-				_slicesInCurrentHill = Math.random() * 40 + 10;
+				_slicesInCurrentHill = Math.random() * 10 + 10;
 				_currentAmplitude = Math.random() * 60 - 20;
 //				_slicesInCurrentHill = Math.random() * 30 + 30;
 				// a slope that goes downward forever
-//				_currentAmplitude = Math.random() * 50 + 80;
+//				_currentAmplitude = Math.random() * 20 + 30;
 //				_currentAmplitude = ( Math.random() * 60 ) - 10;
 //				_currentAmplitude = Math.random() * 30 - 10;
 				if ( Math.random() > 0.8 ) {
 //					_currentAmplitude = -10;
 //					_slicesInCurrentHill = 10;
 				}
+				
+				if ( currentYPoint < _ce.stage.stageHeight / 2 ) {
+					_currentAmplitude = 50;
+				} else if ( currentYPoint > _ce.stage.stageHeight * 3 ) {
+					_currentAmplitude = -30;
+				}
+				
 				_indexSliceInCurrentHill = 0;
 				currentXPoint = 0;
 			}
@@ -109,11 +117,9 @@ package {
 //			_nextYPoint = Math.sin(((Math.PI / 180) * (-1)));// + (3.5 * Math.sin(currentYPoint/2* Math.PI * (Math.PI/180))) + (Math.cos(180 * (currentYPoint))) ;
 			
 			// the standard equation:
-			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / _slicesInCurrentHill) * _indexSliceInCurrentHill)) * _currentAmplitude);
-			
 //			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / _slicesInCurrentHill) * _indexSliceInCurrentHill)) * _currentAmplitude);
-
-//			_nextYPoint = currentYPoint;// + (Math.sin((( ( Math.PI / 180 ) * currentYPoint) * _indexSliceInCurrentHill)) * _currentAmplitude);
+			
+			_nextYPoint = currentYPoint;// + (Math.sin((( ( Math.PI / 180 ) * currentYPoint) * _indexSliceInCurrentHill)) * _currentAmplitude);
 			
 			// generates 'sine wave' hills:
 //			_nextYPoint = currentYPoint + (Math.sin(((Math.PI / 180 * _slicesInCurrentHill * 4) * _indexSliceInCurrentHill * 4)) * _currentAmplitude);
@@ -122,6 +128,8 @@ package {
 			
 			_sliceVectorConstructor[2].y = _nextYPoint - currentYPoint;
 			var slicePolygon:Polygon = new Polygon(_sliceVectorConstructor);
+//			slicePolygon.material = new Material( 0, 0.3, 0, 1, 0);
+//			slicePolygon.material = Material.ice();
 			_body = new Body(BodyType.STATIC);
 			_body.userData.myData = this;
 			_body.shapes.add(slicePolygon);

@@ -5,7 +5,7 @@ package
 	
 	//0xDEF2FC
 	
-	[SWF(frameRate="60", width="1280", height="800", backgroundColor="0xb6dffc")]
+	[SWF(frameRate="60", width="1280", height="720", backgroundColor="0xb6dffc")]
 	public class MickeyRun extends StarlingCitrusEngine
 	{
 		private var _context:GameContext = new GameContext();

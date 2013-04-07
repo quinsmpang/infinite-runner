@@ -20,6 +20,7 @@ package {
 	import nape.callbacks.PreListener;
 	import nape.geom.Vec2;
 	
+	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.extensions.particles.PDParticleSystem;
 
@@ -35,11 +36,13 @@ package {
 		
 		private var _contactBeginListener:Listener;
 		
-		private var _minSpeed:uint = 280;
+		private var _minSpeed:uint = 180;
 		private var _maxSpeed:uint = 400;
 		
 		public var _isFlying:Boolean = false;
 		private var _flyingJumpHeight:uint = 250;
+		
+		public var _isSpeeding:Boolean = false;
 		
 		private var _zoomModified:Boolean = false;
 		
@@ -65,6 +68,7 @@ package {
 			
 			_context = context;
 			
+			_minSpeed = _context.heroMinSpeed;
 			_maxSpeed = _context.heroMaxSpeed;
 			
 			_heroAnim = heroAnim;
@@ -92,6 +96,7 @@ package {
 			speedTimer = new Timer( 1000 );
 			speedTimer.addEventListener( TimerEvent.TIMER, handleSpeedTimer );
 			speedTimer.start();
+			
 		}
 		
 		private function setAnimFPS( anim:String, fps:Number ):void
@@ -105,13 +110,17 @@ package {
 			// TODO Auto-generated method stub
 			if ( _isFlying ) 
 				_minSpeed *= 1.2;
-			else
+			else if ( _isSpeeding ) {
+				_minSpeed *= 1.3;
+			} else {
 				_minSpeed *= 1.1;
+			}
 		}
 		
 		protected function handleTimeEvent(event:TimerEvent):void
 		{
 			// TODO Auto-generated method stub
+			_isSpeeding = false;
 			_isFlying = false;
 			downTimer.stop();
 			if ( _flyingPD ) _flyingPD.stop();
@@ -135,9 +144,14 @@ package {
 			return numCoins;
 		}
 
+		private var missile:CustomMissile;
+		private var _firedMissile:Boolean = false;
+		
 		private var _doubleJumpAvailable:Boolean = true;
 		private var screenTouchedOnce:Boolean = false;
 		private var screenTapped:Boolean = false;
+		
+		private var applyImpulse:Boolean = false;
 		override public function update(timeDelta:Number):void {
 
 			var velocity:Vec2 = _body.velocity;
@@ -146,6 +160,7 @@ package {
 			
 			
 			if (_mobileInput.screenTouched) {
+				
 				
 				screenTouchedOnce = true;
 				
@@ -174,7 +189,7 @@ package {
 	
 	//					numJump = 0;
 						//if (Math.random() > 0.5)
-						this._ce.state.view.camera.setZoom( 0.8 );
+//						this._ce.state.view.camera.setZoom( 0.8 );
 						//else
 							//this._ce.state.view.camera.setZoom( 1.0 );
 						
@@ -188,6 +203,9 @@ package {
 						_animation = "slice_";
 	
 					} else if ( screenTapped && _doubleJumpAvailable ) {
+						
+//						_body.applyImpulse( Vec2.weak( 200, 0 ) );
+						
 						velocity.y = -jumpHeight;
 //						trace( "double jump" );
 						_doubleJumpAvailable = false;
@@ -208,7 +226,7 @@ package {
 //					if (velocity.y < 0) velocity.y *= 0.9;
 					if ( velocity.y > 0 ) { // going downwards
 						if ( _zoomModified ) {
-							this._ce.state.view.camera.setZoom( 1.0 );
+//							this._ce.state.view.camera.setZoom( 1.0 );
 							_zoomModified = false;
 						}
 					}
@@ -232,8 +250,12 @@ package {
 			if ( _isFlying ) {
 				velocity.x = _minSpeed + 40;
 				if ( velocity.x > _maxSpeed + 20 ) velocity.x = _maxSpeed + 20;
+			} else if ( _isSpeeding ) {
+				velocity.x = _minSpeed + 100;
+				if ( velocity.x > _maxSpeed + 150 ) velocity.x = _maxSpeed + 150;
 			} else {
-				velocity.x = _minSpeed + 10;;
+//				velocity.x += (_minSpeed - velocity.x) * 0.2;
+				velocity.x = _minSpeed + 10;
 				if ( velocity.x > _maxSpeed ) {
 //					_isFlying = true;	
 //					if ( _flyingPD ) _flyingPD.start();
@@ -242,14 +264,36 @@ package {
 			}
 			
 			if ( _obstacleHit ) {
-				velocity.x = jumpHeight;
+				velocity.x = -jumpHeight;
 				velocity.y = -jumpHeight;
 				_obstacleHit = false;
 			} else {
 			}
 			
+			if ( _mobileInput._buttonClicked && !_firedMissile ) {
+				missile = new CustomMissile("Missile", 
+					{x:x + width, y:y, group:group, 
+						width:25, height:25, 
+						speed:300, 
+						explodeDuration:10000, fuseDuration:30000, 
+						view:new Image(Assets.getMiscAtlas().getTexture("small_ball"))});
+				_ce.state.add( missile );
+				_firedMissile = true;
+			} else if ( !_mobileInput._buttonClicked ) {
+				_firedMissile = false;
+			}
 			
 			_body.velocity = velocity;
+			
+//			if ( velocity.x < _minSpeed ) _body.applyImpulse( Vec2.weak( 200, 0 ) );
+			
+			if ( applyImpulse ) {
+//				velocity.x = 1000;
+//				velocity.y = -1000;
+//				_body.applyImpulse( Vec2.weak( 500, 0 ) );
+				applyImpulse = false;
+			}
+			
 
 			_updateAnimation();
 		}
@@ -285,7 +329,11 @@ package {
 //			else
 //				_animation = "mickeythrow_";
 			if ( _animation == "slice_" ) {
-				setAnimFPS( _animation, Math.round( this.body.velocity.x / 18 ) );
+				setAnimFPS( _animation, Math.round( this.body.velocity.x / 14 ) );
+			}
+			
+			if ( _mobileInput._buttonClicked ) {
+				_animation = "mickeythrow_";
 			}
 		}
 
@@ -317,7 +365,9 @@ package {
 //						_minSpeed = 200;
 						_obstacleHit = true;
 						_isFlying = false;
+						_isSpeeding = false;
 						if ( _flyingPD ) _flyingPD.stop();
+//						_context.gameEnded();
 //						_context.onCrateHit();
 					}
 				}
@@ -338,8 +388,21 @@ package {
 //				if ( _flyingPD ) _flyingPD.stop();
 //			}
 			
+			if ( collider is CustomBall ) {
+				applyImpulse = true;
+//				_body.applyImpulse( Vec2.weak( 200, 0 ) );
+			}
+			
 			if (callback.int2.userData.myData is CustomCoin) {
 				numCoins++;	
+			}
+			
+			if (callback.int2.userData.myData is CustomBall) {
+				if ( false && Math.random() > 0.99 ) {
+					_isSpeeding = true;
+					downTimer.start();
+					if ( _flyingPD ) _flyingPD.start();
+				}
 			}
 			
 			if (callback.int2.userData.myData is CustomPowerup) {
@@ -352,7 +415,7 @@ package {
 		}
 		
 		override public function handleEndContact(callback:InteractionCallback):void {
-			if (callback.int2.userData.myData is CrateObject) {
+			if (callback.int2.userData.myData is CrateObject) {callback
 				_isPushing = false;	
 			}	
 			
@@ -369,9 +432,12 @@ package {
 			
 			if ( _isFlying ) {
 				
-				if ( !(callback.int2.userData.myData is CustomHills)
-					&& (callback.int1.userData.myData is MickeyHero) )
-					return PreFlag.IGNORE;
+				if (callback.int1.userData.myData is MickeyHero) {
+					if ( !(callback.int2.userData.myData is CustomHills) 
+						&& !(callback.int2.userData.myData is CustomBall) )
+						return PreFlag.IGNORE;
+				}
+				
 			}
 
 			// ignore platform sides - don't stop when colliding with the sides.

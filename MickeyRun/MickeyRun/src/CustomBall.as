@@ -17,7 +17,8 @@ package
 			origX = this.x;
 			this._hero = _hero;
 			//			this._body.mass += 500;
-//			this._body.mass = 0.1;
+//			this._body.mass /= 4;
+			trace( "ball mass: " + this._body.mass );
 		}
 		
 		override public function update(timeDelta:Number):void {
@@ -32,7 +33,9 @@ package
 		
 		override protected function createShape():void {
 			
-			_material = new Material( 20 );
+			trace( "ball mass: " + this._body.mass );
+			_material = new Material( 10 );
+//			_material = Material.rubber();
 			_radius = _width/2;
 			if (_radius != 0)
 				_shape = new Circle(_radius, null, _material);

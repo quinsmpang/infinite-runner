@@ -3,6 +3,7 @@ package
 	import citrus.objects.platformer.nape.Platform;
 	
 	import nape.phys.BodyType;
+	import nape.phys.Material;
 	
 	public class CustomPlatform extends Platform
 	{
@@ -15,7 +16,7 @@ package
 		
 		override protected function defineBody():void {
 			
-			_bodyType = BodyType.KINEMATIC;
+//			_bodyType = BodyType.KINEMATIC;
 		}
 		
 		override public function update(timeDelta:Number):void {
@@ -25,6 +26,11 @@ package
 				this.x = _hero.x;
 				//				trace( "removed body" + this.x );
 			}
+		}
+		
+		override protected function createBody():void {
+//			_material = Material.ice();
+			super.createBody();
 		}
 	}
 }
