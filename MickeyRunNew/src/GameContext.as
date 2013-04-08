@@ -16,6 +16,8 @@ package
 		
 		public var viewCamPosX:int = 0;
 		
+		public var currentLevel:int = 1;
+		
 		public function GameContext()
 		{
 			gameEndedSig = new Signal();

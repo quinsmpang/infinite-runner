@@ -35,5 +35,10 @@ package objects
 			
 			_body.shapes.add(_shape);
 		}
+		
+		public function destroyThis():void {
+			this._ce.state.remove( this );
+			this.destroy();
+		}
 	}
 }

@@ -59,6 +59,7 @@ package {
 		private var _heroAnim:AnimationSequence;
 		
 		private var _obstacleHit:Boolean = false;
+		private var _cannonHit:Boolean = false;
 
 		public function MickeyHero(name:String, params:Object = null, context:GameContext = null, heroAnim:AnimationSequence = null ) {
 
@@ -130,6 +131,8 @@ package {
 
 			var velocity:Vec2 = _body.velocity;
 			
+			if ( velocity.x < _minSpeed ) velocity.x = _minSpeed;
+			
 			if (_mobileInput.screenTouched) {
 				screenTouchedOnce = true;
 				
@@ -177,11 +180,11 @@ package {
 				velocity.x = _minSpeed + 40;
 				if ( velocity.x > _maxSpeed + 20 ) velocity.x = _maxSpeed + 20;
 			} else if ( _isSpeeding ) {
-				velocity.x = _minSpeed + 100;
-				if ( velocity.x > _maxSpeed + 150 ) velocity.x = _maxSpeed + 150;
+//				velocity.x = _minSpeed + 100;
+//				if ( velocity.x > _maxSpeed + 150 ) velocity.x = _maxSpeed + 150;
 			} else {
 //				velocity.x += (_minSpeed - velocity.x) * 0.2;
-				velocity.x = _minSpeed + 10;
+//				velocity.x = _minSpeed + 10;
 				if ( velocity.x > _maxSpeed ) {
 					velocity.x = _maxSpeed;
 				}
@@ -191,6 +194,13 @@ package {
 				velocity.x = -jumpHeight;
 				velocity.y = -jumpHeight;
 				_obstacleHit = false;
+			}
+			
+			if ( _cannonHit ) {
+//				_body.applyImpulse( Vec2.weak( 500, -100 ) );
+//				velocity.x = jumpHeight * 20;
+//				velocity.y = -30;
+				_cannonHit = false;
 			}
 			
 			if ( _mobileInput._buttonClicked && !_firedMissile ) {
@@ -278,6 +288,7 @@ package {
 			}
 			
 			if (callback.int2.userData.myData is CustomBall) {
+				_cannonHit = true;
 				if ( false && Math.random() > 0.99 ) {
 					_isSpeeding = true;
 					downTimer.start();

@@ -60,6 +60,8 @@ package {
 		
 		private var gameDistance:int = 0;
 		
+		private var groundLevel:int = 0;
+		
 		public function GameState( context:GameContext ) 
 		{
 			_context = context;
@@ -69,6 +71,9 @@ package {
 		override public function initialize():void 
 		{
 			super.initialize();
+			
+			// ground level y
+			groundLevel = stage.stageHeight * 0.85;
 
 			if ( _context.viewMaster == null ) {
 				_context.viewMaster = new ViewMaster( _context, _ce.state );
@@ -95,7 +100,7 @@ package {
 			_hillsTexture = new HillsTexture();
 			
 			_hills = new CustomHills("hills", 
-				{rider:_hero, sliceHeight:400, sliceWidth:100, currentYPoint:stage.stageHeight * 0.85, //currentXPoint: 10, 
+				{rider:_hero, sliceHeight:400, sliceWidth:100, currentYPoint:groundLevel, //currentXPoint: 10, 
 					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
 					registration:"topLeft", view:_hillsTexture},
 				_context );
@@ -121,7 +126,7 @@ package {
 			_context.initNewLevel();
 			_context.gameEndedSig.add( gameEndedControl );
 			
-			gameDistance = _context.getAndIncGameDistance();
+//			gameDistance = _context.getAndIncGameDistance();
 			
 			_ce.playing = true;
 			
@@ -134,7 +139,7 @@ package {
 			startButton.visible = false;
 			
 			//first level:
-			generateFirstLevel();
+			gameDistance = generateLevel( _context.currentLevel );
 		}
 		
 		private function onFireButtonClick(event:Event):void
@@ -145,6 +150,7 @@ package {
 		
 		private function onStartButtonClick(event:Event):void
 		{
+			_context.currentLevel += 1;
 			_ce.state = new GameState( _context );
 		}
 		
@@ -163,17 +169,44 @@ package {
 			startButton.visible = true;
 		}
 		
-		private function generateFirstLevel():void {
-			_context.viewMaster.addPlatform( 1000, 300, _hills.currentYPoint - 300, false, 100 );
-			_context.viewMaster.addPlatform( 1500, 600, _hills.currentYPoint - 300, false, 1 );
-			_context.viewMaster.addPlatform( 2000, 600, _hills.currentYPoint - 600, false, 50 );
-			_context.viewMaster.addPlatform( 2500, 600, _hills.currentYPoint - 300, false, 0 );
-			_context.viewMaster.addPlatform( 3000, 600, _hills.currentYPoint - 100, false, 0 );
+		private function generateLevel( level:int ):int
+		{
+			var levelDistance:int = 1000;
+			switch ( level ) {
+				case 1:
+					levelDistance = generateFirstLevel();
+					break;
+				case 2:
+					levelDistance = generateSecondLevel();
+					break;
+				default:
+					break;
+			}
 			
-			_context.viewMaster.addMovingPlatform( 2500, _hills.currentYPoint - 500, 
-				3000, _hills.currentYPoint - 500, 50 );
+			return levelDistance;
+		}
+		
+		private function generateFirstLevel():int {
+			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, false, 1 );
+			_context.viewMaster.addPlatform( 2400, 600, groundLevel - 200, false, 1 );
+			_context.viewMaster.addPlatform( 3400, 600, groundLevel - 400, false, 1 );
+			
+			return 4600;
+		}
+		
+		private function generateSecondLevel():int {
+			_context.viewMaster.addPlatform( 1000, 300, groundLevel - 200, false, 100 );
+			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, true, 1 );
+			_context.viewMaster.addPlatform( 2000, 600, groundLevel - 500, true, 25 );
+			_context.viewMaster.addPlatform( 2500, 600, groundLevel - 200, false, 0 );
+			_context.viewMaster.addPlatform( 3000, 600, groundLevel - 100, false, 0 );
+			
+			_context.viewMaster.addMovingPlatform( 2500, groundLevel - 500, 
+				3000, groundLevel - 500, 50 );
 				
-			_context.viewMaster.addCrate( false, true, 2000, _hills.currentYPoint - 200 );
+			_context.viewMaster.addCrate( false, true, 2000, groundLevel - 200 );
+			
+			return 4400;
 		}
 		
 		override public function update(timeDelta:Number):void {
@@ -192,7 +225,7 @@ package {
 			hud.foodScore = _hero.numCoinsCollected;
 			
 			// game end distance
-			if ( _hero.x > gameDistance ) {
+			if ( _hero.x + _context.viewCamPosX > gameDistance ) {
 				_context.gameEnded();
 			}
 			
