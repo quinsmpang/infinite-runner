@@ -70,7 +70,11 @@ package {
 		{
 			super.initialize();
 
-			_context.viewMaster = new ViewMaster( _context, _ce.state );
+			if ( _context.viewMaster == null ) {
+				_context.viewMaster = new ViewMaster( _context, _ce.state );
+			}
+			
+			_context.viewMaster.setState( this );
 			
 			_nape = new Nape("nape");
 			add(_nape);
@@ -80,7 +84,6 @@ package {
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", "mickeycarpet_", "mickeybubble_"]);
 			
 			_miscTextureAtlas = Assets.getMiscAtlas() ;
-			
 			
 			_hero = new MickeyHero( "hero", {x:stage.stageWidth * 0.2, radius:40, view:heroAnim, group:1}, 
 				_context, heroAnim );
@@ -161,9 +164,11 @@ package {
 		}
 		
 		private function generateFirstLevel():void {
+			_context.viewMaster.addPlatform( 1000, 300, _hills.currentYPoint - 300, false, 100 );
 			_context.viewMaster.addPlatform( 1500, 600, _hills.currentYPoint - 300, false, 1 );
 			_context.viewMaster.addPlatform( 2000, 600, _hills.currentYPoint - 600, false, 50 );
 			_context.viewMaster.addPlatform( 2500, 600, _hills.currentYPoint - 300, false, 0 );
+			_context.viewMaster.addPlatform( 3000, 600, _hills.currentYPoint - 100, false, 0 );
 			
 			_context.viewMaster.addMovingPlatform( 2500, _hills.currentYPoint - 500, 
 				3000, _hills.currentYPoint - 500, 50 );
@@ -196,7 +201,7 @@ package {
 				if ( viewCamLensWidth == -1 ) 
 					viewCamLensWidth = view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() );
 				
-				if ( _hero.x - 200 > 
+				if ( _hero.x - 100 > 
 					viewCamPosX + ( viewCamLensWidth ) ) {
 					onGameEnded();
 				}

@@ -1,5 +1,4 @@
 package {
-
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
@@ -28,14 +27,8 @@ package {
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.extensions.particles.PDParticleSystem;
-	
 
-	/**
-	 * @author Aymeric
-	 */
 	public class MickeyHero extends Hero {
-
-		//public var jumpDecceleration:Number = 2;
 
 		private var _mobileInput:TouchInput;
 		private var _preListener:PreListener;
@@ -59,7 +52,6 @@ package {
 		private var numJump:int = 0;
 		
 		private var downTimer:Timer;
-		private var speedTimer:Timer;
 		private var numCoins:Number = 0;
 		
 		private var _context:GameContext;
@@ -80,29 +72,17 @@ package {
 			_heroAnim = heroAnim;
 
 			jumpAcceleration += 10;
-//			jumpHeight += 80;
 			jumpHeight += 170;
 			
-//			this._body.gravMass = 4.8;
 			this._body.gravMass = 6.8;
-//			this._body.gravMass = 4.8;
-			
-//			this.dynamicFriction = 0;
-//			this.staticFriction = 0;
 			
 			// working combo: jumAcc += 6; body.gravMass = 6.8; jumpHeight += 200;
-
 			
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
 			
 			downTimer = new Timer( 12000 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
-			
-			speedTimer = new Timer( 1000 );
-			speedTimer.addEventListener( TimerEvent.TIMER, handleSpeedTimer );
-			speedTimer.start();
-			
 		}
 		
 		private function setAnimFPS( anim:String, fps:Number ):void
@@ -111,25 +91,13 @@ package {
 			(_heroAnim.mcSequences[anim] as MovieClip).fps = fps;
 		}
 		
-		protected function handleSpeedTimer(event:TimerEvent):void
-		{
-			// TODO Auto-generated method stub
-			if ( _isFlying ) 
-				_minSpeed *= 1.2;
-			else if ( _isSpeeding ) {
-				_minSpeed *= 1.3;
-			} else {
-				_minSpeed *= 1.1;
-			}
-		}
-		
 		protected function handleTimeEvent(event:TimerEvent):void
 		{
 			// TODO Auto-generated method stub
 			_isSpeeding = false;
 			_isFlying = false;
 			downTimer.stop();
-			if ( _flyingPD ) _flyingPD.stop();
+			//if ( _flyingPD ) _flyingPD.stop();
 		}
 		
 		override public function destroy():void {
@@ -162,64 +130,30 @@ package {
 
 			var velocity:Vec2 = _body.velocity;
 			
-//			if (velocity.x < _minSpeed) velocity.x = _minSpeed;
-			
-			
 			if (_mobileInput.screenTouched) {
-				
-				
 				screenTouchedOnce = true;
 				
 				if ( _isFlying ) {
 					if ( _mobileInput.touchPoint ) {
-//						this.y = _mobileInput.touchPoint.y;
-//						this.y -= ( this.y - _mobileInput.touchPoint.y ) * 0.1;	
 						velocity.y = -_flyingJumpHeight;
-						
 					}
 				} else {
 
-	//				velocity.x *= 1.5;
-	//				if (velocity.x > _maxSpeed) {
-	//					velocity.x = _maxSpeed;
-	//				}
-	//				if ( numJump < 10 ) {
-	//					trace( "jump" );
-	//					velocity.y = -jumpHeight;
-	//					numJump++;
-	//				} else {
-	//					//numJump = 0;	
-	//				}
-					
 					if (_onGround) {
 	
-	//					numJump = 0;
-						//if (Math.random() > 0.5)
-//						this._ce.state.view.camera.setZoom( 0.8 );
-						//else
-							//this._ce.state.view.camera.setZoom( 1.0 );
-						
 						_zoomModified = true;
-						//velocity.x = 800;
 						velocity.y = -jumpHeight;
 						_onGround = false;
-						
-//						trace( "onGround" );
 						
 						_animation = "slice_";
 	
 					} else if ( screenTapped && _doubleJumpAvailable ) {
-						
-//						_body.applyImpulse( Vec2.weak( 200, 0 ) );
-						
 						velocity.y = -jumpHeight;
-//						trace( "double jump" );
 						_doubleJumpAvailable = false;
 					} else if (velocity.y < 0) {
 						velocity.y -= jumpAcceleration;
 					} else {
-						;//velocity.y += jumpAcceleration;
-						
+						;
 					}
 					
 				} // isFlying
@@ -229,30 +163,16 @@ package {
 				if ( screenTouchedOnce ) screenTapped = true;
 				
 				if ( !_isFlying ) {
-//					if (velocity.y < 0) velocity.y *= 0.9;
 					if ( velocity.y > 0 ) { // going downwards
 						if ( _zoomModified ) {
-//							this._ce.state.view.camera.setZoom( 1.0 );
 							_zoomModified = false;
 						}
 					}
 				} else {
 					if ( velocity.y > 0 ) velocity.y *= 0.85;
 				}
-				//else velocity.y *= 1.01;
-
-//				if ( velocity.x > _minSpeed ) velocity.x *= 0.99999;
-				//else velocity.x = 200;	
-//				if ( _onGround ) {
-//					if ( _zoomModified ) {
-//						this._ce.state.view.camera.setZoom( 1.0 );
-//						_zoomModified = false;
-//					}
-//				}
 			}
 
-			//velocity.x = 0;
-			
 			if ( _isFlying ) {
 				velocity.x = _minSpeed + 40;
 				if ( velocity.x > _maxSpeed + 20 ) velocity.x = _maxSpeed + 20;
@@ -263,8 +183,6 @@ package {
 //				velocity.x += (_minSpeed - velocity.x) * 0.2;
 				velocity.x = _minSpeed + 10;
 				if ( velocity.x > _maxSpeed ) {
-//					_isFlying = true;	
-//					if ( _flyingPD ) _flyingPD.start();
 					velocity.x = _maxSpeed;
 				}
 			}
@@ -273,7 +191,6 @@ package {
 				velocity.x = -jumpHeight;
 				velocity.y = -jumpHeight;
 				_obstacleHit = false;
-			} else {
 			}
 			
 			if ( _mobileInput._buttonClicked && !_firedMissile ) {
@@ -291,16 +208,6 @@ package {
 			
 			_body.velocity = velocity;
 			
-//			if ( velocity.x < _minSpeed ) _body.applyImpulse( Vec2.weak( 200, 0 ) );
-			
-			if ( applyImpulse ) {
-//				velocity.x = 1000;
-//				velocity.y = -1000;
-//				_body.applyImpulse( Vec2.weak( 500, 0 ) );
-				applyImpulse = false;
-			}
-			
-
 			_updateAnimation();
 		}
 		
@@ -312,14 +219,11 @@ package {
 		private function _updateAnimation():void {
 
 			if (_mobileInput.screenTouched) {
-
-//				_animation = _body.velocity.y < 0 ? "jump" : "ascent";
 				if ( _isFlying ) _animation = true ? "mickeycarpet_" : "mickeybubble_";
 				else if ( _onGround )
 					_animation = "slice_";
 				else
 					_animation = "mickeyjump2_";//_body.velocity.y < 0 ? "mickeyjump2_" : "mickeythrow_";
-
 			} 
 			else {
 				if (_isPushing) {
@@ -332,8 +236,7 @@ package {
 						_animation = "slice_";
 				}
 			}
-//			else
-//				_animation = "mickeythrow_";
+
 			if ( _animation == "slice_" ) {
 				setAnimFPS( _animation, Math.round( this.body.velocity.x / 14 ) );
 			}
@@ -344,15 +247,10 @@ package {
 		}
 
 		override protected function createConstraint():void {
-
 			super.createConstraint();
 
 			_preListener = new PreListener(InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, handlePreContact);
 			_body.space.listeners.add(_preListener);
-			
-			//_contactBeginListener = new Listener();
-			
-			
 		}
 		
 		override public function handleBeginContact(callback:InteractionCallback):void {
@@ -367,36 +265,12 @@ package {
 					if ( collisionAngle > 45 && collisionAngle < 135 ) {
 					
 					} else {
-//						_maxSpeed += 100;
-//						_minSpeed = 200;
 						_obstacleHit = true;
 						_isFlying = false;
 						_isSpeeding = false;
 						if ( _flyingPD ) _flyingPD.stop();
-//						_context.gameEnded();
-//						_context.onCrateHit();
 					}
 				}
-				
-//				if ( collider is CrateObject ) ( collider as CrateObject ).destroyThis();
-			}
-			
-//			if ( (callback.int2.userData.myData is CrateObject) ) {
-////				_isPushing = true;	
-//				_minSpeed = 200;
-//				_isFlying = false;
-//				if ( _flyingPD ) _flyingPD.stop();
-//			}
-//			
-//			if ( (callback.int2.userData.myData is CustomEnemy) ) {
-//				_minSpeed = 200;
-//				_isFlying = false;
-//				if ( _flyingPD ) _flyingPD.stop();
-//			}
-			
-			if ( collider is CustomBall ) {
-				applyImpulse = true;
-//				_body.applyImpulse( Vec2.weak( 200, 0 ) );
 			}
 			
 			if (callback.int2.userData.myData is CustomCoin) {
@@ -421,7 +295,7 @@ package {
 		}
 		
 		override public function handleEndContact(callback:InteractionCallback):void {
-			if ( callback.int2.userData.myData is CustomCrate ) {callback
+			if (callback.int2.userData.myData is CustomCrate) {callback
 				_isPushing = false;	
 			}	
 			
@@ -430,13 +304,11 @@ package {
 
 		override public function handlePreContact(callback:PreCallback):PreFlag {
 			if ( _isFlying ) {
-				
 				if (callback.int1.userData.myData is MickeyHero) {
 					if ( !(callback.int2.userData.myData is CustomHills) 
 						&& !(callback.int2.userData.myData is CustomBall) )
 						return PreFlag.IGNORE;
 				}
-				
 			}
 
 			// ignore platform sides - don't stop when colliding with the sides.
@@ -447,7 +319,6 @@ package {
 				var collisionAngle:Number = callback.arbiter.collisionArbiter.normal.angle * 180 / Math.PI;
 				
 				if ( collider is Platform ) {
-					//					trace( "collision angle: " + collisionAngle );
 					if ( collisionAngle < 45 || collisionAngle > 135 ) {
 						return PreFlag.IGNORE;	
 					}
@@ -461,21 +332,10 @@ package {
 				_doubleJumpAvailable = true;
 				screenTapped = false;
 				screenTouchedOnce = false;
-				//_animation = "slice_";
-//				_minSpeed *= 1.09;
-				
-//				if ( _zoomModified ) {
-//					this._ce.state.view.camera.setZoom( 1.0 );
-//					_zoomModified = false;
-//				}
 			} 
-//			else if (callback.int2.userData.myData is CrateObject) {
-//				return PreFlag.IGNORE;	
-//			}
-			
-
 
 			return PreFlag.ACCEPT;
 		}
+
 	}
 }

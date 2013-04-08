@@ -26,6 +26,11 @@ package
 			_miscTextureAtlas = Assets.getMiscAtlas();
 		}
 		
+		public function setState( state:IState ):void
+		{
+			_state = state;
+		}
+		
 		public function addBall( addLargeBall:Boolean = false, x:int=-1, y:int=-1 ):void {
 			var image:Image;
 			var width:int; var height:int;

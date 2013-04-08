@@ -23,6 +23,7 @@ package
 		
 		public function initNewLevel():void
 		{
+			viewCamPosX = 0;
 			hasGameEnded = false;
 			gameEndedSig.removeAll();
 		}
