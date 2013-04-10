@@ -34,16 +34,17 @@ package complexbox2dobject{
 
 		public function RopeChain(name:String, params:Object = null) {
 			
-			updateCallEnabled = true;
+//			updateCallEnabled = true;
 			
 			super(name, params);
-		}
-			
-		override public function addPhysics():void {
-			super.addPhysics();
-			
 			if (view)
 				(view as RopeChainGraphics).init(numChain, widthChain, heightChain);
+			
+		}
+			
+		protected function addPhysics():void {
+//			super.addPhysics();
+			
 		}
 			
 		override public function update(timeDelta:Number):void {

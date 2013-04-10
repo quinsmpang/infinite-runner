@@ -1,11 +1,13 @@
 package {
 
 	import flash.geom.Rectangle;
+	import flash.utils.Endian;
 	import flash.utils.Timer;
 	
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
 	import citrus.objects.platformer.nape.Coin;
+	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
@@ -14,6 +16,9 @@ package {
 	
 	import starling.display.Button;
 	import starling.events.Event;
+	import starling.extensions.particles.PDParticleSystem;
+	import starling.extensions.particles.ParticleSystem;
+	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	
 	import views.GameBackground;
@@ -61,6 +66,8 @@ package {
 		private var gameDistance:int = 0;
 		
 		private var groundLevel:int = 0;
+		
+		private var _particleSystem:ParticleSystem;
 		
 		public function GameState( context:GameContext ) 
 		{
@@ -129,7 +136,6 @@ package {
 			
 //			gameDistance = _context.getAndIncGameDistance();
 			
-			_ce.playing = true;
 			
 			startButton = new Button(Assets.getAtlas().getTexture("startButton"));
 			startButton.fontColor = 0xffffff;
@@ -141,12 +147,33 @@ package {
 			
 			//first level:
 			gameDistance = generateLevel( _context.currentLevel );
+			
+			var psconfig:XML = Assets.getParticleConfig();
+			var psTexture:Texture = Assets.getTexture( "_particlePng" );
+
+			_particleSystem = new PDParticleSystem(psconfig, psTexture);
+			_particleSystem.start();
+			
+			endLevel = new Sensor( "endLevel", { x: 2000, y: groundLevel - 100 } );
+			endLevel.view = _particleSystem;
+			endLevel.onBeginContact.add( onGameEnded );
+			add( endLevel );
+			
+			_ce.playing = true;
 		}
-		
+		 
+		private var endLevel:Sensor;
 		private function onFireButtonClick(event:Event):void
 		{
 			event.stopPropagation();
 			event.stopImmediatePropagation();
+		}
+		
+		public override function destroy():void
+		{
+			endLevel = null;
+			_particleSystem = null;
+			super.destroy();
 		}
 		
 		private function onStartButtonClick(event:Event):void
@@ -167,8 +194,10 @@ package {
 					, int.MAX_VALUE );
 		}
 		
-		private function onGameEnded():void
+		private function onGameEnded(obj:Object=null):void
 		{
+			endLevel.onBeginContact.removeAll();
+			_context.gameEnded();
 			this._ce.playing = false;
 			startButton.visible = true;
 		}

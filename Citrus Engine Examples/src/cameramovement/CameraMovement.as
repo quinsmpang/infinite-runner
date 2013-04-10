@@ -101,7 +101,7 @@ package cameramovement {
 				cloud = new CitrusSprite("cloud" + String(i), {view: cloudIMG, group: i});
 				cloud.x = Math.random() * _bounds.width;
 				cloud.y = Math.random() * 3 * _bounds.height / 4;
-				cloud.parallaxX = cloud.parallaxY = (i / total) / 3 + 1;
+				cloud.parallax = (i / total) / 3 + 1;
 				_clouds.push(cloud);
 				add(cloud);
 			}

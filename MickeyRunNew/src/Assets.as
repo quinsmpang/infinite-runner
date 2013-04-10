@@ -59,6 +59,11 @@ package  {
 		[Embed(source="/../embed/mickey/misc.png")]
 		public static const MiscPng:Class;
 		
+		[Embed(source="/../embed/Particle.pex", mimeType="application/octet-stream")]
+		public static const _particleConfig:Class;
+
+		[Embed(source="/../embed/ParticleTexture.png")]
+		public static const _particlePng:Class;
 //		[Embed(source="/../embed/games/hungryhero//graphics/bgWelcome.jpg")]
 //		public static const BgWelcome:Class;
 		
@@ -125,6 +130,11 @@ package  {
 			}
 			
 			return gameTextures[name];
+		}
+		
+		public static function getParticleConfig():XML
+		{
+			return XML(new _particleConfig());
 		}
 	}
 }
