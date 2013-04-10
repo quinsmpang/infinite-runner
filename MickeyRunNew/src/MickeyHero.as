@@ -248,7 +248,7 @@ package {
 			}
 
 			if ( _animation == "slice_" ) {
-				setAnimFPS( _animation, Math.round( this.body.velocity.x / 14 ) );
+				setAnimFPS( _animation, Math.round( this.body.velocity.x / 10 ) );
 			}
 			
 			if ( _mobileInput._buttonClicked ) {

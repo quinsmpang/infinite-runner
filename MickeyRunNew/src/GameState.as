@@ -73,7 +73,7 @@ package {
 			super.initialize();
 			
 			// ground level y
-			groundLevel = stage.stageHeight * 0.85;
+			groundLevel = stage.stageHeight * 0.9;
 
 			if ( _context.viewMaster == null ) {
 				_context.viewMaster = new ViewMaster( _context, _ce.state );
@@ -90,28 +90,29 @@ package {
 			
 			_miscTextureAtlas = Assets.getMiscAtlas() ;
 			
-			_hero = new MickeyHero( "hero", {x:stage.stageWidth * 0.2, radius:40, view:heroAnim, group:1}, 
+			_hero = new MickeyHero( "hero", {x:50, y: 100, radius:40, view:heroAnim, group:1}, 
 				_context, heroAnim );
 			add(_hero);
 			
 			bg = new GameBackground("background", null, _hero, true);
 			add(bg);
 			
-			_hillsTexture = new HillsTexture();
+//			_hillsTexture = new HillsTexture();
 			
-			_hills = new CustomHills("hills", 
-				{rider:_hero, sliceHeight:400, sliceWidth:100, currentYPoint:groundLevel, //currentXPoint: 10, 
-					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
-					registration:"topLeft", view:_hillsTexture},
-				_context );
-			add(_hills);
+//			_hills = new CustomHills("hills", 
+//				{rider:_hero, sliceHeight:400, sliceWidth:100, currentYPoint:groundLevel, //currentXPoint: 10, 
+//					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
+//					registration:"topLeft", view:_hillsTexture},
+//				_context );
+//			add(_hills);
 			
-			_cameraBounds = new Rectangle(0, -500, int.MAX_VALUE, int.MAX_VALUE);
+//			_hills.visible = false;
+			
+			_cameraBounds = new Rectangle(0, -800, int.MAX_VALUE, int.MAX_VALUE);
 
 			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.75), 
 				_cameraBounds, new MathVector(0.20, 0.10));
 			view.camera.allowZoom = true;
-			view.camera.setZoom( 0.8 );
 			
 			view.camera.zoomEasing = 0.01;
 			view.camera.setZoom( 0.8 );
@@ -151,15 +152,18 @@ package {
 		private function onStartButtonClick(event:Event):void
 		{
 			_context.currentLevel += 1;
+			if ( _context.currentLevel > _context.maxLevel ) _context.currentLevel = 1;
 			_ce.state = new GameState( _context );
 		}
 		
 		private function gameEndedControl():void
 		{
 			_context.hasGameEnded = true;
-			view.camera.bounds = new Rectangle( 0, -500, 
-				view.camera.camPos.x + view.camera.cameraLensWidth
-//				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
+			
+//			view.camera.target = null;
+			view.camera.bounds = new Rectangle( 0, -800, 
+//				view.camera.camPos.x + view.camera.cameraLensWidth
+				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
 					, int.MAX_VALUE );
 		}
 		
@@ -187,19 +191,26 @@ package {
 		}
 		
 		private function generateFirstLevel():int {
-			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, false, 1 );
-			_context.viewMaster.addPlatform( 2400, 600, groundLevel - 200, false, 1 );
-			_context.viewMaster.addPlatform( 3400, 600, groundLevel - 400, false, 1 );
 			
-			return 4600;
+			// ground
+			_context.viewMaster.addPlatform( 2000, 4000, groundLevel, false, 0.5 );
+			
+			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, false, 0, true );
+			_context.viewMaster.addPlatform( 2200, 600, groundLevel - 200, true, 0, true );
+			_context.viewMaster.addPlatform( 3000, 600, groundLevel - 500, false, 0, true );
+			
+			return 3600;
 		}
 		
 		private function generateSecondLevel():int {
-			_context.viewMaster.addPlatform( 1000, 300, groundLevel - 200, false, 100 );
-			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, true, 1 );
-			_context.viewMaster.addPlatform( 2000, 600, groundLevel - 500, true, 25 );
+			// ground
+			_context.viewMaster.addPlatform( 1000, 6000, groundLevel, false, 0.5 );
+			
+			_context.viewMaster.addPlatform( 1000, 300, groundLevel - 200, false, 0, true );
+			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, true, 0 );
+			_context.viewMaster.addPlatform( 2000, 600, groundLevel - 500, true, 0, true );
 			_context.viewMaster.addPlatform( 2500, 600, groundLevel - 200, false, 0 );
-			_context.viewMaster.addPlatform( 3000, 600, groundLevel - 100, false, 0 );
+			_context.viewMaster.addPlatform( 3000, 600, groundLevel - 100, false, 0, true );
 			
 			_context.viewMaster.addMovingPlatform( 2500, groundLevel - 500, 
 				3000, groundLevel - 500, 50 );
@@ -217,7 +228,7 @@ package {
 			elapsed = timeDelta;
 			
 			// update the hills here to remove the displacement made by StarlingArt. Called after all operations done.
-			_hillsTexture.update();
+//			_hillsTexture.update();
 			
 			// update HUD
 			hud.distance = _hero.x * 0.1;
@@ -233,6 +244,7 @@ package {
 				if ( viewCamPosX == -1 ) viewCamPosX = view.camera.camPos.x;
 				if ( viewCamLensWidth == -1 ) 
 					viewCamLensWidth = view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() );
+//					viewCamLensWidth = view.camera.cameraLensWidth;
 				
 				if ( _hero.x - 100 > 
 					viewCamPosX + ( viewCamLensWidth ) ) {

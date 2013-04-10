@@ -17,6 +17,7 @@ package
 		public var viewCamPosX:int = 0;
 		
 		public var currentLevel:int = 1;
+		public var maxLevel:int = 2;
 		
 		public function GameContext()
 		{

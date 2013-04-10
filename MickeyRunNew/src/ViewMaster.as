@@ -99,7 +99,8 @@ package
 		}
 		
 		public function addPlatform( platformX:int=0, platWidth:int=0, 
-									  platformY:int=0, ballAdd:Boolean=false, friction:Number=10 ):CustomPlatform {
+									  platformY:int=0, ballAdd:Boolean=false, friction:Number=10,
+									coinAdd:Boolean=false ):CustomPlatform {
 			var textureName:String = "platformNew800";
 			var image:Image = new Image( _miscTextureAtlas.getTexture(textureName) );
 			image.scaleX = platWidth / 800;
@@ -108,8 +109,8 @@ package
 				x: platformX, 
 				y: platformY,
 				width:platWidth, 
-				height: 50, 
-				friction:friction 
+				height: 50//, 
+//				friction:friction 
 			}, _context);
 			floor.view = image;
 			floor.oneWay = true;
@@ -119,7 +120,9 @@ package
 				addBall( false, floor.x + 200, floor.y - 100 );
 			}
 			
-			addCoin( floor.x + 100, floor.y - 100 ); 
+			if ( coinAdd ) {
+				addCoin( floor.x + 100, floor.y - 100 ); 
+			}
 
 			return floor;
 		}

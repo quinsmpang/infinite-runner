@@ -11,7 +11,7 @@ package objects
 		
 		public function CustomPlatform( name:String, params:Object=null, context:GameContext=null )
 		{
-			_friction = params.friction;
+//			_friction = params.friction;
 			super(name, params);
 			this._context = context;
 		}
