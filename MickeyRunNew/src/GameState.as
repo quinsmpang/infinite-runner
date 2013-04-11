@@ -118,7 +118,7 @@ package {
 			_cameraBounds = new Rectangle(0, -800, int.MAX_VALUE, int.MAX_VALUE);
 
 			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.75), 
-				_cameraBounds, new MathVector(0.20, 0.10));
+				_cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
 			
 			view.camera.zoomEasing = 0.01;
@@ -154,9 +154,10 @@ package {
 			_particleSystem = new PDParticleSystem(psconfig, psTexture);
 			_particleSystem.start();
 			
-			endLevel = new Sensor( "endLevel", { x: 2000, y: groundLevel - 100 } );
+			endLevel = new Sensor( "endLevel", { x: 2000, y: groundLevel - 100, height: 200 } );
 			endLevel.view = _particleSystem;
-			endLevel.onBeginContact.add( onGameEnded );
+			endLevel.onBeginContact.add( onSensorTouched );
+//			endLevel.onBeginContact.add( onGameEnded );
 			add( endLevel );
 			
 			_ce.playing = true;
@@ -188,10 +189,16 @@ package {
 			_context.hasGameEnded = true;
 			
 //			view.camera.target = null;
-			view.camera.bounds = new Rectangle( 0, -800, 
-//				view.camera.camPos.x + view.camera.cameraLensWidth
-				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
-					, int.MAX_VALUE );
+//			view.camera.bounds = new Rectangle( 0, -800, 
+////				view.camera.camPos.x + view.camera.cameraLensWidth
+//				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
+//					, int.MAX_VALUE );
+		}
+		
+		private function onSensorTouched(obj:Object=null):void
+		{
+			_hero.x = endLevel.x - 1500;
+			_hero.y = endLevel.y - 500;
 		}
 		
 		private function onGameEnded(obj:Object=null):void
@@ -202,9 +209,9 @@ package {
 			startButton.visible = true;
 		}
 		
+		private var levelDistance:int = 1000;
 		private function generateLevel( level:int ):int
 		{
-			var levelDistance:int = 1000;
 			switch ( level ) {
 				case 1:
 					levelDistance = generateFirstLevel();
@@ -215,6 +222,9 @@ package {
 				default:
 					break;
 			}
+			
+			view.camera.bounds = new Rectangle( 0, -800, 
+					levelDistance , int.MAX_VALUE );
 			
 			return levelDistance;
 		}
@@ -246,7 +256,7 @@ package {
 				
 			_context.viewMaster.addCrate( false, true, 2000, groundLevel - 200 );
 			
-			return 4400;
+			return 3800;
 		}
 		
 		override public function update(timeDelta:Number):void {
@@ -265,21 +275,24 @@ package {
 			hud.foodScore = _hero.numCoinsCollected;
 			
 			// game end distance
-			if ( _hero.x + _context.viewCamPosX > gameDistance ) {
-				_context.gameEnded();
+//			if ( _hero.x + _context.viewCamPosX > gameDistance ) {
+//				_context.gameEnded();
+//			}
+			
+			if ( _hero.x - 100 > levelDistance ) {
+				onGameEnded();
 			}
 			
-			if ( _context.hasGameEnded ) {
-				if ( viewCamPosX == -1 ) viewCamPosX = view.camera.camPos.x;
-				if ( viewCamLensWidth == -1 ) 
-					viewCamLensWidth = view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() );
-//					viewCamLensWidth = view.camera.cameraLensWidth;
-				
-				if ( _hero.x - 100 > 
-					viewCamPosX + ( viewCamLensWidth ) ) {
-					onGameEnded();
-				}
-			}
+//			if ( _context.hasGameEnded ) {
+////				if ( viewCamPosX == -1 ) viewCamPosX = view.camera.camPos.x;
+//				if ( viewCamLensWidth == -1 ) 
+//					viewCamLensWidth = view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() );
+////					viewCamLensWidth = view.camera.cameraLensWidth;
+//				
+//				if ( _hero.x - 100 > levelDistance ) {
+//					onGameEnded();
+//				}
+//			}
 		}
 	}
 }
