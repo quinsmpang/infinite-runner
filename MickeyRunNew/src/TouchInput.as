@@ -18,11 +18,15 @@ package {
 	 */
 	public class TouchInput extends Input {
 		
-		private var _screenTouched:Boolean = false;
+		private var _screenRightTouched:Boolean = false;
+		private var _screenLeftTouched:Boolean = false;
 		public var _buttonClicked:Boolean = false;
-
+		
+		private var _context:GameContext;
+		
 		public function TouchInput() {
 			super();
+			_context = GameContext.getInstance();
 		}
 			
 		override public function destroy():void {
@@ -53,7 +57,8 @@ package {
 			(_ce as StarlingCitrusEngine).starling.stage.addEventListener(TouchEvent.TOUCH, _touchEvent);
 		}
 
-		public var touchPoint:Point = new Point();
+		public var touchStartPoint:Point = new Point();
+		public var touchEndPoint:Point = new Point();
 		private function _touchEvent(tEvt:TouchEvent):void {
 				
 			var touchStart:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.BEGAN);
@@ -66,30 +71,49 @@ package {
 //			}
 			
 //			var touchHover:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.HOVER);
-			var touchMoved:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.MOVED);
+//			var touchMoved:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.MOVED);
 
 			if (touchStart) {
-				_screenTouched = true;
-//				trace( " touch began " );
+				touchStartPoint = touchStart.getLocation( (_ce.state as StarlingState) );
+				
+				if ( _context.isTouchSideRight( touchStartPoint ) ) {
+					_screenRightTouched = true;
+//					trace( "screen right touched" );
+				} else {
+					_screenLeftTouched = true;
+//					trace( "screen left touched" );
+				}
 			}
 			
-			if ( touchMoved ) {
-				touchPoint = touchMoved.getLocation( (_ce.state as StarlingState) );
+//			if ( touchMoved ) {
+//				touchStartPoint = touchMoved.getLocation( (_ce.state as StarlingState) );
 //				touchPoint.x = touchMoved.globalX;
 //				touchPoint.y = touchMoved.globalY;
-			}
+//			}
 			
 //			if ( !touchHover && !touchMoved )
 //				trace( " touch going on " );
 			
 			if (touchEnd) {
-				_screenTouched = false;
+				touchEndPoint = touchEnd.getLocation( (_ce.state as StarlingState) );
+				
+				if ( _context.isTouchSideRight( touchEndPoint ) ) {
+					_screenRightTouched = false;
+				} else {
+					_screenLeftTouched = false;
+				}
+//				_screenRightTouched = false;
+//				_screenLeftTouched = false;
 //				trace( " touch ended " );
 			}
 		}
 
-		public function get screenTouched():Boolean {
-			return _screenTouched;
+		public function get screenTouchedRight():Boolean {
+			return _screenRightTouched;
+		}
+		
+		public function get screenTouchedLeft():Boolean {
+			return _screenLeftTouched;
 		}
 	}
 }

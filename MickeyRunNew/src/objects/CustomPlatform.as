@@ -28,7 +28,7 @@ package objects
 			super.createMaterial();
 			
 			var f:int = _friction;
-			_material = new Material( 0, f, f, 10, f );
+			_material = new Material( 0, f, f, 1, f );
 //			_material.elasticity = 30;
 //			_material = Material.ice();
 		}

@@ -18,6 +18,7 @@ package {
 	import nape.geom.Vec2;
 	
 	import objects.CustomBall;
+	import objects.CustomCannonSensor;
 	import objects.CustomCoin;
 	import objects.CustomCrate;
 	import objects.CustomHills;
@@ -60,6 +61,11 @@ package {
 		
 		private var _obstacleHit:Boolean = false;
 		private var _cannonHit:Boolean = false;
+		
+		private var impulseCount:int = 0;
+		private const impulseMax:int = 100;
+		
+		private var _isMoving:Boolean = true;
 
 		public function MickeyHero(name:String, params:Object = null, context:GameContext = null, heroAnim:AnimationSequence = null ) {
 
@@ -73,9 +79,9 @@ package {
 			_heroAnim = heroAnim;
 
 			jumpAcceleration += 10;
-			jumpHeight += 170;
+			jumpHeight += 200;
 			
-			this._body.gravMass = 6.8;
+			this._body.gravMass = 2.8;
 			
 			// working combo: jumAcc += 6; body.gravMass = 6.8; jumpHeight += 200;
 			
@@ -131,13 +137,13 @@ package {
 
 			var velocity:Vec2 = _body.velocity;
 			
-			if ( velocity.x < _minSpeed ) velocity.x = _minSpeed;
+			if ( velocity.x < _minSpeed && !_mobileInput.screenTouchedLeft ) velocity.x = _minSpeed;
 			
-			if (_mobileInput.screenTouched) {
+			if (_mobileInput.screenTouchedRight && !_mobileInput.screenTouchedLeft) {
 				screenTouchedOnce = true;
 				
 				if ( _isFlying ) {
-					if ( _mobileInput.touchPoint ) {
+					if ( _mobileInput.touchStartPoint ) {
 						velocity.y = -_flyingJumpHeight;
 					}
 				} else {
@@ -161,6 +167,14 @@ package {
 					
 				} // isFlying
 				
+			} else if ( _mobileInput.screenTouchedLeft ){ 
+				if ( _onGround ) {
+					if ( velocity.x > 0 ) {
+//					velocity.x = 0;
+//						velocity.y = -10;
+						_body.applyImpulse( Vec2.weak( -40, 0 ) );
+					}
+				}
 			} else {
 				
 				if ( screenTouchedOnce ) screenTapped = true;
@@ -191,8 +205,8 @@ package {
 			}
 			
 			if ( _obstacleHit ) {
-				velocity.x = -jumpHeight;
-				velocity.y = -jumpHeight;
+//				velocity.x = -jumpHeight;
+//				velocity.y = -jumpHeight;
 				_obstacleHit = false;
 			}
 			
@@ -203,16 +217,27 @@ package {
 				_cannonHit = false;
 			}
 			
-			if ( _mobileInput._buttonClicked && !_firedMissile ) {
+			if ( impulseCount-- > 0 ) {
+				_body.applyImpulse( Vec2.weak( 0, -100 ) );
+				if ( impulseCount > impulseMax - 2 ) {
+					velocity.y = -jumpHeight;
+					_onGround = false;
+				}
+				
+			}
+			
+//			if ( _mobileInput._buttonClicked && !_firedMissile ) {
+			if ( _mobileInput.screenTouchedLeft && _mobileInput.screenTouchedRight && !_firedMissile ) {
 				missile = new CustomMissile("Missile", 
 					{x:x + width, y:y, group:group, 
 						width:25, height:25, 
 						speed:300, 
-						explodeDuration:10000, fuseDuration:30000, 
-						view:new Image(Assets.getMiscAtlas().getTexture("small_ball"))});
+						explodeDuration:2000, fuseDuration:30000, 
+						view:new Image(Assets.getMiscAtlas().getTexture("small_ball"))}, _context);
 				_ce.state.add( missile );
 				_firedMissile = true;
-			} else if ( !_mobileInput._buttonClicked ) {
+			} else if ( !_mobileInput.screenTouchedLeft || !_mobileInput.screenTouchedRight ) {
+//			} else if ( !_mobileInput._buttonClicked ) {
 				_firedMissile = false;
 			}
 			
@@ -228,14 +253,27 @@ package {
 
 		private function _updateAnimation():void {
 
-			if (_mobileInput.screenTouched) {
+			if (_mobileInput.screenTouchedRight && _mobileInput.screenTouchedLeft) {
+				_animation = "mickeythrow_";
+			} else if (_mobileInput.screenTouchedRight) {
+				
 				if ( _isFlying ) _animation = true ? "mickeycarpet_" : "mickeybubble_";
 				else if ( _onGround )
 					_animation = "slice_";
 				else
 					_animation = "mickeyjump2_";//_body.velocity.y < 0 ? "mickeyjump2_" : "mickeythrow_";
-			} 
-			else {
+				
+			} else if ( _mobileInput.screenTouchedLeft ) {
+				
+				if ( _onGround ) {
+//					_animation = "mickeywatch_";
+//					setAnimFPS( _animation, 8 );
+					_animation = "mickeyidle_";
+				} else {
+//					_animation = "mickeythrow_";
+				}
+				
+			} else {
 				if (_isPushing) {
 					//(this.view as AnimationSequence).changeAnimation("mickeypush_", true);	
 					_animation = "mickeypush_";
@@ -251,9 +289,9 @@ package {
 				setAnimFPS( _animation, Math.round( this.body.velocity.x / 10 ) );
 			}
 			
-			if ( _mobileInput._buttonClicked ) {
-				_animation = "mickeythrow_";
-			}
+//			if ( _mobileInput._buttonClicked ) {
+//				_animation = "mickeythrow_";
+//			}
 		}
 
 		override protected function createConstraint():void {
@@ -285,6 +323,10 @@ package {
 			
 			if (callback.int2.userData.myData is CustomCoin) {
 				numCoins++;	
+			}
+			
+			if (callback.int2.userData.myData is CustomCannonSensor) {
+				impulseCount = impulseMax;
 			}
 			
 			if (callback.int2.userData.myData is CustomBall) {

@@ -7,11 +7,18 @@ package {
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
 	import citrus.objects.platformer.nape.Coin;
+	import citrus.objects.platformer.nape.Crate;
+	import citrus.objects.platformer.nape.Platform;
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	
+	import nape.constraint.WeldJoint;
+	import nape.geom.Vec2;
+	import nape.phys.Body;
+	
+	import objects.CustomCrate;
 	import objects.CustomHills;
 	
 	import starling.display.Button;
@@ -81,6 +88,8 @@ package {
 			
 			// ground level y
 			groundLevel = stage.stageHeight * 0.9;
+			
+			_context.setViewCamLensWidth( view.camera.cameraLensWidth );// + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() );
 
 			if ( _context.viewMaster == null ) {
 				_context.viewMaster = new ViewMaster( _context, _ce.state );
@@ -89,11 +98,16 @@ package {
 			_context.viewMaster.setState( this );
 			
 			_nape = new Nape("nape");
+			_nape.gravity = Vec2.weak( 0, 1000 );
 			add(_nape);
 			
 			sTextureAtlas = Assets.getMickeyAtlas();
-			heroAnim = new AnimationSequence(sTextureAtlas, ["slice_", "mickeyjump2_", "mickeythrow_", "mickeypush_", "mickeycarpet_", "mickeybubble_"], "slice_", 15, true, "none");
-			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", "mickeycarpet_", "mickeybubble_"]);
+			heroAnim = new AnimationSequence(sTextureAtlas, 
+				[ "slice_", "mickeyjump2_", "mickeythrow_", 
+					"mickeypush_", "mickeycarpet_", "mickeybubble_", "mickeyidle_", "mickeywatch_" ], 
+				"slice_", 15, true, "none");
+			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
+				"mickeycarpet_", "mickeybubble_", "mickeywatch_" ]);
 			
 			_miscTextureAtlas = Assets.getMiscAtlas() ;
 			
@@ -154,12 +168,13 @@ package {
 			_particleSystem = new PDParticleSystem(psconfig, psTexture);
 			_particleSystem.start();
 			
-			endLevel = new Sensor( "endLevel", { x: 2000, y: groundLevel - 100, height: 200 } );
+			endLevel = new Sensor( "endLevel", { x: 3000, y: groundLevel - 100, height: 200 } );
 			endLevel.view = _particleSystem;
 			endLevel.onBeginContact.add( onSensorTouched );
 //			endLevel.onBeginContact.add( onGameEnded );
 			add( endLevel );
 			
+//			temp();
 			_ce.playing = true;
 		}
 		 
@@ -198,7 +213,7 @@ package {
 		private function onSensorTouched(obj:Object=null):void
 		{
 			_hero.x = endLevel.x - 1500;
-			_hero.y = endLevel.y - 500;
+			_hero.y = endLevel.y - 50;
 		}
 		
 		private function onGameEnded(obj:Object=null):void
@@ -229,16 +244,46 @@ package {
 			return levelDistance;
 		}
 		
+		private function temp():void
+		{
+			var crate1:CustomCrate = _context.viewMaster.addCrate( false, true, 1000, groundLevel - 152 );
+			var crate2:CustomCrate = _context.viewMaster.addCrate( false, true, 900, groundLevel - 305 );
+			
+			var joint1:WeldJoint = new WeldJoint( crate1.body, crate2.body,
+//				Vec2.weak( 2050, groundLevel - 153 ),
+				crate1.body.worldPointToLocal(
+					Vec2.weak( crate1.x + crate1.width / 2, crate1.y + crate1.height / 2 )
+					), 
+				crate2.body.worldPointToLocal(
+					Vec2.weak( crate2.x + crate2.width / 2, crate2.y + crate2.height / 2 )
+				), 
+				Math.PI/2 );
+			joint1.space = _nape.space;
+//			joint1.stiff = false;
+			
+//			joint1.active =  false;
+			
+//			joint1.damping = 0.001;
+//			joint1.frequency = 5000;
+		}
+		
 		private function generateFirstLevel():int {
 			
 			// ground
-			_context.viewMaster.addPlatform( 2000, 4000, groundLevel, false, 0.5 );
+			_context.viewMaster.addPlatform( 10000, 20000, groundLevel, false, 1 );
 			
-			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, false, 0, true );
-			_context.viewMaster.addPlatform( 2200, 600, groundLevel - 200, true, 0, true );
-			_context.viewMaster.addPlatform( 3000, 600, groundLevel - 500, false, 0, true );
+			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, false, 0, true, 0 );
+//			_context.viewMaster.addPlatform( 2200, 600, groundLevel - 200, true, 0, true );
+			_context.viewMaster.addPlatform( 2800, 1000, groundLevel - 700, false, 0, false );
+//			_context.viewMaster.addPlatform( 3800, 1000, groundLevel - 400, false, 0, false, Math.PI/4 );
 			
-			return 3600;
+			_context.viewMaster.addPlatform( 5500, 600, groundLevel - 200, false, 0, true, 0 );
+			_context.viewMaster.addPlatform( 6800, 1000, groundLevel - 700, false, 0, false );
+			
+			_context.viewMaster.addPlatform( 9500, 600, groundLevel - 200, false, 0, true, 0 );
+			_context.viewMaster.addPlatform( 10800, 1000, groundLevel - 700, false, 0, false );
+			
+			return 20000;
 		}
 		
 		private function generateSecondLevel():int {
@@ -263,6 +308,7 @@ package {
 			super.update(timeDelta);
 			
 			_context.viewCamPosX = view.camera.camPos.x;
+			
 			
 			elapsed = timeDelta;
 			

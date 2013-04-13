@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:bc25b20366b55a7172d7eb5d29b487f7$ -->
+<!-- $TexturePacker:SmartUpdate:b68e34d470096beedfba02d1bcb9f8bd$ -->
 <TextureAtlas imagePath="misc.png">
-    <SubTexture name="ball" x="948" y="84" width="50" height="50"/>
-    <SubTexture name="coin" x="976" y="2" width="40" height="40"/>
+    <SubTexture name="ball" x="486" y="199" width="50" height="50"/>
+    <SubTexture name="cannon" x="102" y="156" width="80" height="96" frameX="-10" frameY="-7" frameWidth="100" frameHeight="106"/>
+    <SubTexture name="coin" x="538" y="199" width="40" height="40"/>
     <SubTexture name="large_ball" x="2" y="156" width="98" height="98" frameX="0" frameY="-1" frameWidth="100" frameHeight="100"/>
-    <SubTexture name="large_crate" x="102" y="156" width="70" height="76"/>
-    <SubTexture name="platformNew300" x="646" y="54" width="300" height="50"/>
-    <SubTexture name="platformNew500" x="144" y="84" width="500" height="50"/>
-    <SubTexture name="platformNew800" x="174" y="2" width="800" height="50"/>
-    <SubTexture name="small_ball" x="144" y="2" width="25" height="25"/>
-    <SubTexture name="small_crate" x="976" y="44" width="35" height="38"/>
+    <SubTexture name="large_crate" x="144" y="69" width="70" height="76"/>
+    <SubTexture name="platformNew300" x="184" y="199" width="300" height="50"/>
+    <SubTexture name="platformNew500" x="184" y="147" width="500" height="50"/>
+    <SubTexture name="platformNew800" x="184" y="2" width="800" height="50"/>
+    <SubTexture name="small_ball" x="986" y="42" width="25" height="25"/>
+    <SubTexture name="small_crate" x="986" y="2" width="35" height="38"/>
     <SubTexture name="very_large_crate" x="2" y="2" width="140" height="152"/>
 </TextureAtlas>

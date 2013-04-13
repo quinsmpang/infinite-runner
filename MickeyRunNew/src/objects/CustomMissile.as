@@ -15,25 +15,21 @@ package objects
 
 	public class CustomMissile extends Missile
 	{
-		private var cam:ACitrusCamera;
 		private var _context:GameContext = null;
 		public function CustomMissile(name:String, params:Object = null, context:GameContext=null ) {
 			super(name, params);
-			cam = _ce.state.view.camera;
 		}
 		
 		override public function update(timeDelta:Number):void {
 			
 			super.update(timeDelta);
 			body.velocity.x += 600;
-//			if (!_exploded)
-//				_body.velocity.x += 500;
-//			else
-//				_body.velocity.x = 0;
 			
-			if (_body.position.x > cam.camPos.x + cam.cameraLensWidth + this.width) {
-				kill = true;
-			}
+//			if ( _body == null || _context == null ) return;
+//			
+//			if (_body.position.x > _context.viewCamPosX + _context.viewCamLensWidth) {
+//				kill = true;
+//			}
 		}
 		
 		override public function explode():void {

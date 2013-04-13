@@ -3,6 +3,7 @@ package
 	import citrus.core.IState;
 	
 	import objects.CustomBall;
+	import objects.CustomCannonSensor;
 	import objects.CustomCoin;
 	import objects.CustomCrate;
 	import objects.CustomMovingPlatform;
@@ -48,7 +49,7 @@ package
 			_state.add(physicObject);	
 		}
 		
-		public function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false, x:int=-1, y:int=-1 ):void {
+		public function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false, x:int=-1, y:int=-1 ):CustomCrate {
 			var image:Image;
 			var width:int; var height:int;
 			
@@ -66,6 +67,8 @@ package
 			var physicObject:CustomCrate = new CustomCrate("physicobject", { 
 				x:x, y:y, width:width, height:height, view:image}, _context );
 			_state.add(physicObject);	
+			
+			return physicObject;
 		}
 		
 		public function addCoin( coinX:int, coinY:int, largeCoin:Boolean=false ):void {
@@ -86,6 +89,20 @@ package
 			_state.add(physicObject);	
 		}
 		
+		public function addCannonSensor( cannonX:int, coinY:int ):void {
+			var image:Image;
+			var width:int; var height:int;
+			
+			image = new Image( _miscTextureAtlas.getTexture("cannon") );
+			
+//			image.scaleX = image.scaleY = 2;
+			width = 102; height = 156;
+
+			var physicObject:CustomCannonSensor = new CustomCannonSensor("physicobject", 
+				{ x:cannonX, y:coinY, width:width, height:height, view:image}, _context );
+			_state.add(physicObject);	
+		}
+		
 		public function addPowerup( coinX:int, coinY:int ):void {
 			var image:Image;
 			var width:int; var height:int;
@@ -100,10 +117,12 @@ package
 		
 		public function addPlatform( platformX:int=0, platWidth:int=0, 
 									  platformY:int=0, ballAdd:Boolean=false, friction:Number=10,
-									coinAdd:Boolean=false ):CustomPlatform {
+									coinAdd:Boolean=false, rotation:Number=0 ):CustomPlatform {
 			var textureName:String = "platformNew800";
 			var image:Image = new Image( _miscTextureAtlas.getTexture(textureName) );
 			image.scaleX = platWidth / 800;
+			
+//			image.rotation = rotation;
 			
 			var floor:CustomPlatform = new CustomPlatform("floor", {
 				x: platformX, 
@@ -113,6 +132,9 @@ package
 //				friction:friction 
 			}, _context);
 			floor.view = image;
+			
+			floor.body.rotation = rotation;
+			
 			floor.oneWay = true;
 			_state.add(floor);
 			
@@ -121,7 +143,7 @@ package
 			}
 			
 			if ( coinAdd ) {
-				addCoin( floor.x + 100, floor.y - 100 ); 
+				addCannonSensor( floor.x + 100, floor.y - 70 ); 
 			}
 
 			return floor;
