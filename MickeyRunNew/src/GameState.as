@@ -6,11 +6,14 @@ package {
 	
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
+	import citrus.objects.NapePhysicsObject;
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.Nape;
+	import citrus.physics.nape.NapeUtils;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	
+	import nape.callbacks.InteractionCallback;
 	import nape.constraint.WeldJoint;
 	import nape.geom.Vec2;
 	
@@ -223,10 +226,15 @@ package {
 //					, int.MAX_VALUE );
 		}
 		
-		private function onSensorTouched(obj:Object=null):void
+		private function onSensorTouched(callback:InteractionCallback):void
 		{
-			_hero.x = endLevel.x - 1500;
-			_hero.y = endLevel.y - 50;
+			var collider:NapePhysicsObject = callback.int1.userData.myData as NapePhysicsObject;
+			if ( collider ) {
+				collider.x = endLevel.x - 1500;
+				collider.y = endLevel.y - 50;
+			}
+//			_hero.x = endLevel.x - 1500;
+//			_hero.y = endLevel.y - 50;
 		}
 		
 		private function onGameEnded(obj:Object=null):void
@@ -379,6 +387,11 @@ package {
 				if ( !_hero._isFlying ) _hero._isFlying = true;
 				_hero.y = groundLevel + 500;
 			}
+			
+			if ( _hero.onGround && _hero.body.velocity.x > 50 ) {
+				_context.viewMaster.createEatParticle( _hero );
+			}
+			_context.viewMaster.animateEatParticles();
 			
 //			if ( _context.hasGameEnded ) {
 ////				if ( viewCamPosX == -1 ) viewCamPosX = view.camera.camPos.x;

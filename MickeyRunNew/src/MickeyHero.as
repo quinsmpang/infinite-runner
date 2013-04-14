@@ -21,8 +21,10 @@ package {
 	import objects.CustomCannonSensor;
 	import objects.CustomCoin;
 	import objects.CustomCrate;
+	import objects.CustomEnemy;
 	import objects.CustomHills;
 	import objects.CustomMissile;
+	import objects.CustomPlatform;
 	import objects.CustomPowerup;
 	
 	import starling.display.Image;
@@ -62,10 +64,14 @@ package {
 		private var _obstacleHit:Boolean = false;
 		private var _cannonHit:Boolean = false;
 		
+		private var _ignoreNextPlatform:Boolean = false;
+		
 		private var impulseCount:int = 0;
 		private const impulseMax:int = 50;
 		
 		private var _isMoving:Boolean = true;
+		
+		private var MICKEY_HERO:CbType = new CbType();
 
 		public function MickeyHero(name:String, params:Object = null, context:GameContext = null, heroAnim:AnimationSequence = null ) {
 
@@ -206,8 +212,9 @@ package {
 			
 			if ( _obstacleHit ) {
 //				velocity.x = -jumpHeight;
-//				velocity.y = -jumpHeight;
+				velocity.y = -jumpHeight;
 				_obstacleHit = false;
+				_ignoreNextPlatform = true;
 			}
 			
 			if ( _cannonHit ) {
@@ -303,11 +310,14 @@ package {
 //			}
 		}
 
+		
 		override protected function createConstraint():void {
 			super.createConstraint();
 
 			_preListener = new PreListener(InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, handlePreContact);
 			_body.space.listeners.add(_preListener);
+			_body.cbTypes.add(MICKEY_HERO);
+			
 		}
 		
 		override public function handleBeginContact(callback:InteractionCallback):void {
@@ -318,7 +328,7 @@ package {
 				
 				var collisionAngle:Number = callback.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
 				
-				if ( collider is CustomCrate ) {
+				if ( collider is CustomEnemy ) {
 					if ( collisionAngle > 45 && collisionAngle < 135 ) {
 					
 					} else {
@@ -368,11 +378,20 @@ package {
 			if ( _isFlying ) {
 				if (callback.int1.userData.myData is MickeyHero) {
 					if ( !(callback.int2.userData.myData is CustomHills) 
-						&& !(callback.int2.userData.myData is CustomBall) )
+						&& !(callback.int2.userData.myData is CustomEnemy) )
 						return PreFlag.IGNORE;
 				}
 			}
 
+			if ( _ignoreNextPlatform ) {
+				if (callback.int1.userData.myData is MickeyHero) {
+					if ( callback.int2.userData.myData is CustomPlatform) {
+						_ignoreNextPlatform = false;
+						return PreFlag.IGNORE;
+					}
+				}
+			}
+			
 			// ignore platform sides - don't stop when colliding with the sides.
 			var collider:NapePhysicsObject = callback.int2.userData.myData as NapePhysicsObject;
 			

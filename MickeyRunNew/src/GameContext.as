@@ -67,6 +67,8 @@ package
 			viewCamLensWidth = 0;
 			hasGameEnded = false;
 			gameEndedSig.removeAll();
+			
+			viewMaster.init();
 		}
 		
 		public function setViewCamLensWidth( w:int ):void

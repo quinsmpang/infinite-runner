@@ -1,6 +1,7 @@
 package
 {
 	import citrus.core.IState;
+	import citrus.objects.platformer.nape.Hero;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	
@@ -12,6 +13,8 @@ package
 	import objects.CustomMovingPlatform;
 	import objects.CustomPlatform;
 	import objects.CustomPowerup;
+	import objects.Particle;
+	import objects.pools.PoolParticle;
 	
 	import starling.display.Image;
 	import starling.textures.TextureAtlas;
@@ -29,6 +32,15 @@ package
 			_state = state;
 			_miscTextureAtlas = Assets.getMiscAtlas();
 			
+		}
+		
+		public function init():void 
+		{
+			eatParticlesPool = new PoolParticle(eatParticleCreate, eatParticleClean, 20, 30);
+			
+			// Initialize particles-to-animate vectors.
+			eatParticlesToAnimate = new Vector.<Particle>();
+			eatParticlesToAnimateLength = 0;
 		}
 		
 		public function setState( state:IState ):void
@@ -181,5 +193,102 @@ package
 			floor.enabled = true;
 			_state.add(floor);
 		}
+		
+		private var eatParticlesPool:PoolParticle;
+		private var eatParticlesToAnimate:Vector.<Particle>;
+		private var eatParticlesToAnimateLength:uint = 0;
+		public function createEatParticle(itemToTrack:Hero, count:int = 2):void
+		{
+			var eatParticleToTrack:Particle;
+			
+			if ( eatParticlesToAnimateLength > 5 ) return;
+			
+			while (count > 0)
+			{
+				count--;
+				
+				// Create eat particle object.
+				eatParticleToTrack = eatParticlesPool.checkOut();
+				
+				if (eatParticleToTrack)
+				{
+					// Set the position of the particle object with a random offset.
+					eatParticleToTrack.x = itemToTrack.x + Math.random() * 40 - 20;
+					eatParticleToTrack.y = itemToTrack.y + itemToTrack.height ;
+					
+					// Set the speed of a particle object. 
+					eatParticleToTrack.speedY = Math.random() * 10 - 5;
+					eatParticleToTrack.speedX = Math.random() * 2 + 1;
+					
+					// Set the spinning speed of the particle object.
+					eatParticleToTrack.spin = Math.random() * 20 - 5;
+					
+					// Set the scale of the eat particle.
+					eatParticleToTrack.view.scaleX = eatParticleToTrack.view.scaleY = Math.random() * 0.3 + 0.3;
+					
+					// Animate the eat particle.
+					eatParticlesToAnimate[eatParticlesToAnimateLength++] = eatParticleToTrack;
+				}
+			}
+		}
+		
+		private function eatParticleCreate():Particle
+		{
+			var eatParticle:Particle = new Particle("eatParticle", {typeParticle:GameConstants.PARTICLE_TYPE_1});
+			eatParticle.x = 0;
+			_state.add(eatParticle);
+			
+			return eatParticle;
+		}
+		
+		private function eatParticleClean(eatParticle:Particle):void
+		{
+			eatParticle.x = 0;
+		}
+		
+		public function disposeEatParticleTemporarily(animateId:uint, particle:Particle):void
+		{
+			eatParticlesToAnimate.splice(animateId, 1);
+			eatParticlesToAnimateLength--;
+			eatParticlesPool.checkIn(particle);
+		}
+		
+		public function animateEatParticles():void
+		{
+			var eatParticleToTrack:Particle;
+			
+			for(var i:uint = 0;i < eatParticlesToAnimateLength;i++)
+			{
+				eatParticleToTrack = eatParticlesToAnimate[i];
+				
+				if (eatParticleToTrack)
+				{
+					eatParticleToTrack.view.scaleX -= 0.03;
+					
+					// Make the eat particle get smaller.
+					eatParticleToTrack.view.scaleY = eatParticleToTrack.view.scaleX;
+					// Move it horizontally based on speedX.
+					eatParticleToTrack.y -= eatParticleToTrack.speedY; 
+					// Reduce the horizontal speed.
+					eatParticleToTrack.speedY -= eatParticleToTrack.speedY * 0.2;
+					// Move it vertically based on speedY.
+					eatParticleToTrack.x += eatParticleToTrack.speedX;
+					// Reduce the vertical speed.
+					eatParticleToTrack.speedX--; 
+					
+					// Rotate the eat particle based on spin.
+					eatParticleToTrack.rotation += eatParticleToTrack.spin; 
+					// Increase the spinning speed.
+					eatParticleToTrack.spin *= 1.1; 
+					
+					// If the eat particle is small enough, remove it.
+					if (eatParticleToTrack.view.scaleY <= 0.02)
+					{
+						disposeEatParticleTemporarily(i, eatParticleToTrack);
+					}
+				}
+			}
+		}
+		
 	}
 }
