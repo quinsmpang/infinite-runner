@@ -315,6 +315,7 @@ package {
 			super.createConstraint();
 
 			_preListener = new PreListener(InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, handlePreContact);
+//			_preListener = new PreListener(InteractionType.ANY, MICKEY_HERO, CbType.ANY_BODY, handlePreContact);
 			_body.space.listeners.add(_preListener);
 			_body.cbTypes.add(MICKEY_HERO);
 			

@@ -33,12 +33,5 @@ package objects
 			this.destroy();
 		}
 		
-		override public function handleBeginContact(callback:InteractionCallback):void {
-//			var collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
-//				
-//			if ( collider is CustomMissile ) {
-//				this.destroyThis();
-//			}
-		}
 	}
 }
