@@ -149,18 +149,19 @@ package
 			return floor;
 		}
 		
-		public function addMovingPlatform( x:int, y:int, endX:int, endY:int, friction:Number=1 ):void {
+		public function addMovingPlatform( x:int, y:int, endX:int, endY:int, platWidth:int, 
+										   friction:Number=1, wait:Boolean=true, speed:int=50 ):void {
 			var textureName:String = "platformNew800";
 			var image:Image = new Image( _miscTextureAtlas.getTexture(textureName) );
-			image.scaleX = 800 / 800;
+			image.scaleX = platWidth / 800;
 			
 			var floor:CustomMovingPlatform = new CustomMovingPlatform("moving1", 
-				{x:x, y:y, width:800,
+				{x:x, y:y, width:platWidth,
 					startX:x, startY:y, endX: endX, endY:endY, height: 50, friction:friction },
 				_context );
 			floor.view = image;
-			floor.speed = 50;
-			floor.waitForPassenger = false;
+			floor.speed = speed;
+			floor.waitForPassenger = wait;
 			floor.enabled = true;
 			_state.add(floor);
 		}

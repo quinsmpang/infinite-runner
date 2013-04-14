@@ -1,5 +1,6 @@
 package {
 
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Endian;
 	import flash.utils.Timer;
@@ -27,6 +28,9 @@ package {
 	import starling.extensions.particles.ParticleSystem;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	
+	import steamboat.data.metadata.MetaData;
+	import steamboat.data.metadata.RowData;
 	
 	import views.GameBackground;
 	import views.GameHUD;
@@ -116,7 +120,7 @@ package {
 			add(_hero);
 			
 			bg = new GameBackground("background", null, _hero, true);
-			add(bg);
+//			add(bg);
 			
 //			_hillsTexture = new HillsTexture();
 			
@@ -129,9 +133,9 @@ package {
 			
 //			_hills.visible = false;
 			
-			_cameraBounds = new Rectangle(0, -800, int.MAX_VALUE, int.MAX_VALUE);
+			_cameraBounds = new Rectangle(0, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.75), 
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.55), 
 				_cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
 			
@@ -194,8 +198,8 @@ package {
 		
 		private function onStartButtonClick(event:Event):void
 		{
-			_context.currentLevel += 1;
-			if ( _context.currentLevel > _context.maxLevel ) _context.currentLevel = 1;
+//			_context.currentLevel += 1;
+//			if ( _context.currentLevel > _context.maxLevel ) _context.currentLevel = 1;
 			_ce.state = new GameState( _context );
 		}
 		
@@ -225,20 +229,44 @@ package {
 		}
 		
 		private var levelDistance:int = 1000;
-		private function generateLevel( level:int ):int
+		private function generateLevel( level:String ):int
 		{
-			switch ( level ) {
-				case 1:
-					levelDistance = generateFirstLevel();
-					break;
-				case 2:
-					levelDistance = generateSecondLevel();
-					break;
-				default:
-					break;
+			var rowData:RowData = MetaData.getRowData( "Levels", level );
+			
+			levelDistance = rowData.getInt( "distance" );
+			
+			var levelComponents:Array = rowData.getArray( "components" );
+			
+			for (var i:int = 0; i < levelComponents.length; i++) 
+			{
+				var component:String = levelComponents[ i ];
+				var componentData:RowData = MetaData.getRowData( "Components", component );
+				
+				var pos:Point = _context.locToPoint( componentData.getString( "pos" ) );
+				pos.y += groundLevel;
+				
+				var width:int = componentData.getInt( "width" );
+				var height:int = componentData.getInt( "height" );
+				var friction:Number = componentData.getNumber( "friction" );
+				
+				_context.viewMaster.addPlatform( 
+					pos.x, width, pos.y, false, friction, false );
+				trace( " level: " + level + " component: " + component + " width: " + componentData.getString( "width" ) );
 			}
 			
-			view.camera.bounds = new Rectangle( 0, -800, 
+			
+//			switch ( level ) {
+//				case 1:
+//					levelDistance = generateFirstLevel();
+//					break;
+//				case 2:
+//					levelDistance = generateSecondLevel();
+//					break;
+//				default:
+//					break;
+//			}
+			
+			view.camera.bounds = new Rectangle( 0, _context.minY, 
 					levelDistance , int.MAX_VALUE );
 			
 			return levelDistance;
@@ -270,12 +298,33 @@ package {
 		private function generateFirstLevel():int {
 			
 			// ground
-			_context.viewMaster.addPlatform( 10000, 20000, groundLevel, false, 1 );
+			_context.viewMaster.addPlatform( 1000, 2000, groundLevel, false, 1, false );
+			_context.viewMaster.addPlatform( 2500, 500, groundLevel - 500, false, 1, false, 0 );
+			_context.viewMaster.addPlatform( 4000, 2000, groundLevel, false, 1 );
+			
+//			_context.viewMaster.addPlatform( 5500, 1000, groundLevel - 400, false, 1 );
+			_context.viewMaster.addMovingPlatform( 5500, groundLevel - 400, 6000, groundLevel - 400, 1000, 1, true, 100 );
+//			_context.viewMaster.addPlatform( 7250, 1000, groundLevel - 200, false, 1 );
+			_context.viewMaster.addMovingPlatform( 7250, groundLevel - 400, 7250, groundLevel - 1200, 1000, 1, true, 100 );
+			
+			_context.viewMaster.addPlatform( 9000, 2000, groundLevel - 1200, false, 1 );
+			
+			return 10000;
+		}
+		
+		private function generateThirdLevel():int {
+			
+			// ground
+			_context.viewMaster.addPlatform( 2000, 4000, groundLevel, false, 1 );
+			_context.viewMaster.addPlatform( 6200, 4000, groundLevel, false, 1 );
+//			_context.viewMaster.addPlatform( 10000, 20000, groundLevel, false, 1 );
 			
 			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, false, 0, true, 0 );
 //			_context.viewMaster.addPlatform( 2200, 600, groundLevel - 200, true, 0, true );
-			_context.viewMaster.addPlatform( 2800, 1000, groundLevel - 700, false, 0, false );
+			_context.viewMaster.addPlatform( 2500, 1000, groundLevel - 700, false, 0, false );
 //			_context.viewMaster.addPlatform( 3800, 1000, groundLevel - 400, false, 0, false, Math.PI/4 );
+			_context.viewMaster.addMovingPlatform( 4000, groundLevel - 800, 4000, groundLevel - 1200, 1000, 1, false, 30 );
+			_context.viewMaster.addMovingPlatform( 5300, groundLevel - 400, 5300, groundLevel - 600, 1000, 1, false, 30 );
 			
 			_context.viewMaster.addPlatform( 5500, 600, groundLevel - 200, false, 0, true, 0 );
 			_context.viewMaster.addPlatform( 6800, 1000, groundLevel - 700, false, 0, false );
@@ -283,7 +332,7 @@ package {
 			_context.viewMaster.addPlatform( 9500, 600, groundLevel - 200, false, 0, true, 0 );
 			_context.viewMaster.addPlatform( 10800, 1000, groundLevel - 700, false, 0, false );
 			
-			return 20000;
+			return 12000;
 		}
 		
 		private function generateSecondLevel():int {
@@ -307,6 +356,7 @@ package {
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			
+			_context.viewCamPos = view.camera.camPos;
 			_context.viewCamPosX = view.camera.camPos.x;
 			
 			
@@ -325,8 +375,13 @@ package {
 //				_context.gameEnded();
 //			}
 			
-			if ( _hero.x - 100 > levelDistance ) {
+			if ( _hero.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
 				onGameEnded();
+			}
+			
+			if ( _hero.y > groundLevel + 500 ) {
+				if ( !_hero._isFlying ) _hero._isFlying = true;
+				_hero.y = groundLevel + 500;
 			}
 			
 //			if ( _context.hasGameEnded ) {

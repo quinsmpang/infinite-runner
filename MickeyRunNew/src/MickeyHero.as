@@ -63,7 +63,7 @@ package {
 		private var _cannonHit:Boolean = false;
 		
 		private var impulseCount:int = 0;
-		private const impulseMax:int = 100;
+		private const impulseMax:int = 50;
 		
 		private var _isMoving:Boolean = true;
 
@@ -224,6 +224,10 @@ package {
 					_onGround = false;
 				}
 				
+				if ( velocity.y > 0 ) {
+					impulseCount = 0;
+				}
+				
 			}
 			
 //			if ( _mobileInput._buttonClicked && !_firedMissile ) {
@@ -255,6 +259,7 @@ package {
 
 			if (_mobileInput.screenTouchedRight && _mobileInput.screenTouchedLeft) {
 				_animation = "mickeythrow_";
+//				setAnimFPS( _animation, 4 );
 			} else if (_mobileInput.screenTouchedRight) {
 				
 				if ( _isFlying ) _animation = true ? "mickeycarpet_" : "mickeybubble_";
