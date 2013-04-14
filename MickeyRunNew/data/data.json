@@ -3,7 +3,7 @@
     "objects" : {
       "Levels" : [ {
         "uid" : "lev_01",
-        "distance" : "10000",
+        "distance" : "5000",
 		"components" : [ "lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3" ],
 		"seq" : "1"
 		}, {
@@ -25,7 +25,7 @@
 		"pos" : "2500|-400",
 		"width" : "500",
 		"height" : "50",
-		"friction" : "1"
+		"friction" : "0"
       }, {
         "uid" : "lev_01_platform_3",
         "level" : "lev_01",

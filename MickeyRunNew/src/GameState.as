@@ -254,18 +254,6 @@ package {
 				trace( " level: " + level + " component: " + component + " width: " + componentData.getString( "width" ) );
 			}
 			
-			
-//			switch ( level ) {
-//				case 1:
-//					levelDistance = generateFirstLevel();
-//					break;
-//				case 2:
-//					levelDistance = generateSecondLevel();
-//					break;
-//				default:
-//					break;
-//			}
-			
 			view.camera.bounds = new Rectangle( 0, _context.minY, 
 					levelDistance , int.MAX_VALUE );
 			
