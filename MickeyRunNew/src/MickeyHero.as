@@ -257,13 +257,17 @@ package {
 
 		private function _updateAnimation():void {
 
+			if ( _isFlying ) {
+				_animation = true ? "mickeycarpet_" : "mickeybubble_";
+				return;
+			}
+			
 			if (_mobileInput.screenTouchedRight && _mobileInput.screenTouchedLeft) {
 				_animation = "mickeythrow_";
 //				setAnimFPS( _animation, 4 );
 			} else if (_mobileInput.screenTouchedRight) {
 				
-				if ( _isFlying ) _animation = true ? "mickeycarpet_" : "mickeybubble_";
-				else if ( _onGround )
+				if ( _onGround )
 					_animation = "slice_";
 				else
 					_animation = "mickeyjump2_";//_body.velocity.y < 0 ? "mickeyjump2_" : "mickeythrow_";

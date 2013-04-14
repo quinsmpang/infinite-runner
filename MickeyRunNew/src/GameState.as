@@ -2,14 +2,10 @@ package {
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.Endian;
 	import flash.utils.Timer;
 	
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
-	import citrus.objects.platformer.nape.Coin;
-	import citrus.objects.platformer.nape.Crate;
-	import citrus.objects.platformer.nape.Platform;
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.AnimationSequence;
@@ -17,7 +13,6 @@ package {
 	
 	import nape.constraint.WeldJoint;
 	import nape.geom.Vec2;
-	import nape.phys.Body;
 	
 	import objects.CustomCrate;
 	import objects.CustomHills;
@@ -59,12 +54,6 @@ package {
 		/** Time calculation for animation. */
 		private var elapsed:Number;
 		
-		private var _miscTextureAtlas:TextureAtlas;
-		
-		private var heroAnim:AnimationSequence;
-		private var enemyAnim:AnimationSequence;
-		private var sTextureAtlas:TextureAtlas;
-		
 		private var downTimer:Timer;
 		
 		private var _context:GameContext;
@@ -77,6 +66,11 @@ package {
 		private var gameDistance:int = 0;
 		
 		private var groundLevel:int = 0;
+		
+		public var heroAnim:AnimationSequence;
+		private var mickeyTextureAtlas:TextureAtlas;
+		public var enemyAnim:AnimationSequence;
+		private var peteTextureAtlas:TextureAtlas;
 		
 		private var _particleSystem:ParticleSystem;
 		
@@ -101,23 +95,37 @@ package {
 			
 			_context.viewMaster.setState( this );
 			
+			mickeyTextureAtlas = Assets.getMickeyAtlas();
+			heroAnim = new AnimationSequence(mickeyTextureAtlas, 
+				[ "slice_", "mickeyjump2_", "mickeythrow_", 
+					"mickeypush_", "mickeycarpet_", "mickeybubble_", "mickeyidle_", "mickeywatch_" ], 
+				"slice_", 15, true, "none");
+			
+			peteTextureAtlas = Assets.getPeteAtlas();
+			
+//			enemyAnim = new AnimationSequence(peteTextureAtlas, 
+//				[ "petebwwalk_" ], 
+//				"petebwwalk_", 12, true, "none");
+			
+			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
+				"mickeycarpet_", "mickeybubble_", "mickeywatch_", "petebwwalk_" ]);
+
+			
 			_nape = new Nape("nape");
 			_nape.gravity = Vec2.weak( 0, 1000 );
 			add(_nape);
 			
-			sTextureAtlas = Assets.getMickeyAtlas();
-			heroAnim = new AnimationSequence(sTextureAtlas, 
-				[ "slice_", "mickeyjump2_", "mickeythrow_", 
-					"mickeypush_", "mickeycarpet_", "mickeybubble_", "mickeyidle_", "mickeywatch_" ], 
-				"slice_", 15, true, "none");
-			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
-				"mickeycarpet_", "mickeybubble_", "mickeywatch_" ]);
-			
-			_miscTextureAtlas = Assets.getMiscAtlas() ;
-			
 			_hero = new MickeyHero( "hero", {x:50, y: 100, radius:40, view:heroAnim, group:1}, 
 				_context, heroAnim );
 			add(_hero);
+			
+			
+//			_enemy = new CustomEnemy("enemy", {x:4000, y: _hero.y - 100,
+//				radius:60, view:enemyAnim, group:1}, _hero);
+//			add(_enemy);
+//			_enemy = new CustomEnemy("enemy", {x:6000, y: _hero.y - 100,
+//				radius:60, view:enemyAnim, group:1}, _hero);
+//			add(_enemy);
 			
 			bg = new GameBackground("background", null, _hero, true);
 //			add(bg);
@@ -198,6 +206,7 @@ package {
 		
 		private function onStartButtonClick(event:Event):void
 		{
+			startButton.removeEventListener(Event.TRIGGERED, onStartButtonClick);
 //			_context.currentLevel += 1;
 //			if ( _context.currentLevel > _context.maxLevel ) _context.currentLevel = 1;
 			_ce.state = new GameState( _context );
@@ -250,8 +259,7 @@ package {
 				var friction:Number = componentData.getNumber( "friction" );
 				
 				_context.viewMaster.addPlatform( 
-					pos.x, width, pos.y, false, friction, false );
-				trace( " level: " + level + " component: " + component + " width: " + componentData.getString( "width" ) );
+					pos.x, width, pos.y, false, friction, true );
 			}
 			
 			view.camera.bounds = new Rectangle( 0, _context.minY, 

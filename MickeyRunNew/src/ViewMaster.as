@@ -1,11 +1,14 @@
 package
 {
 	import citrus.core.IState;
+	import citrus.view.starlingview.AnimationSequence;
+	import citrus.view.starlingview.StarlingArt;
 	
 	import objects.CustomBall;
 	import objects.CustomCannonSensor;
 	import objects.CustomCoin;
 	import objects.CustomCrate;
+	import objects.CustomEnemy;
 	import objects.CustomMovingPlatform;
 	import objects.CustomPlatform;
 	import objects.CustomPowerup;
@@ -25,6 +28,7 @@ package
 			_context = context;
 			_state = state;
 			_miscTextureAtlas = Assets.getMiscAtlas();
+			
 		}
 		
 		public function setState( state:IState ):void
@@ -47,6 +51,17 @@ package
 			var physicObject:CustomBall = new CustomBall("physicobject", 
 				{ x:x, y:y, width:width, height:height, view:image}, _context );
 			_state.add(physicObject);	
+		}
+		
+		public function addEnemy( x:int, y:int ):void {
+			
+			var enemyAnim:AnimationSequence = new AnimationSequence(Assets.getPeteAtlas(), 
+				[ "petebwwalk_" ], 
+				"petebwwalk_", 12, true, "none");
+			
+			var enemy:CustomEnemy = new CustomEnemy("enemy", {x:x, y:y,
+				radius:60, view:enemyAnim, group:1}, _context, enemyAnim );
+			_state.add(enemy);
 		}
 		
 		public function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false, x:int=-1, y:int=-1 ):CustomCrate {
@@ -143,9 +158,10 @@ package
 			}
 			
 			if ( coinAdd ) {
-				addCannonSensor( floor.x + 100, floor.y - 70 ); 
+//				addCannonSensor( floor.x + 100, floor.y - 70 ); 
+				addEnemy( floor.x + 100, floor.y - 300 ); 
 			}
-
+				
 			return floor;
 		}
 		

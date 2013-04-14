@@ -47,6 +47,12 @@ package  {
 		/**
 		 * Mickey Assets
 		 */
+		[Embed(source="/../embed/mickey/pete.xml", mimeType="application/octet-stream")]
+		public static const PeteConfig:Class;
+		
+		[Embed(source="/../embed/mickey/pete.png")]
+		public static const PetePng:Class;
+		
 		[Embed(source="/../embed/mickey/mickeyall.xml", mimeType="application/octet-stream")]
 		public static const MickeyConfig:Class;
 		
@@ -73,6 +79,7 @@ package  {
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
 		private static var mickeyTextureAtlas:TextureAtlas;
+		private static var peteTextureAtlas:TextureAtlas;
 		private static var miscTextureAtlas:TextureAtlas;
 		
 		/**
@@ -101,6 +108,18 @@ package  {
 			}
 			
 			return mickeyTextureAtlas;
+		}
+		
+		public static function getPeteAtlas():TextureAtlas
+		{
+			if (peteTextureAtlas == null)
+			{
+				var texture:Texture = getTexture("PetePng");
+				var xml:XML = XML(new PeteConfig());
+				peteTextureAtlas=new TextureAtlas(texture, xml);
+			}
+			
+			return peteTextureAtlas;
 		}
 		
 		public static function getMiscAtlas():TextureAtlas

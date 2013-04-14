@@ -410,9 +410,9 @@ package {
 //			
 //		}
 		
-		private function addEnemy():void {
+		private function addEnemy( x:int, y:int ):void {
 			enemyAnim = new AnimationSequence(sTextureAtlas, ["slice_"], "slice_", 15, true, "none");
-			_enemy = new CustomEnemy("enemy", {x:_hero.x + stage.stageWidth, y: _hero.y,
+			_enemy = new CustomEnemy("enemy", {x:x, y:y,
 				radius:40, view:enemyAnim, group:1}, _hero);
 			add(_enemy);
 		}
@@ -558,7 +558,8 @@ package {
 					floor.y - 100 );//, Math.random() > 0.5 );
 			}
 			
-			addCoin( coinX + 100, floor.y - 100 ); 
+//			addCoin( coinX + 100, floor.y - 100 ); 
+			addEnemy( coinX + 100, floor.y - 100 ); 
 
 			var i:int = 0;
 //			for ( i = 0; i<10; i++ ) {
