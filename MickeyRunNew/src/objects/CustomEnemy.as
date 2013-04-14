@@ -60,6 +60,7 @@ package objects
 			// if the object is a missile, you get hurt, of course!
 			if ( collider is CustomMissile ) {
 				this.hurt();
+				( collider as CustomMissile ).kill = true;
 			}
 		}
 	}

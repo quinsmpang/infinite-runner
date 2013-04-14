@@ -13,11 +13,13 @@
 
 package  {
 
-	import starling.textures.Texture;
-	import starling.textures.TextureAtlas;
-
 	import flash.display.Bitmap;
 	import flash.utils.Dictionary;
+	
+	import objects.Particle;
+	
+	import starling.textures.Texture;
+	import starling.textures.TextureAtlas;
 	
 	/**
 	 * This class holds all embedded textures, fonts and sounds and other embedded files.  
@@ -43,6 +45,18 @@ package  {
 		 */
 		[Embed(source="/../embed/bgLayer1.png")]
 		public static const BgLayer1:Class;
+		
+		/**
+		 * Particle Assets
+		 */
+		[Embed(source="/../embed/particles/particleCoffee.pex", mimeType="application/octet-stream")]
+		public static var ParticleCoffeeXML:Class;
+		
+		[Embed(source="/../embed/particles/particleMushroom.pex", mimeType="application/octet-stream")]
+		public static var ParticleMushroomXML:Class;
+		
+		[Embed(source="/../embed/particles/texture.png")]
+		public static var ParticleTexture:Class;
 		
 		/**
 		 * Mickey Assets
@@ -154,6 +168,11 @@ package  {
 		public static function getParticleConfig():XML
 		{
 			return XML(new _particleConfig());
+		}
+		
+		public static function getParticleMushroomConfig():XML
+		{
+			return XML(new ParticleMushroomXML());
 		}
 	}
 }

@@ -20,7 +20,7 @@ package {
 	
 	import objects.CustomCrate;
 	import objects.CustomHills;
-	import objects.CustomSensor;
+	import objects.CustomPortal;
 	
 	import starling.display.Button;
 	import starling.events.Event;
@@ -78,13 +78,10 @@ package {
 		public var enemyAnim:AnimationSequence;
 		private var peteTextureAtlas:TextureAtlas;
 		
-		private var _portalEntryParticleSystem:ParticleSystem;
+//		private var _portalEntryParticleSystem:ParticleSystem;
 		
 		private var particleCoffee:CitrusSprite;
 		private var particleCoffeePD:PDParticleSystem;
-		
-		private var particleMushroom:CitrusSprite;
-		private var particleMushroomPD:PDParticleSystem;
 		
 		public function GameState( context:GameContext ) 
 		{
@@ -186,32 +183,17 @@ package {
 			//first level:
 			gameDistance = generateLevel( _context.currentLevel );
 			
-			var psconfig:XML = Assets.getParticleConfig();
-			var psTexture:Texture = Assets.getTexture( "_particlePng" );
-
-			_portalEntryParticleSystem = new PDParticleSystem(psconfig, psTexture);
-			_portalEntryParticleSystem.start();
-			
 			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleCoffeeXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
 			add(particleCoffee);
-			
-			particleMushroom = new CitrusSprite("particleMushroom", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleMushroomXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
-			add(particleMushroom);
 			
 			if ( particleCoffeePD == null ) {
 				particleCoffeePD = ((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem);
 				particleCoffeePD.start();
 			}
 			
-			if ( particleMushroomPD == null ) {
-				particleMushroomPD = ((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem);
-				particleMushroomPD.start();
-			}
 			
-			endLevel = new CustomSensor( "endLevel", { x: 3000, y: groundLevel - 100, height: 200 } );
-			endLevel.view = _portalEntryParticleSystem;
-			endLevel.onBeginContact.add( onSensorTouched );
-//			endLevel.onBeginContact.add( onGameEnded );
+			endLevel = new CustomPortal( "endLevel", { x: 3000, y: groundLevel - 100, height: 200 },
+				_context, 1800, groundLevel - 500 );
 			add( endLevel );
 			
 //			temp();
@@ -228,7 +210,7 @@ package {
 		public override function destroy():void
 		{
 			endLevel = null;
-			_portalEntryParticleSystem = null;
+//			_portalEntryParticleSystem = null;
 			super.destroy();
 		}
 		
@@ -249,18 +231,6 @@ package {
 ////				view.camera.camPos.x + view.camera.cameraLensWidth
 //				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
 //					, int.MAX_VALUE );
-		}
-		
-		private function onSensorTouched(callback:InteractionCallback):void
-		{
-			var collider:NapePhysicsObject = callback.int1.userData.myData is Sensor ?
-				callback.int2.userData.myData as NapePhysicsObject : callback.int1.userData.myData;
-			if ( collider ) {
-				collider.x = endLevel.x - 1500;
-				collider.y = endLevel.y - 50;
-			}
-//			_hero.x = endLevel.x - 1500;
-//			_hero.y = endLevel.y - 50;
 		}
 		
 		private function onGameEnded(obj:Object=null):void
@@ -410,9 +380,6 @@ package {
 				particleCoffeePD.emitterX = _hero.x;
 			
 			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).emitterY = _hero.y;
-			
-			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterX = _hero.x + _hero.width * 0.5 * 0.5;
-			((view.getArt(particleMushroom) as StarlingArt).content as PDParticleSystem).emitterY = _hero.y;
 			
 			if ( _hero.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
 				onGameEnded();

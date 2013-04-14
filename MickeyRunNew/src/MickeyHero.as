@@ -243,7 +243,7 @@ package {
 					{x:x + width, y:y, group:group, 
 						width:25, height:25, 
 						speed:300, 
-						explodeDuration:2000, fuseDuration:30000, 
+						explodeDuration:2000, fuseDuration:5000, 
 						view:new Image(Assets.getMiscAtlas().getTexture("small_ball"))}, _context);
 				_ce.state.add( missile );
 				_firedMissile = true;
