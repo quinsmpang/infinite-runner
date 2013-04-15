@@ -2,11 +2,15 @@ package {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import citrus.core.starling.StarlingState;
+	import citrus.objects.CitrusSprite;
 	import citrus.objects.NapePhysicsObject;
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Platform;
 	import citrus.physics.nape.NapeUtils;
 	import citrus.view.starlingview.AnimationSequence;
+	import citrus.view.starlingview.StarlingArt;
+	import citrus.view.starlingview.StarlingView;
 	
 	import nape.callbacks.CbType;
 	import nape.callbacks.InteractionCallback;
@@ -30,6 +34,9 @@ package {
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.extensions.particles.PDParticleSystem;
+	import starling.textures.Texture;
+	
+	import views.ParticleAssets;
 
 	public class MickeyHero extends Hero {
 
@@ -72,6 +79,9 @@ package {
 		private var _isMoving:Boolean = true;
 		
 		private var MICKEY_HERO:CbType = new CbType();
+		
+		private var particleCoffee:CitrusSprite;
+		private var particleCoffeePD:PDParticleSystem;
 
 		public function MickeyHero(name:String, params:Object = null, context:GameContext = null, heroAnim:AnimationSequence = null ) {
 
@@ -96,6 +106,17 @@ package {
 			
 			downTimer = new Timer( 12000 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
+			
+			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleCoffeeXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
+			_ce.state.add(particleCoffee);
+			
+			if ( particleCoffeePD == null ) {
+				particleCoffeePD = 
+					((((_ce.state as StarlingState).view as StarlingView).getArt(particleCoffee) as StarlingArt).content as PDParticleSystem);
+//				particleCoffeePD.start();
+			}
+			
+			_flyingPD = particleCoffeePD;
 		}
 		
 		private function setAnimFPS( anim:String, fps:Number ):void
@@ -110,7 +131,7 @@ package {
 			_isSpeeding = false;
 			_isFlying = false;
 			downTimer.stop();
-			//if ( _flyingPD ) _flyingPD.stop();
+			if ( _flyingPD ) _flyingPD.stop();
 		}
 		
 		override public function destroy():void {
@@ -255,11 +276,34 @@ package {
 			_body.velocity = velocity;
 			
 			_updateAnimation();
+			
+			//update particles
+			if ( _isFlying )
+				particleCoffeePD.emitterX = this.x + this.width + 15;
+			else 
+				particleCoffeePD.emitterX = this.x;
+			
+			particleCoffeePD.emitterY = this.y;
+			
 		}
 		
 		private var _flyingPD:PDParticleSystem;
-		public function setFlyingPD( pd:PDParticleSystem ):void {
-			_flyingPD = pd;
+		public function startFlying( start:Boolean, startTimer:Boolean=false, timerDelay:int=5000 ):void {
+			
+			_isFlying = start;
+			
+			if ( start ) {
+				if ( _flyingPD ) _flyingPD.start();
+			} else {
+				if ( _flyingPD ) _flyingPD.stop();
+			}
+			
+			if ( startTimer ) {
+				downTimer.delay = timerDelay;
+				downTimer.start();
+			} else {
+				downTimer.reset();
+			}
 		}
 
 		private function _updateAnimation():void {

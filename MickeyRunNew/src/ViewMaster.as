@@ -2,6 +2,7 @@ package
 {
 	import citrus.core.IState;
 	import citrus.objects.platformer.nape.Hero;
+	import citrus.objects.platformer.nape.Sensor;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	
@@ -12,6 +13,7 @@ package
 	import objects.CustomEnemy;
 	import objects.CustomMovingPlatform;
 	import objects.CustomPlatform;
+	import objects.CustomPortal;
 	import objects.CustomPowerup;
 	import objects.Particle;
 	import objects.pools.PoolParticle;
@@ -63,6 +65,13 @@ package
 			var physicObject:CustomBall = new CustomBall("physicobject", 
 				{ x:x, y:y, width:width, height:height, view:image}, _context );
 			_state.add(physicObject);	
+		}
+		
+		public function addPortal( entryX:int, entryY:int, entryH:int, exitX:int, exitY:int ):void
+		{
+			var endLevel:Sensor = new CustomPortal( "portal", { x: entryX, y: entryY, height: entryH },
+				_context, exitX, exitY );
+			_state.add( endLevel );
 		}
 		
 		public function addEnemy( x:int, y:int ):void {

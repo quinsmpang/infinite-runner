@@ -75,13 +75,8 @@ package {
 		
 		public var heroAnim:AnimationSequence;
 		private var mickeyTextureAtlas:TextureAtlas;
-		public var enemyAnim:AnimationSequence;
-		private var peteTextureAtlas:TextureAtlas;
 		
 //		private var _portalEntryParticleSystem:ParticleSystem;
-		
-		private var particleCoffee:CitrusSprite;
-		private var particleCoffeePD:PDParticleSystem;
 		
 		public function GameState( context:GameContext ) 
 		{
@@ -110,12 +105,6 @@ package {
 					"mickeypush_", "mickeycarpet_", "mickeybubble_", "mickeyidle_", "mickeywatch_" ], 
 				"slice_", 15, true, "none");
 			
-			peteTextureAtlas = Assets.getPeteAtlas();
-			
-//			enemyAnim = new AnimationSequence(peteTextureAtlas, 
-//				[ "petebwwalk_" ], 
-//				"petebwwalk_", 12, true, "none");
-			
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
 				"mickeycarpet_", "mickeybubble_", "mickeywatch_", "petebwwalk_" ]);
 
@@ -127,14 +116,6 @@ package {
 			_hero = new MickeyHero( "hero", {x:50, y: 100, radius:40, view:heroAnim, group:1}, 
 				_context, heroAnim );
 			add(_hero);
-			
-			
-//			_enemy = new CustomEnemy("enemy", {x:4000, y: _hero.y - 100,
-//				radius:60, view:enemyAnim, group:1}, _hero);
-//			add(_enemy);
-//			_enemy = new CustomEnemy("enemy", {x:6000, y: _hero.y - 100,
-//				radius:60, view:enemyAnim, group:1}, _hero);
-//			add(_enemy);
 			
 			bg = new GameBackground("background", null, _hero, true);
 //			add(bg);
@@ -183,24 +164,11 @@ package {
 			//first level:
 			gameDistance = generateLevel( _context.currentLevel );
 			
-			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleCoffeeXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
-			add(particleCoffee);
-			
-			if ( particleCoffeePD == null ) {
-				particleCoffeePD = ((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem);
-				particleCoffeePD.start();
-			}
-			
-			
-			endLevel = new CustomPortal( "endLevel", { x: 3000, y: groundLevel - 100, height: 200 },
-				_context, 1800, groundLevel - 500 );
-			add( endLevel );
-			
+			_context.viewMaster.addPortal( 3000, groundLevel - 100, 200, 1800, groundLevel - 500 );
 //			temp();
 			_ce.playing = true;
 		}
 		 
-		private var endLevel:Sensor;
 		private function onFireButtonClick(event:Event):void
 		{
 			event.stopPropagation();
@@ -209,7 +177,6 @@ package {
 		
 		public override function destroy():void
 		{
-			endLevel = null;
 //			_portalEntryParticleSystem = null;
 			super.destroy();
 		}
@@ -235,7 +202,6 @@ package {
 		
 		private function onGameEnded(obj:Object=null):void
 		{
-			endLevel.onBeginContact.removeAll();
 			_context.gameEnded();
 			this._ce.playing = false;
 			startButton.visible = true;
@@ -374,19 +340,13 @@ package {
 //			if ( _hero.x + _context.viewCamPosX > gameDistance ) {
 //				_context.gameEnded();
 //			}
-			if ( _hero._isFlying )
-				particleCoffeePD.emitterX = _hero.x + _hero.width + 5;
-			else 
-				particleCoffeePD.emitterX = _hero.x;
 			
-			((view.getArt(particleCoffee) as StarlingArt).content as PDParticleSystem).emitterY = _hero.y;
-			
-			if ( _hero.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
+			if ( _hero.x > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
 				onGameEnded();
 			}
 			
 			if ( _hero.y > groundLevel + 500 ) {
-				if ( !_hero._isFlying ) _hero._isFlying = true;
+				if ( !_hero._isFlying ) _hero.startFlying( true, true, 3000 );
 				_hero.y = groundLevel + 500;
 			}
 			
