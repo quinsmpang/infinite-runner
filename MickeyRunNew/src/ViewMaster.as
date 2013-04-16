@@ -1,6 +1,7 @@
 package
 {
 	import citrus.core.IState;
+	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.view.starlingview.AnimationSequence;
@@ -136,6 +137,18 @@ package
 			_state.add(physicObject);	
 		}
 		
+		public function addSprite( coinX:int, coinY:int, spriteName:String ):void {
+			var image:Image;
+			var width:int; var height:int;
+			
+			image = new Image( _miscTextureAtlas.getTexture( spriteName ) );
+//			width = 35; height = 38;
+			
+			var physicObject:CitrusSprite = new CitrusSprite("powerup", 
+				{ x:coinX, y:coinY, view:image} );
+			_state.add(physicObject);	
+		}
+		
 		public function addPowerup( coinX:int, coinY:int ):void {
 			var image:Image;
 			var width:int; var height:int;
@@ -151,6 +164,9 @@ package
 		public function addPlatform( platformX:int=0, platWidth:int=0, 
 									  platformY:int=0, ballAdd:Boolean=false, friction:Number=10,
 									coinAdd:Boolean=false, rotation:Number=0 ):CustomPlatform {
+			
+			addSprite( platformX, platformY - 400, "tree" ); 
+						
 			var textureName:String = "platformNew" + platWidth;
 			var image:Image = new Image( _miscTextureAtlas.getTexture(textureName) );
 //			image.scaleX = platWidth / 800;

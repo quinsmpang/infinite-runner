@@ -133,7 +133,7 @@ package {
 			
 			_cameraBounds = new Rectangle(0, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.55), 
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.65), 
 				_cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
 			
