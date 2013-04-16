@@ -164,8 +164,16 @@ package
 		public function addPlatform( platformX:int=0, platWidth:int=0, 
 									  platformY:int=0, ballAdd:Boolean=false, friction:Number=10,
 									coinAdd:Boolean=false, rotation:Number=0 ):CustomPlatform {
+			if ( Math.random() > 0.2 ) {
+				addSprite( platformX, platformY - 400, "tree" ); 
+			}
 			
-			addSprite( platformX, platformY - 400, "tree" ); 
+			var numBushes:int = ( platWidth / 200 ) * Math.random();
+			for (var i:int = 0; i < numBushes; i++) 
+			{
+				addSprite( platformX + ((platWidth/2) * Math.random()) - platWidth/4, platformY - 97, "bush" );
+			}
+			
 						
 			var textureName:String = "platformNew" + platWidth;
 			var image:Image = new Image( _miscTextureAtlas.getTexture(textureName) );

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:bf7f315beb8f6a303a83cc1e11f855f9$ -->
+<!-- $TexturePacker:SmartUpdate:202a9070e4c3b3cd657a473a26622b2e$ -->
 <TextureAtlas imagePath="misc.png">
     <SubTexture name="ball" x="1978" y="2" width="50" height="50"/>
+    <SubTexture name="bush" x="1967" y="136" width="76" height="49"/>
     <SubTexture name="cannon" x="539" y="290" width="80" height="96" frameX="-10" frameY="-7" frameWidth="100" frameHeight="106"/>
     <SubTexture name="coin" x="1978" y="54" width="40" height="40"/>
     <SubTexture name="large_ball" x="399" y="394" width="98" height="98" frameX="0" frameY="-1" frameWidth="100" frameHeight="100"/>
-    <SubTexture name="large_crate" x="1967" y="136" width="70" height="76"/>
+    <SubTexture name="large_crate" x="1967" y="187" width="70" height="76"/>
     <SubTexture name="platformNew1000" x="499" y="394" width="984" height="96" frameX="-9" frameY="-18" frameWidth="1000" frameHeight="150"/>
     <SubTexture name="platformNew2000" x="2" y="2" width="1974" height="94" frameX="-9" frameY="-20" frameWidth="2000" frameHeight="150"/>
     <SubTexture name="platformNew500" x="1485" y="98" width="480" height="94" frameX="-9" frameY="-20" frameWidth="500" frameHeight="150"/>
     <SubTexture name="small_ball" x="2020" y="54" width="25" height="25"/>
     <SubTexture name="small_crate" x="1978" y="96" width="35" height="38"/>
-    <SubTexture name="spring" x="541" y="214" width="138" height="46" frameX="-6" frameY="-104" frameWidth="150" frameHeight="150"/>
+    <SubTexture name="spring" x="541" y="194" width="138" height="46" frameX="-6" frameY="-104" frameWidth="150" frameHeight="150"/>
     <SubTexture name="spring2" x="399" y="290" width="138" height="102" frameX="-5" frameY="-47" frameWidth="150" frameHeight="150"/>
     <SubTexture name="tree" x="2" y="136" width="395" height="360" frameX="0" frameY="0" frameWidth="403" frameHeight="360"/>
     <SubTexture name="very_large_crate" x="399" y="136" width="140" height="152"/>
