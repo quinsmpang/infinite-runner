@@ -118,7 +118,7 @@ package {
 			add(_hero);
 			
 			bg = new GameBackground("background", null, _hero, true);
-//			add(bg);
+			add(bg);
 			
 //			_hillsTexture = new HillsTexture();
 			
@@ -137,7 +137,7 @@ package {
 				_cameraBounds, new MathVector(0.05, 0.05));
 			view.camera.allowZoom = true;
 			
-			view.camera.zoomEasing = 0.01;
+//			view.camera.zoomEasing = 0.01;
 			view.camera.setZoom( 0.8 );
 			
 			hud = new GameHUD();
@@ -164,7 +164,6 @@ package {
 			//first level:
 			gameDistance = generateLevel( _context.currentLevel );
 			
-			_context.viewMaster.addPortal( 3000, groundLevel - 100, 200, 1800, groundLevel - 500 );
 //			temp();
 			_ce.playing = true;
 		}
@@ -228,8 +227,27 @@ package {
 				var height:int = componentData.getInt( "height" );
 				var friction:Number = componentData.getNumber( "friction" );
 				
-				_context.viewMaster.addPlatform( 
-					pos.x, width, pos.y, false, friction, true );
+				var secondPos:Point = _context.locToPoint( componentData.getString( "second_pos" ) );
+				secondPos.y += groundLevel;
+				
+				var type:String = componentData.getString( "type" );
+				
+				switch ( type ) {
+					case GameConstants.COMPONENT_TYPE_PLATFORM:
+						_context.viewMaster.addPlatform( 
+							pos.x, width, pos.y, false, friction, true );
+						break;
+					case GameConstants.COMPONENT_TYPE_PORTAL:
+						_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y );
+						break;
+					case GameConstants.COMPONENT_TYPE_ENEMY:
+						_context.viewMaster.addCannonSensor( pos.x, pos.y ); 
+//						_context.viewMaster.addEnemy( pos.x, pos.y ); 
+						break;
+					default:
+						break;
+				}
+				
 			}
 			
 			view.camera.bounds = new Rectangle( 0, _context.minY, 
@@ -341,7 +359,7 @@ package {
 //				_context.gameEnded();
 //			}
 			
-			if ( _hero.x > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
+			if ( _hero.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
 				onGameEnded();
 			}
 			

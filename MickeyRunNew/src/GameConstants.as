@@ -10,5 +10,13 @@ package
 		/** Particle - Wind Force. */		
 		public static const PARTICLE_TYPE_2:int = 2;
 		
+		
+		public static const COMPONENT_TYPE_PLATFORM:String = "platform";
+		public static const COMPONENT_TYPE_PORTAL:String = "portal";
+		public static const COMPONENT_TYPE_ENEMY:String = "enemy";
+		
+		public static const COL_POS:String = "pos";
+		public static const COL_SECOND_POS:String = "second_pos";
+		
 	}
 }

@@ -13,7 +13,7 @@ package
 	import steamboat.data.metadata.MetaData;
 	
 //	[SWF(frameRate="60", backgroundColor="0xb6dffc")]
-	[SWF(frameRate="60", width="1280", height="760", backgroundColor="0x555555")]
+	[SWF(frameRate="60", width="1280", height="760", backgroundColor="0x000000")]
 	public class MickeyRun extends StarlingCitrusEngine
 	{
 		private var _context:GameContext = new GameContext();

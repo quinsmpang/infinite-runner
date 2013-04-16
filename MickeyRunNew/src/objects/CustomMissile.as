@@ -3,33 +3,68 @@ package objects
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
+	import citrus.core.starling.StarlingState;
+	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.nape.Missile;
 	import citrus.physics.PhysicsCollisionCategories;
 	import citrus.physics.nape.NapeUtils;
 	import citrus.view.ACitrusCamera;
+	import citrus.view.starlingview.StarlingArt;
+	import citrus.view.starlingview.StarlingView;
 	
 	import nape.callbacks.InteractionCallback;
 	import nape.dynamics.InteractionFilter;
 	import nape.phys.Material;
 	import nape.shape.Circle;
+	
+	import starling.extensions.particles.PDParticleSystem;
+	import starling.textures.Texture;
+	
+	import views.ParticleAssets;
 
 	public class CustomMissile extends Missile
 	{
 		private var _context:GameContext = null;
+		private var particleMissile:CitrusSprite;
+		private var particleMissilePD:PDParticleSystem;
+		
 		public function CustomMissile(name:String, params:Object = null, context:GameContext=null ) {
 			super(name, params);
+			
+			particleMissile = new CitrusSprite("particleMissile", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleMissileXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
+			_ce.state.add(particleMissile);
+			
+			if ( particleMissilePD == null ) {
+				particleMissilePD = 
+					((((_ce.state as StarlingState).view as StarlingView).getArt(particleMissile) as StarlingArt).content as PDParticleSystem);
+				particleMissilePD.maxNumParticles = 200;
+				particleMissilePD.start();
+			}
 		}
 		
 		override public function update(timeDelta:Number):void {
 			
 			super.update(timeDelta);
-			body.velocity.x += 600;
+			body.velocity.x = 600;
+			
+			particleMissilePD.emitterX = this.x;
+			particleMissilePD.emitterY = this.y - 5;
 			
 //			if ( _body == null || _context == null ) return;
 //			
 //			if (_body.position.x > _context.viewCamPosX + _context.viewCamLensWidth) {
 //				kill = true;
 //			}
+		}
+		
+		override public function destroy():void
+		{
+			if ( particleMissilePD ) {
+				particleMissilePD.stop();
+				particleMissilePD.dispose();
+			}
+			
+			super.destroy();
 		}
 		
 		override public function explode():void {

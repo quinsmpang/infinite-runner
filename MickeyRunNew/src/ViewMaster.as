@@ -129,10 +129,7 @@ package
 			var image:Image;
 			var width:int; var height:int;
 			
-			image = new Image( _miscTextureAtlas.getTexture("cannon") );
-			
-//			image.scaleX = image.scaleY = 2;
-			width = 102; height = 156;
+			width = 50; height = 50;
 
 			var physicObject:CustomCannonSensor = new CustomCannonSensor("physicobject", 
 				{ x:cannonX, y:coinY, width:width, height:height, view:image}, _context );
@@ -154,9 +151,9 @@ package
 		public function addPlatform( platformX:int=0, platWidth:int=0, 
 									  platformY:int=0, ballAdd:Boolean=false, friction:Number=10,
 									coinAdd:Boolean=false, rotation:Number=0 ):CustomPlatform {
-			var textureName:String = "platformNew800";
+			var textureName:String = "platformNew" + platWidth;
 			var image:Image = new Image( _miscTextureAtlas.getTexture(textureName) );
-			image.scaleX = platWidth / 800;
+//			image.scaleX = platWidth / 800;
 			
 //			image.rotation = rotation;
 			
@@ -164,7 +161,7 @@ package
 				x: platformX, 
 				y: platformY,
 				width:platWidth, 
-				height: 50//, 
+				height: 100//, 
 //				friction:friction 
 			}, _context);
 			floor.view = image;
@@ -180,7 +177,7 @@ package
 			
 			if ( coinAdd ) {
 //				addCannonSensor( floor.x + 100, floor.y - 70 ); 
-				addEnemy( floor.x + 100, floor.y - 300 ); 
+//				addEnemy( floor.x + 100, floor.y - 300 ); 
 			}
 				
 			return floor;

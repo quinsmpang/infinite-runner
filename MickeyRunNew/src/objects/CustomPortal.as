@@ -73,8 +73,20 @@ package objects
 			}
 		}
 		
+		
+		private var isSleeping:Boolean = false;
 		override public function update( timeDelta:Number ):void {
 			super.update( timeDelta );
+			
+//			if ( this.x < _context.viewCamPosX || this.x > _context.viewCamPosX + _context.viewCamLensWidth ) {
+//				_particleMushroomPD.stop();
+//				_portalEntryParticleSystemPD.stop();
+//				isSleeping = true;
+//			} else {
+//				_particleMushroomPD.start();
+//				_portalEntryParticleSystemPD.start();
+//				isSleeping = false;
+//			}
 		}
 		
 		override protected function defineBody():void {

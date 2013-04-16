@@ -73,8 +73,8 @@ package {
 		
 		private var _ignoreNextPlatform:Boolean = false;
 		
-		private var impulseCount:int = 0;
-		private const impulseMax:int = 50;
+		public var impulseCount:int = 0;
+		public const impulseMax:int = 50;
 		
 		private var _isMoving:Boolean = true;
 		
@@ -196,7 +196,7 @@ package {
 				
 			} else if ( _mobileInput.screenTouchedLeft ){ 
 				if ( _onGround ) {
-					if ( velocity.x > 0 ) {
+					if ( velocity.x > 1 ) {
 //					velocity.x = 0;
 //						velocity.y = -10;
 						_body.applyImpulse( Vec2.weak( -40, 0 ) );
@@ -259,7 +259,7 @@ package {
 			}
 			
 //			if ( _mobileInput._buttonClicked && !_firedMissile ) {
-			if ( _mobileInput.screenTouchedLeft && _mobileInput.screenTouchedRight && !_firedMissile ) {
+			if ( _mobileInput.screenTouchedLeft && ( _mobileInput.screenTouchedRight || _isFlying ) && !_firedMissile ) {
 				missile = new CustomMissile("Missile", 
 					{x:x + width, y:y, group:group, 
 						width:25, height:25, 
@@ -389,9 +389,9 @@ package {
 				numCoins++;	
 			}
 			
-			if (callback.int2.userData.myData is CustomCannonSensor) {
-				impulseCount = impulseMax;
-			}
+//			if (callback.int2.userData.myData is CustomCannonSensor) {
+//				impulseCount = impulseMax;
+//			}
 			
 			if (callback.int2.userData.myData is CustomBall) {
 				_cannonHit = true;

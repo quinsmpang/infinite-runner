@@ -13,6 +13,9 @@
 
 package views {
 
+	import citrus.core.CitrusEngine;
+	import citrus.core.starling.StarlingCitrusEngine;
+	
 	import starling.display.BlendMode;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -75,7 +78,7 @@ package views {
 				image1 = new Image(Assets.getTexture("BgLayer" + _layer));
 				image1.blendMode = BlendMode.NONE;
 				image1.touchable = false;
-				image1.scaleX = image1.scaleY = 1.5;
+				image1.scaleX = image1.scaleY = 1.3;
 				image1.x = image1.y = 0;
 //				image2 = new Image(Assets.getTexture("BgLayer" + _layer));
 //				image2.blendMode = BlendMode.NONE;
@@ -84,15 +87,25 @@ package views {
 			}
 			else if (_layer == 2) {
 				image1 = new Image(Texture.fromBitmap(new bgMountains()));
+//				image1 = new Image(Assets.getAtlas().getTexture("bgLayer3"));
 				//image1.blendMode = BlendMode.NONE;
 				image2 = new Image(Texture.fromBitmap(new bgMountains()));
+//				image2 = new Image(Assets.getAtlas().getTexture("bgLayer3"));
 				//image2.blendMode = BlendMode.NONE;	
+				image1.touchable = false;
+				image2.touchable = false;
+				image1.scaleX = image1.scaleY = 1.3;
+				image2.scaleX = image2.scaleY = 1.3;
 			}
 			else if (_layer == 3) {
 				image1 = new Image(Texture.fromBitmap(new bgBushes()));
-				//image1.blendMode = BlendMode.NONE;
+//				image1.blendMode = BlendMode.NONE;
 				image2 = new Image(Texture.fromBitmap(new bgBushes()));
-				//image2.blendMode = BlendMode.NONE;	
+//				image2.blendMode = BlendMode.NONE;	
+				image1.touchable = false;
+				image2.touchable = false;
+				image1.scaleX = image1.scaleY = 1.3;
+				image2.scaleX = image2.scaleY = 1.3;
 			}
 			else if (_layer == 4) {
 				image1 = new Image(Texture.fromBitmap(new bgForegroundBush()));
@@ -115,6 +128,10 @@ package views {
 			
 			image2.x = image2.width;
 			image2.y = image1.y;
+			
+//			if ( _layer == 2 ) {
+//				image1.y = image2.y = CitrusEngine.getInstance().state.view.camera.cameraLensHeight - image1.height;
+//			}
 			
 
 			this.addChild(image2);

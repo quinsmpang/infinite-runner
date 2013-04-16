@@ -4,56 +4,73 @@
       "Levels" : [ {
         "uid" : "lev_01",
         "distance" : "5000",
-		"components" : [ "lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3" ],
+		"components" : [ "lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 
+			"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_enemy_1" ],
 		"seq" : "1"
-		}, {
-		"uid" : "lev_02",
-        "distance" : "10000",
-		"components" : [ "lev_02_platform_1", "lev_02_platform_2", "lev_02_platform_3" ],
-		"seq" : "2"
       } ],
       "Components" : [ {
         "uid" : "lev_01_platform_1",
         "level" : "lev_01",
+		"type" : "platform",
 		"pos" : "1000|0",
 		"width" : "2000",
 		"height" : "50",
-		"friction" : "1"
+		"friction" : "1",
+		"second_pos" : ""
       }, {
         "uid" : "lev_01_platform_2",
         "level" : "lev_01",
+		"type" : "platform",
 		"pos" : "2500|-400",
 		"width" : "500",
 		"height" : "50",
-		"friction" : "0"
+		"friction" : "0",
+		"second_pos" : ""
       }, {
         "uid" : "lev_01_platform_3",
         "level" : "lev_01",
+		"type" : "platform",
 		"pos" : "4000|0",
 		"width" : "2000",
 		"height" : "50",
-		"friction" : "1"
+		"friction" : "1",
+		"second_pos" : ""
 	 }, {
-		"uid" : "lev_02_platform_1",
-        "level" : "lev_02",
-		"pos" : "1000|0",
-		"width" : "2000",
+		"uid" : "lev_01_portal_1",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "3000|-100",
+		"width" : "20",
 		"height" : "50",
-		"friction" : "1"
-      }, {
-        "uid" : "lev_02_platform_2",
-        "level" : "lev_02",
-		"pos" : "2500|-400",
-		"width" : "500",
+		"friction" : "1",
+		"second_pos" : "1800|-500"
+	 }, {
+		"uid" : "lev_01_portal_4",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "4000|-100",
+		"width" : "20",
 		"height" : "50",
-		"friction" : "1"
-      }, {
-        "uid" : "lev_02_platform_3",
-        "level" : "lev_02",
-		"pos" : "4000|0",
-		"width" : "2000",
+		"friction" : "1",
+		"second_pos" : "800|-500"
+	 }, {
+		"uid" : "lev_01_portal_3",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "1500|-300",
+		"width" : "20",
 		"height" : "50",
-		"friction" : "1"
+		"friction" : "1",
+		"second_pos" : "2250|-800"
+	 }, {
+		"uid" : "lev_01_enemy_1",
+        "level" : "lev_01",
+		"type" : "enemy",
+		"pos" : "3800|-120",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
       } ]
     }
   },
@@ -65,7 +82,7 @@
     "spreadsheetName" : "Mickey Run Meta Data",
     "pages" : [ {
       "pageName" : "Components",
-      "columns" : [ "uid", "level", "pos", "width", "height", "friction" ]
+      "columns" : [ "uid", "level", "pos", "width", "height", "friction", "second_pos" ]
     }, {
       "pageName" : "Levels",
       "columns" : [ "uid", "distance", "components", "seq" ]

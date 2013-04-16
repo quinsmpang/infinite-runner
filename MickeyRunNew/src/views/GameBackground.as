@@ -70,12 +70,12 @@ package views {
 				bgLayer1.parallaxDepth = 0.02;
 				_container.addChild(bgLayer1);
 				
-//				bgLayer2 = new BgLayer(2);
-//				bgLayer2.parallaxDepth = 0.2;
-//				_container.addChild(bgLayer2);
+				bgLayer2 = new BgLayer(2);
+				bgLayer2.parallaxDepth = 0.2;
+				_container.addChild(bgLayer2);
 				
 //				bgLayer3 = new BgLayer(3);
-//				bgLayer3.parallaxDepth = 0.5;
+//				bgLayer3.parallaxDepth = 0.25;
 //				_container.addChild(bgLayer3);
 			
 			} else {
@@ -128,18 +128,18 @@ package views {
 					//bgLayer1.y = 0;
 					
 	//				// Background 2 - Hills
-//					bgLayer2.x -= Math.ceil(speed * bgLayer2.parallaxDepth);
+					bgLayer2.x -= Math.ceil(speed * bgLayer2.parallaxDepth);
 	//				// Hero flying left
 	//				if (bgLayer2.x > 0) bgLayer2.x = -_ce.stage.stageWidth;
 	//				// Hero flying right
-//					if (bgLayer2.x < -_ce.stage.stageWidth ) bgLayer2.x = 0;
+					if (bgLayer2.x < -_ce.stage.stageWidth * 1.3 ) bgLayer2.x = 0;
 	//				
 	//				// Background 3 - Buildings
 //					bgLayer3.x -= Math.ceil(speed * bgLayer3.parallaxDepth);
 	//				// Hero flying left
 	//				if (bgLayer3.x > 0) bgLayer3.x = -_ce.stage.stageWidth;
 	//				// Hero flying right
-//					if (bgLayer3.x < -_ce.stage.stageWidth ) bgLayer3.x = 0;
+//					if (bgLayer3.x < -_ce.stage.stageWidth * 1.3) bgLayer3.x = 0;
 				
 				} else {
 	//				// Background 4 - Trees
