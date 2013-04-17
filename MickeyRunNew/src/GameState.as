@@ -51,9 +51,6 @@ package {
 		
 		private var _hills:CustomHills;
 		
-		/** Game background object. */
-		private var bg:GameBackground;
-
 		/** HUD Container. */		
 		private var hud:GameHUD;
 		
@@ -109,13 +106,12 @@ package {
 			_nape.gravity = Vec2.weak( 0, 1000 );
 			add(_nape);
 			
-			_hero = new MickeyHero( "hero", {x:50, y: 100, radius:40, view:heroAnim, group:1}, 
+			_context._hero = new MickeyHero( "hero", {x:50, y: 100, radius:37, view:heroAnim, group:1}, 
 				_context, heroAnim );
+			_hero = _context._hero;
 			add(_hero);
 			
-			bg = new GameBackground("background", null, _hero, true);
-			add(bg);
-			
+			_context.viewMaster.addBackground();
 //			_hillsTexture = new HillsTexture();
 			
 //			_hills = new CustomHills("hills", 
@@ -136,7 +132,8 @@ package {
 //			view.camera.zoomEasing = 0.01;
 			view.camera.setZoom( _context.CAM_ZOOM );
 			
-			hud = new GameHUD();
+			_context.hud = new GameHUD( _context );
+			hud = _context.hud;
 			this.addChild(hud);
 			
 			// Reset hud values and text fields.

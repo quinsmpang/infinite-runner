@@ -16,6 +16,8 @@ package
 	import steamboat.data.AssetManager;
 	import steamboat.data.LoaderQueue;
 	import steamboat.data.metadata.MetaData;
+	
+	import views.GameHUD;
 
 	public class GameContext
 	{		
@@ -47,7 +49,9 @@ package
 		public var assetLoader:AssetLoader;
 		public var gameState:SubscribableHashtable;
 		
+		public var _hero:MickeyHero;
 		public var startButton:Button;
+		public var hud:GameHUD;
 		
 		public const CAM_ZOOM:Number = 0.8;
 		public const CAM_ZOOM_MULT:Number = ( 1 - CAM_ZOOM ) + 0.1;

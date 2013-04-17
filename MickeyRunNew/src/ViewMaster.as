@@ -1,5 +1,7 @@
 package
 {
+	import starling.display.BlendMode;
+	
 	import citrus.core.CitrusEngine;
 	import citrus.core.IState;
 	import citrus.core.starling.StarlingState;
@@ -27,6 +29,8 @@ package
 	import starling.events.Event;
 	import starling.textures.TextureAtlas;
 	
+	import views.GameBackground;
+	
 
 	public class ViewMaster
 	{
@@ -34,6 +38,9 @@ package
 		private var _context:GameContext;
 		private var _state:IState;
 		
+		/** Game background object. */
+		private var bg:GameBackground;
+
 		public function ViewMaster( context:GameContext, state:IState )
 		{
 			_context = context;
@@ -60,6 +67,14 @@ package
 			_context.startButton.addEventListener(Event.TRIGGERED, onStartButtonClick);
 			( _state as StarlingState ).addChild(_context.startButton);
 			_context.startButton.visible = false;
+		}
+		
+		public function addBackground():void
+		{
+			if ( bg == null ) {
+				bg = new GameBackground("background", null, _context._hero, true);
+			}
+			_state.add(bg);
 		}
 		
 		private function onStartButtonClick(event:Event):void
@@ -115,7 +130,7 @@ package
 				"plutowalk_", 12, true, "none");
 			
 			var pluto:Pluto = new Pluto("pluto", {x:x, y:y,
-				radius:40, view:plutoAnim, group:1}, _context, plutoAnim );
+				radius:37, view:plutoAnim, group:1}, _context, plutoAnim );
 			_state.add(pluto);
 		}
 		
@@ -141,21 +156,20 @@ package
 			return physicObject;
 		}
 		
-		public function addCoin( coinX:int, coinY:int, largeCoin:Boolean=false ):void {
+		public function addStar( starX:int, starY:int, bw:Boolean=false ):void {
 			var image:Image;
 			var width:int; var height:int;
 			
-			image = new Image( _miscTextureAtlas.getTexture("coin") );
-			
-			if ( !largeCoin ) {
-				width = 40; height = 40;
+			if ( !bw ) {
+				image = new Image( _miscTextureAtlas.getTexture("star2") );
 			} else {
-				image.scaleX = image.scaleY = 2;
-				width = 80; height = 80;
+				image = new Image( _miscTextureAtlas.getTexture("star2bw") );
 			}
+			
+			width = 50; height = 47;
 
-			var physicObject:CustomCoin = new CustomCoin("physicobject", 
-				{ x:coinX, y:coinY, width:width, height:height, view:image}, _context );
+			var physicObject:CustomCoin = new CustomCoin("star", 
+				{ x:starX, y:starY, width:width, height:height, view:image}, _context );
 			_state.add(physicObject);	
 		}
 		
@@ -199,6 +213,7 @@ package
 									coinAdd:Boolean=false, rotation:Number=0 ):CustomPlatform {
 			if ( Math.random() > 0.2 ) {
 				addSprite( platformX, platformY - 400, "tree" ); 
+				addStar( platformX - 200, platformY - 400, false ); 
 			}
 			
 			var numBushes:int = ( platWidth / 200 ) * Math.random();

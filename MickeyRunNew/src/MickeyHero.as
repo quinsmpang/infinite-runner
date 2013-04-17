@@ -62,7 +62,7 @@ package {
 		private var numJump:int = 0;
 		
 		private var downTimer:Timer;
-		private var numCoins:Number = 0;
+		private var numStars:Number = 0;
 		
 		private var _context:GameContext;
 		
@@ -152,7 +152,7 @@ package {
 		}
 		
 		public function get numCoinsCollected():Number {
-			return numCoins;
+			return numStars;
 		}
 
 		private var missile:CustomMissile;
@@ -390,7 +390,10 @@ package {
 			}
 			
 			if (callback.int2.userData.myData is CustomCoin) {
-				numCoins++;	
+				numStars++;	
+				if ( _context.hud ) {
+					_context.hud.setStars( numStars );
+				}
 			}
 			
 //			if (callback.int2.userData.myData is CustomCannonSensor) {

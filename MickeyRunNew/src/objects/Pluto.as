@@ -53,7 +53,8 @@ package objects
 				
 				var collisionAngle:Number = callback.arbiters.at(0).collisionArbiter.normal.angle * 180 / Math.PI;
 				
-				if (collider is _enemyClass && collider.body.velocity.y != 0 && collider.body.velocity.y > enemyKillVelocity)
+//				if (collider is _enemyClass && collider.body.velocity.y != 0 && collider.body.velocity.y > enemyKillVelocity)
+				if ( collider is _enemyClass )
 				{
 //					hurt();
 					_context.endGame();

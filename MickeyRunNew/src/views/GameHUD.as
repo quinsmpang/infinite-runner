@@ -13,9 +13,15 @@
 
 package views  {
 
+	import citrus.objects.CitrusSprite;
+	
+	import objects.CustomCoin;
+	
+	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 	
@@ -60,10 +66,47 @@ package views  {
 		/** Font for score value. */		
 		private var fontScoreValue:Font;
 		
-		public function GameHUD()
+		private var _context:GameContext;
+		
+		private var stars:Array = [];
+		private var starColorTexture:Texture;
+		private var starBWTexture:Texture;
+		
+		public function GameHUD( context:GameContext )
 		{
+			this._context = context;
 			super();
+			
+			starColorTexture = Assets.getMiscAtlas().getTexture( "star2" );
+			starBWTexture = Assets.getMiscAtlas().getTexture( "star2bw" );
+			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		private function createStar( i:int, color:Boolean=false ):Image
+		{
+			stars[i] = new Image( color ? starColorTexture : starBWTexture );
+			var image:Image = stars[ i ] as Image;
+			
+			image.x = 10 + i * 60;
+			image.y = 10;
+			image.width = 50;
+			image.height = 47;
+			
+			this.addChild( image );
+			return image;
+		}
+		
+		public function setStars( numStars:int ):void
+		{
+			var image:Image;
+			for (var i:int = 0; i < stars.length; i++) 
+			{
+				image = stars[ i ] as Image;
+				if ( image ) {
+					image.texture = ( i <= numStars - 1 ) ? starColorTexture : starBWTexture;
+				}
+			}
 		}
 		
 		/**
@@ -73,6 +116,12 @@ package views  {
 		 */
 		private function onAddedToStage(event:Event):void
 		{
+			createStar( 0 );
+			createStar( 1 );
+			createStar( 2 );
+			
+//			setStars( 2 );
+			
 			// Get fonts for score labels and values.
 			fontScoreLabel = Fonts.getFont("ScoreLabel");
 			fontScoreValue = Fonts.getFont("ScoreValue");
