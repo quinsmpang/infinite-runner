@@ -33,7 +33,7 @@ package views
 		[Embed(source="/../embed/particles/particleMissile.pex", mimeType="application/octet-stream")]
 		public static var ParticleMissileXML:Class;
 		
-		[Embed(source="/../embed/particles/texture.png")]
-		public static var ParticleTexture:Class;
+//		[Embed(source="/../embed/particles/texture.png")]
+//		public static var ParticleTexture:Class;
 	}
 }

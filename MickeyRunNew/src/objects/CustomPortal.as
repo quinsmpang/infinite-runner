@@ -10,6 +10,7 @@ package objects
 	import nape.callbacks.InteractionCallback;
 	import nape.phys.BodyType;
 	
+	import starling.display.BlendMode;
 	import starling.extensions.particles.PDParticleSystem;
 	import starling.textures.Texture;
 	
@@ -18,10 +19,10 @@ package objects
 	public class CustomPortal extends Sensor
 	{
 		private var _context:GameContext;
-		private var _portalEntryParticleSystem:CitrusSprite;
-		private var _portalEntryParticleSystemPD:PDParticleSystem;
-		private var _particleMushroom:CitrusSprite;
-		private var _particleMushroomPD:PDParticleSystem;
+		private var _portalExit:CitrusSprite;
+		private var _portalExitPD:PDParticleSystem;
+		private var _portalEntry:CitrusSprite;
+		private var _portalEntryPD:PDParticleSystem;
 		
 		private var _exitX:int;
 		private var _exitY:int;
@@ -33,31 +34,37 @@ package objects
 			_exitX = exitX;
 			_exitY = exitY;
 			
-			var psconfig:XML = Assets.getParticleConfig();
-			var psTexture:Texture = Assets.getTexture( "_particlePng" );
+			var psconfig:XML = Assets.getParticleMushroomConfig();
+//			var psconfig:XML = Assets.getParticleConfig();
+//			var psTexture:Texture = Assets.getTexture( "_particlePng" );
+			var psTexture:Texture =	Assets.getMiscAtlas().getTexture( "ParticleTexture" );
 
-			_portalEntryParticleSystem = new CitrusSprite("particleCoffee", 
+			_portalExit = new CitrusSprite("particleCoffee", 
 				{view:new PDParticleSystem(psconfig, psTexture)});
 			
-			psconfig = Assets.getParticleMushroomConfig();
-			psTexture = Assets.getTexture( "ParticleTexture" );
-			
-			_particleMushroomPD = new PDParticleSystem(psconfig, psTexture);
-			_particleMushroomPD.start();
+			psconfig = Assets.getParticleConfig();
+//			psTexture = Assets.getTexture( "ParticleTexture" );
+//			psTexture =	Assets.getMiscAtlas().getTexture( "ParticleTexture" );
+				
+			_portalEntryPD = new PDParticleSystem(psconfig, psTexture);
+			_portalEntryPD.start();
 			
 			super( name, params );
-			this.view = _particleMushroomPD;
+			this.view = _portalEntryPD;
 			
-			_ce.state.add( _portalEntryParticleSystem );
+			_ce.state.add( _portalExit );
 			
-			if ( _portalEntryParticleSystemPD == null ) {
-				_portalEntryParticleSystemPD = 
-					((((_ce.state as StarlingState).view as StarlingView).getArt(_portalEntryParticleSystem) as StarlingArt).content as PDParticleSystem);
+			if ( _portalExitPD == null ) {
+				_portalExitPD = 
+					((((_ce.state as StarlingState).view as StarlingView).getArt(_portalExit) as StarlingArt).content as PDParticleSystem);
 			}
-			_portalEntryParticleSystemPD.start();
+			_portalExitPD.start();
 			
-			_portalEntryParticleSystemPD.emitterX = exitX;
-			_portalEntryParticleSystemPD.emitterY = exitY;
+//			_portalEntryPD.blendMode = BlendMode.NONE;
+//			_portalExitPD.blendMode = BlendMode.NONE;
+			
+			_portalExitPD.emitterX = exitX;
+			_portalExitPD.emitterY = exitY;
 			
 			// sensor handler
 			onBeginContact.add( onSensorTouched );
@@ -74,19 +81,38 @@ package objects
 		}
 		
 		
-		private var isSleeping:Boolean = false;
+		private var isEntrySleeping:Boolean = false;
+		private var isExitSleeping:Boolean = false;
 		override public function update( timeDelta:Number ):void {
 			super.update( timeDelta );
 			
-//			if ( this.x < _context.viewCamPosX || this.x > _context.viewCamPosX + _context.viewCamLensWidth ) {
-//				_particleMushroomPD.stop();
-//				_portalEntryParticleSystemPD.stop();
-//				isSleeping = true;
-//			} else {
-//				_particleMushroomPD.start();
-//				_portalEntryParticleSystemPD.start();
-//				isSleeping = false;
-//			}
+			if ( this.x < _context.viewCamLeftX 
+				|| ( this.x > _context.viewCamLeftX + _context.viewCamLensWidth )  ) {
+				
+				if ( !isEntrySleeping ) {
+					_portalEntryPD.stop();
+					isEntrySleeping = true;
+				}
+			} else {
+				if ( isEntrySleeping ) {
+					_portalEntryPD.start();
+					isEntrySleeping = false;
+				}
+			}
+			
+			if ( _exitX < _context.viewCamLeftX 
+				|| ( _exitX > _context.viewCamLeftX + _context.viewCamLensWidth )  ) {
+				
+				if ( !isExitSleeping ) {
+					_portalExitPD.stop();
+					isExitSleeping = true;
+				}
+			} else {
+				if ( isExitSleeping ) {
+					_portalExitPD.start();
+					isExitSleeping = false;
+				}
+			}
 		}
 		
 		override protected function defineBody():void {

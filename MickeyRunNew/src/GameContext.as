@@ -2,11 +2,15 @@ package
 {
 	import flash.geom.Point;
 	
+	import citrus.core.CitrusEngine;
+	
 	import common.interfaces.ILog;
 	import common.util.SubscribableHashtable;
 	import common.util.TraceLog;
 	
 	import org.osflash.signals.Signal;
+	
+	import starling.display.Button;
 	
 	import steamboat.data.AssetLoader;
 	import steamboat.data.AssetManager;
@@ -26,8 +30,9 @@ package
 		public var numCratesHit:int = 1;
 		
 		public var viewCamPos:Point;
-		public var viewCamPosX:int = 0;
+		public var viewCamLeftX:int = 0;
 		public var viewCamLensWidth:int = 0;
+		public var viewCamRightX:int = 0;
 		private var screenHalfX:int = 0;
 		
 		public var minY:int = -1200;
@@ -41,6 +46,11 @@ package
 		public var assetMgr:AssetManager;
 		public var assetLoader:AssetLoader;
 		public var gameState:SubscribableHashtable;
+		
+		public var startButton:Button;
+		
+		public const CAM_ZOOM:Number = 0.8;
+		public const CAM_ZOOM_MULT:Number = ( 1 - CAM_ZOOM ) + 0.1;
 		
 		private static var _instance:GameContext;
 		
@@ -63,7 +73,7 @@ package
 		
 		public function initNewLevel():void
 		{
-			viewCamPosX = 0;
+			viewCamLeftX = 0;
 			viewCamLensWidth = 0;
 			hasGameEnded = false;
 			gameEndedSig.removeAll();
@@ -71,16 +81,18 @@ package
 			viewMaster.init();
 		}
 		
+		public function endGame():void
+		{
+			gameEndedSig.dispatch();
+			gameEndedSig.removeAll();
+			CitrusEngine.getInstance().playing = false;
+			startButton.visible = true;
+		}
+		
 		public function setViewCamLensWidth( w:int ):void
 		{
 			viewCamLensWidth = w;
 			screenHalfX = viewCamLensWidth / 2;
-		}
-		
-		public function gameEnded():void
-		{
-			gameEndedSig.dispatch();
-			gameEndedSig.removeAll();
 		}
 		
 		private var gameDuration:int = 0;
@@ -105,7 +117,7 @@ package
 		{
 			numCratesHit--;
 			if ( numCratesHit <= 0 ) {
-				gameEnded();
+//				endGame();
 			}
 		}
 		

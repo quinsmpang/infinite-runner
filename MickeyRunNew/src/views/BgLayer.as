@@ -86,10 +86,12 @@ package views {
 				
 			}
 			else if (_layer == 2) {
-				image1 = new Image(Texture.fromBitmap(new bgMountains()));
+				var t:Texture = Assets.getMiscAtlas().getTexture( "bgMountains" );
+//				var t:Texture = Texture.fromBitmap(new bgMountains());
+				image1 = new Image( t );
 //				image1 = new Image(Assets.getAtlas().getTexture("bgLayer3"));
 				//image1.blendMode = BlendMode.NONE;
-				image2 = new Image(Texture.fromBitmap(new bgMountains()));
+				image2 = new Image( t );
 //				image2 = new Image(Assets.getAtlas().getTexture("bgLayer3"));
 				//image2.blendMode = BlendMode.NONE;	
 				image1.touchable = false;

@@ -31,15 +31,17 @@ package objects
 		public function CustomMissile(name:String, params:Object = null, context:GameContext=null ) {
 			super(name, params);
 			
-			particleMissile = new CitrusSprite("particleMissile", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleMissileXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
-			_ce.state.add(particleMissile);
+//			particleMissile = new CitrusSprite("particleMissile", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleMissileXML()), 
+//				Assets.getMiscAtlas().getTexture( "ParticleTexture" )
+//			)});
+//			_ce.state.add(particleMissile);
 			
-			if ( particleMissilePD == null ) {
-				particleMissilePD = 
-					((((_ce.state as StarlingState).view as StarlingView).getArt(particleMissile) as StarlingArt).content as PDParticleSystem);
-				particleMissilePD.maxNumParticles = 200;
-				particleMissilePD.start();
-			}
+//			if ( particleMissilePD == null ) {
+//				particleMissilePD = 
+//					((((_ce.state as StarlingState).view as StarlingView).getArt(particleMissile) as StarlingArt).content as PDParticleSystem);
+//				particleMissilePD.maxNumParticles = 200;
+//				particleMissilePD.start();
+//			}
 		}
 		
 		override public function update(timeDelta:Number):void {
@@ -47,8 +49,8 @@ package objects
 			super.update(timeDelta);
 			body.velocity.x = 600;
 			
-			particleMissilePD.emitterX = this.x;
-			particleMissilePD.emitterY = this.y - 5;
+//			particleMissilePD.emitterX = this.x;
+//			particleMissilePD.emitterY = this.y - 5;
 			
 //			if ( _body == null || _context == null ) return;
 //			
@@ -59,10 +61,10 @@ package objects
 		
 		override public function destroy():void
 		{
-			if ( particleMissilePD ) {
-				particleMissilePD.stop();
-				particleMissilePD.dispose();
-			}
+//			if ( particleMissilePD ) {
+//				particleMissilePD.stop();
+//				particleMissilePD.dispose();
+//			}
 			
 			super.destroy();
 		}

@@ -107,7 +107,10 @@ package {
 			downTimer = new Timer( 12000 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 			
-			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleCoffeeXML()), Texture.fromBitmap(new ParticleAssets.ParticleTexture()))});
+			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleCoffeeXML()), 
+				Assets.getMiscAtlas().getTexture( "ParticleTexture" )
+//				Texture.fromBitmap(new ParticleAssets.ParticleTexture())
+			)});
 			_ce.state.add(particleCoffee);
 			
 			if ( particleCoffeePD == null ) {
@@ -258,7 +261,6 @@ package {
 				
 			}
 			
-//			if ( _mobileInput._buttonClicked && !_firedMissile ) {
 			if ( _mobileInput.screenTouchedLeft && ( _mobileInput.screenTouchedRight || _isFlying ) && !_firedMissile ) {
 				missile = new CustomMissile("Missile", 
 					{x:x + width, y:y, group:group, 
@@ -268,9 +270,11 @@ package {
 						view:new Image(Assets.getMiscAtlas().getTexture("small_ball"))}, _context);
 				_ce.state.add( missile );
 				_firedMissile = true;
-			} else if ( !_mobileInput.screenTouchedLeft || !_mobileInput.screenTouchedRight ) {
-//			} else if ( !_mobileInput._buttonClicked ) {
-				_firedMissile = false;
+			} else {
+				if ( ( _isFlying && !_mobileInput.screenTouchedLeft )
+					|| ( !_isFlying && ( !_mobileInput.screenTouchedLeft || !_mobileInput.screenTouchedRight ) ) ) {
+					_firedMissile = false;
+				}
 			}
 			
 			_body.velocity = velocity;

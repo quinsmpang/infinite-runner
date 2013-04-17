@@ -13,19 +13,19 @@
   <tangentialAcceleration value="0"/>
   <radialAccelVariance value="0.00"/>
   <tangentialAccelVariance value="0.00"/>
-  <startColor red="0.13" green="0.18" blue="0.10" alpha="0.00"></startColor>
-  <startColorVariance red="1.00" green="1.00" blue="1.00" alpha="0.00"></startColorVariance>
-  <finishColor red="1.00" green="1.00" blue="0.00" alpha="0.61"></finishColor>
+  <startColor red="0.83" green="0.18" blue="0.10" alpha="1.00"></startColor>
+  <startColorVariance red="0.00" green="0.00" blue="0.00" alpha="0.00"></startColorVariance>
+  <finishColor red="0.00" green="1.00" blue="0.00" alpha="0.61"></finishColor>
   <finishColorVariance red="0.00" green="0.00" blue="0.00" alpha="0.00"></finishColorVariance>
   <maxParticles value="100"/>
-  <startParticleSize value="45.060000000000002"/>
-  <startParticleSizeVariance value="29"/>
+  <startParticleSize value="25.060000000000002"/>
+  <startParticleSizeVariance value="19"/>
   <finishParticleSize value="0.00"/>
   <FinishParticleSizeVariance value="0"/>
   <duration value="-1.00"/>
   <emitterType value="1"/>
-  <maxRadius value="100.44"/>
-  <maxRadiusVariance value="40.82"/>
+  <maxRadius value="40.44"/>
+  <maxRadiusVariance value="0.00"/>
   <minRadius value="0"/>
   <rotatePerSecond value="4.04"/>
   <rotatePerSecondVariance value="0"/>

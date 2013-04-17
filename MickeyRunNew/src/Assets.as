@@ -55,17 +55,17 @@ package  {
 		[Embed(source="/../embed/particles/particleMushroom.pex", mimeType="application/octet-stream")]
 		public static var ParticleMushroomXML:Class;
 		
-		[Embed(source="/../embed/particles/texture.png")]
-		public static var ParticleTexture:Class;
+//		[Embed(source="/../embed/particles/texture.png")]
+//		public static var ParticleTexture:Class;
 		
 		/**
 		 * Mickey Assets
 		 */
-		[Embed(source="/../embed/mickey/pete.xml", mimeType="application/octet-stream")]
-		public static const PeteConfig:Class;
+		[Embed(source="/../embed/mickey/characters.xml", mimeType="application/octet-stream")]
+		public static const CharactersAssetConfig:Class;
 		
-		[Embed(source="/../embed/mickey/pete.png")]
-		public static const PetePng:Class;
+		[Embed(source="/../embed/mickey/characters.png")]
+		public static const CharactersAssetPng:Class;
 		
 		[Embed(source="/../embed/mickey/mickeyall.xml", mimeType="application/octet-stream")]
 		public static const MickeyConfig:Class;
@@ -82,8 +82,9 @@ package  {
 		[Embed(source="/../embed/Particle.pex", mimeType="application/octet-stream")]
 		public static const _particleConfig:Class;
 
-		[Embed(source="/../embed/ParticleTexture.png")]
-		public static const _particlePng:Class;
+//		[Embed(source="/../embed/ParticleTexture.png")]
+//		public static const _particlePng:Class;
+		
 //		[Embed(source="/../embed/games/hungryhero//graphics/bgWelcome.jpg")]
 //		public static const BgWelcome:Class;
 		
@@ -93,7 +94,7 @@ package  {
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
 		private static var mickeyTextureAtlas:TextureAtlas;
-		private static var peteTextureAtlas:TextureAtlas;
+		private static var charactersTextureAtlas:TextureAtlas;
 		private static var miscTextureAtlas:TextureAtlas;
 		
 		/**
@@ -124,16 +125,16 @@ package  {
 			return mickeyTextureAtlas;
 		}
 		
-		public static function getPeteAtlas():TextureAtlas
+		public static function getCharactersTextureAtlas():TextureAtlas
 		{
-			if (peteTextureAtlas == null)
+			if (charactersTextureAtlas == null)
 			{
-				var texture:Texture = getTexture("PetePng");
-				var xml:XML = XML(new PeteConfig());
-				peteTextureAtlas=new TextureAtlas(texture, xml);
+				var texture:Texture = getTexture("CharactersAssetPng");
+				var xml:XML = XML(new CharactersAssetConfig());
+				charactersTextureAtlas=new TextureAtlas(texture, xml);
 			}
 			
-			return peteTextureAtlas;
+			return charactersTextureAtlas;
 		}
 		
 		public static function getMiscAtlas():TextureAtlas

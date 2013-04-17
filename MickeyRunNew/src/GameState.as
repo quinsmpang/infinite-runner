@@ -57,13 +57,10 @@ package {
 		/** HUD Container. */		
 		private var hud:GameHUD;
 		
-		/** Time calculation for animation. */
-		private var elapsed:Number;
-		
 		private var downTimer:Timer;
 		
 		private var _context:GameContext;
-		private var startButton:Button;
+//		private var startButton:Button;
 		private var fireButton:Button;
 		
 		private var viewCamPosX:Number = -1;
@@ -91,7 +88,6 @@ package {
 			// ground level y
 			groundLevel = stage.stageHeight * 0.9;
 			
-			_context.setViewCamLensWidth( view.camera.cameraLensWidth );// + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() );
 
 			if ( _context.viewMaster == null ) {
 				_context.viewMaster = new ViewMaster( _context, _ce.state );
@@ -106,7 +102,7 @@ package {
 				"slice_", 15, true, "none");
 			
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
-				"mickeycarpet_", "mickeybubble_", "mickeywatch_", "petebwwalk_" ]);
+				"mickeycarpet_", "mickeybubble_", "mickeywatch_", "petebwwalk_", "plutowalk_" ]);
 
 			
 			_nape = new Nape("nape");
@@ -138,7 +134,7 @@ package {
 			view.camera.allowZoom = true;
 			
 //			view.camera.zoomEasing = 0.01;
-			view.camera.setZoom( 0.8 );
+			view.camera.setZoom( _context.CAM_ZOOM );
 			
 			hud = new GameHUD();
 			this.addChild(hud);
@@ -148,23 +144,16 @@ package {
 			hud.distance = 0;
 			
 			_context.initNewLevel();
-			_context.gameEndedSig.add( gameEndedControl );
+//			_context.gameEndedSig.add( gameEndedControl );
 			
 //			gameDistance = _context.getAndIncGameDistance();
-			
-			
-			startButton = new Button(Assets.getAtlas().getTexture("startButton"));
-			startButton.fontColor = 0xffffff;
-			startButton.x = stage.stageWidth/2 - startButton.width/2;
-			startButton.y = stage.stageHeight/2 - startButton.height/2;
-			startButton.addEventListener(Event.TRIGGERED, onStartButtonClick);
-			this.addChild(startButton);
-			startButton.visible = false;
 			
 			//first level:
 			gameDistance = generateLevel( _context.currentLevel );
 			
 //			temp();
+			_context.setViewCamLensWidth( view.camera.cameraLensWidth + ( view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() )) );
+			
 			_ce.playing = true;
 		}
 		 
@@ -180,31 +169,17 @@ package {
 			super.destroy();
 		}
 		
-		private function onStartButtonClick(event:Event):void
-		{
-			startButton.removeEventListener(Event.TRIGGERED, onStartButtonClick);
-//			_context.currentLevel += 1;
-//			if ( _context.currentLevel > _context.maxLevel ) _context.currentLevel = 1;
-			_ce.state = new GameState( _context );
-		}
-		
-		private function gameEndedControl():void
-		{
-			_context.hasGameEnded = true;
+//		private function gameEndedControl():void
+//		{
+//			_context.hasGameEnded = true;
 			
 //			view.camera.target = null;
 //			view.camera.bounds = new Rectangle( 0, -800, 
 ////				view.camera.camPos.x + view.camera.cameraLensWidth
 //				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
 //					, int.MAX_VALUE );
-		}
+//		}
 		
-		private function onGameEnded(obj:Object=null):void
-		{
-			_context.gameEnded();
-			this._ce.playing = false;
-			startButton.visible = true;
-		}
 		
 		private var levelDistance:int = 1000;
 		private function generateLevel( level:String ):int
@@ -241,8 +216,8 @@ package {
 						_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y );
 						break;
 					case GameConstants.COMPONENT_TYPE_ENEMY:
-						_context.viewMaster.addCannonSensor( pos.x, pos.y ); 
-//						_context.viewMaster.addEnemy( pos.x, pos.y ); 
+//						_context.viewMaster.addCannonSensor( pos.x, pos.y ); 
+						_context.viewMaster.addPluto( pos.x, pos.y ); 
 						break;
 					default:
 						break;
@@ -341,10 +316,8 @@ package {
 			super.update(timeDelta);
 			
 			_context.viewCamPos = view.camera.camPos;
-			_context.viewCamPosX = view.camera.camPos.x;
-			
-			
-			elapsed = timeDelta;
+			_context.viewCamLeftX = view.camera.camPos.x;
+			_context.viewCamRightX = _context.viewCamLeftX + _context.viewCamLensWidth;
 			
 			// update the hills here to remove the displacement made by StarlingArt. Called after all operations done.
 //			_hillsTexture.update();
@@ -360,7 +333,7 @@ package {
 //			}
 			
 			if ( _hero.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
-				onGameEnded();
+				_context.endGame();
 			}
 			
 			if ( _hero.y > groundLevel + 500 ) {

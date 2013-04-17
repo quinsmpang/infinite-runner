@@ -1,6 +1,8 @@
 package
 {
+	import citrus.core.CitrusEngine;
 	import citrus.core.IState;
+	import citrus.core.starling.StarlingState;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Sensor;
@@ -17,9 +19,12 @@ package
 	import objects.CustomPortal;
 	import objects.CustomPowerup;
 	import objects.Particle;
+	import objects.Pluto;
 	import objects.pools.PoolParticle;
 	
+	import starling.display.Button;
 	import starling.display.Image;
+	import starling.events.Event;
 	import starling.textures.TextureAtlas;
 	
 
@@ -35,6 +40,8 @@ package
 			_state = state;
 			_miscTextureAtlas = Assets.getMiscAtlas();
 			
+			_context.startButton = new Button(Assets.getAtlas().getTexture("startButton"));
+			_context.startButton.fontColor = 0xffffff;
 		}
 		
 		public function init():void 
@@ -44,6 +51,21 @@ package
 			// Initialize particles-to-animate vectors.
 			eatParticlesToAnimate = new Vector.<Particle>();
 			eatParticlesToAnimateLength = 0;
+			
+//			var startButton:Button = _context.startButton;
+			_context.startButton = new Button(Assets.getAtlas().getTexture("startButton"));
+			_context.startButton.fontColor = 0xffffff;
+			_context.startButton.x = CitrusEngine.getInstance().stage.stageWidth/2 - _context.startButton.width/2;
+			_context.startButton.y = CitrusEngine.getInstance().stage.stageHeight/2 - _context.startButton.height/2;
+			_context.startButton.addEventListener(Event.TRIGGERED, onStartButtonClick);
+			( _state as StarlingState ).addChild(_context.startButton);
+			_context.startButton.visible = false;
+		}
+		
+		private function onStartButtonClick(event:Event):void
+		{
+			_context.startButton.removeEventListener(Event.TRIGGERED, onStartButtonClick);
+			CitrusEngine.getInstance().state = new GameState( _context );
 		}
 		
 		public function setState( state:IState ):void
@@ -77,13 +99,24 @@ package
 		
 		public function addEnemy( x:int, y:int ):void {
 			
-			var enemyAnim:AnimationSequence = new AnimationSequence(Assets.getPeteAtlas(), 
+			var enemyAnim:AnimationSequence = new AnimationSequence(Assets.getCharactersTextureAtlas(), 
 				[ "petebwwalk_" ], 
 				"petebwwalk_", 12, true, "none");
 			
 			var enemy:CustomEnemy = new CustomEnemy("enemy", {x:x, y:y,
 				radius:60, view:enemyAnim, group:1}, _context, enemyAnim );
 			_state.add(enemy);
+		}
+		
+		public function addPluto( x:int, y:int ):void {
+			
+			var plutoAnim:AnimationSequence = new AnimationSequence(Assets.getCharactersTextureAtlas(), 
+				[ "plutowalk_" ], 
+				"plutowalk_", 12, true, "none");
+			
+			var pluto:Pluto = new Pluto("pluto", {x:x, y:y,
+				radius:40, view:plutoAnim, group:1}, _context, plutoAnim );
+			_state.add(pluto);
 		}
 		
 		public function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false, x:int=-1, y:int=-1 ):CustomCrate {

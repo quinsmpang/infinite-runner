@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:10ca72a6f84339c93d9fbc87bebae7a8$ -->
+<TextureAtlas imagePath="characters.png">
+    <SubTexture name="petebwwalk01_01" x="0" y="0" width="208" height="188"/>
+    <SubTexture name="petebwwalk02_02" x="208" y="0" width="208" height="188"/>
+    <SubTexture name="petebwwalk03_03" x="416" y="0" width="208" height="188"/>
+    <SubTexture name="petebwwalk04_04" x="624" y="0" width="208" height="188"/>
+    <SubTexture name="petebwwalk05_05" x="832" y="0" width="208" height="188"/>
+    <SubTexture name="petebwwalk06_06" x="1040" y="0" width="208" height="188"/>
+    <SubTexture name="petebwwalk07_07" x="1248" y="0" width="208" height="188"/>
+    <SubTexture name="petebwwalk08_08" x="1456" y="0" width="208" height="188"/>
+    <SubTexture name="petebwwalk09_09" x="0" y="188" width="208" height="188"/>
+    <SubTexture name="petebwwalk10_10" x="208" y="188" width="208" height="188"/>
+    <SubTexture name="petebwwalk11_11" x="416" y="188" width="208" height="188"/>
+    <SubTexture name="petebwwalk12_12" x="624" y="188" width="208" height="188"/>
+    <SubTexture name="plutowalk_01" x="832" y="188" width="208" height="94"/>
+    <SubTexture name="plutowalk_02" x="1040" y="188" width="208" height="94"/>
+    <SubTexture name="plutowalk_03" x="1248" y="188" width="208" height="94"/>
+    <SubTexture name="plutowalk_04" x="1456" y="188" width="208" height="94"/>
+    <SubTexture name="plutowalk_05" x="0" y="376" width="208" height="94"/>
+    <SubTexture name="plutowalk_06" x="208" y="376" width="208" height="94"/>
+    <SubTexture name="plutowalk_07" x="416" y="376" width="208" height="94"/>
+    <SubTexture name="plutowalk_08" x="624" y="376" width="208" height="94"/>
+    <SubTexture name="plutowalk_09" x="832" y="376" width="208" height="94"/>
+    <SubTexture name="plutowalk_10" x="1040" y="376" width="208" height="94"/>
+    <SubTexture name="plutowalk_11" x="1248" y="376" width="208" height="94"/>
+    <SubTexture name="plutowalk_12" x="1456" y="376" width="208" height="94"/>
+</TextureAtlas>
