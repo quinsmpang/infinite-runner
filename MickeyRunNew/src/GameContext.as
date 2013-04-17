@@ -37,9 +37,9 @@ package
 		public var viewCamRightX:int = 0;
 		private var screenHalfX:int = 0;
 		
-		public var minY:int = -1200;
+		public var minY:int = -12000;
 		
-		public var currentLevel:String = "lev_01";
+		public var nextLevel:String = "lev_01";
 		public var maxLevel:int = 1;
 		
 		public var log:ILog;

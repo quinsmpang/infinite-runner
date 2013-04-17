@@ -125,8 +125,8 @@ package {
 			
 			_cameraBounds = new Rectangle(0, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.15, stage.stageHeight * 0.65), 
-				_cameraBounds, new MathVector(0.05, 0.05));
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.01, stage.stageHeight * 0.65), 
+				_cameraBounds, new MathVector(0.02, 0.05));
 			view.camera.allowZoom = true;
 			
 //			view.camera.zoomEasing = 0.01;
@@ -146,7 +146,7 @@ package {
 //			gameDistance = _context.getAndIncGameDistance();
 			
 			//first level:
-			gameDistance = generateLevel( _context.currentLevel );
+			gameDistance = generateLevel( _context.nextLevel );
 			
 //			temp();
 			_context.setViewCamLensWidth( view.camera.cameraLensWidth + ( view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() )) );
@@ -185,6 +185,8 @@ package {
 			
 			levelDistance = rowData.getInt( "distance" );
 			
+			_context.nextLevel = rowData.getString( "next_level" );
+			
 			var levelComponents:Array = rowData.getArray( "components" );
 			
 			for (var i:int = 0; i < levelComponents.length; i++) 
@@ -213,8 +215,16 @@ package {
 						_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y );
 						break;
 					case GameConstants.COMPONENT_TYPE_ENEMY:
-//						_context.viewMaster.addCannonSensor( pos.x, pos.y ); 
-						_context.viewMaster.addPluto( pos.x, pos.y ); 
+						_context.viewMaster.addEnemy( pos.x, pos.y ); 
+						break;
+					case GameConstants.COMPONENT_TYPE_PLUTO:
+						_context.viewMaster.addPluto( pos.x, pos.y );
+						break;
+					case GameConstants.COMPONENT_TYPE_SPRING:
+						_context.viewMaster.addCannonSensor( pos.x, pos.y ); 
+						break;
+					case GameConstants.COMPONENT_TYPE_STAR:
+						_context.viewMaster.addStar( pos.x, pos.y );
 						break;
 					default:
 						break;

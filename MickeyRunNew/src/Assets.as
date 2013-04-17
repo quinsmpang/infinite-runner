@@ -171,6 +171,11 @@ package  {
 			return XML(new _particleConfig());
 		}
 		
+		public static function getParticleCoffeeConfig():XML
+		{
+			return XML(new ParticleCoffeeXML());
+		}
+		
 		public static function getParticleMushroomConfig():XML
 		{
 			return XML(new ParticleMushroomXML());

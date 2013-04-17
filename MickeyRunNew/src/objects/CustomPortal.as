@@ -39,7 +39,7 @@ package objects
 //			var psTexture:Texture = Assets.getTexture( "_particlePng" );
 			var psTexture:Texture =	Assets.getMiscAtlas().getTexture( "ParticleTexture" );
 
-			_portalExit = new CitrusSprite("particleCoffee", 
+			_portalExit = new CitrusSprite("particleMushroom", 
 				{view:new PDParticleSystem(psconfig, psTexture)});
 			
 			psconfig = Assets.getParticleConfig();

@@ -49,8 +49,12 @@ package views {
 		
 		private var _backGround:Boolean = true;
 		
-		public function GameBackground(name:String, params:Object = null, _hero:MickeyHero=null, backGround:Boolean=true )
+		private var _context:GameContext;
+		
+		public function GameBackground(name:String, params:Object = null, 
+									   _hero:MickeyHero=null, backGround:Boolean=true, context:GameContext=null )
 		{
+			this._context = context;
 			super(name, params);
 			
 //			this.parallax = 1;
@@ -111,8 +115,13 @@ package views {
 //				if ( _hero != null ) 
 //					this.x = _hero.x - offsetX;
 				
-				this.x = _ce.state.view.camera.camPos.x;
-				this.y = _ce.state.view.camera.camPos.y;
+				if ( _context.viewCamPos == null ) {
+					this.x = _ce.state.view.camera.camPos.x - 100;
+					this.y = _ce.state.view.camera.camPos.y - 100;
+				} else {
+					this.x = _context.viewCamLeftX - 100;
+					this.y = _context.viewCamPos.y - 100;
+				}
 				
 				speed = _hero.velocityX / 20;
 				

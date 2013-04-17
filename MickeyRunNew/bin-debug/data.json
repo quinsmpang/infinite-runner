@@ -3,8 +3,12 @@
     "objects" : {
       "Levels" : [ {
         "uid" : "lev_01",
-        "distance" : "5000",
-		"components" : [ "lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 
+        "distance" : "12250",
+        "next_level" : "lev_01",
+		"components" : [ 
+			"lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 
+			"lev_01_platform_4", "lev_01_platform_5", "lev_01_platform_6", "lev_01_platform_7", 
+			"lev_01_star_1", "lev_01_star_2", "lev_01_star_3", "lev_01_pluto",
 			"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_enemy_1" ],
 		"seq" : "1"
       } ],
@@ -36,6 +40,42 @@
 		"friction" : "1",
 		"second_pos" : ""
 	 }, {
+        "uid" : "lev_01_platform_4",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "6200|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : ""
+	 }, {
+        "uid" : "lev_01_platform_5",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "8400|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : ""
+	 }, {
+        "uid" : "lev_01_platform_6",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "10600|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : ""
+	 }, {
+        "uid" : "lev_01_platform_7",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "12000|0",
+		"width" : "500",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : ""
+	 }, {
 		"uid" : "lev_01_portal_1",
         "level" : "lev_01",
 		"type" : "portal",
@@ -45,14 +85,14 @@
 		"friction" : "1",
 		"second_pos" : "1800|-500"
 	 }, {
-		"uid" : "lev_01_portal_4",
+		"uid" : "lev_01_portal_2",
         "level" : "lev_01",
 		"type" : "portal",
-		"pos" : "4000|-100",
+		"pos" : "8000|-100",
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "800|-500"
+		"second_pos" : "4000|-500"
 	 }, {
 		"uid" : "lev_01_portal_3",
         "level" : "lev_01",
@@ -62,6 +102,42 @@
 		"height" : "50",
 		"friction" : "1",
 		"second_pos" : "2250|-800"
+	 }, {
+		"uid" : "lev_01_star_1",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "1000|-420",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
+		"uid" : "lev_01_star_2",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "4000|-820",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
+		"uid" : "lev_01_star_3",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "8000|-420",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
+		"uid" : "lev_01_pluto",
+        "level" : "lev_01",
+		"type" : "pluto",
+		"pos" : "12000|-120",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
 	 }, {
 		"uid" : "lev_01_enemy_1",
         "level" : "lev_01",

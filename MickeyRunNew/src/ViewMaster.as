@@ -72,7 +72,7 @@ package
 		public function addBackground():void
 		{
 			if ( bg == null ) {
-				bg = new GameBackground("background", null, _context._hero, true);
+				bg = new GameBackground("background", null, _context._hero, true, _context);
 			}
 			_state.add(bg);
 		}
@@ -213,7 +213,6 @@ package
 									coinAdd:Boolean=false, rotation:Number=0 ):CustomPlatform {
 			if ( Math.random() > 0.2 ) {
 				addSprite( platformX, platformY - 400, "tree" ); 
-				addStar( platformX - 200, platformY - 400, false ); 
 			}
 			
 			var numBushes:int = ( platWidth / 200 ) * Math.random();

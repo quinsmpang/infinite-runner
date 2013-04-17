@@ -107,7 +107,7 @@ package {
 			downTimer = new Timer( 12000 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 			
-			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem(XML(new ParticleAssets.ParticleCoffeeXML()), 
+			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem( Assets.getParticleCoffeeConfig() , 
 				Assets.getMiscAtlas().getTexture( "ParticleTexture" )
 //				Texture.fromBitmap(new ParticleAssets.ParticleTexture())
 			)});
@@ -394,6 +394,7 @@ package {
 				if ( _context.hud ) {
 					_context.hud.setStars( numStars );
 				}
+				_context.viewMaster.createEatParticle( this, 10 );
 			}
 			
 //			if (callback.int2.userData.myData is CustomCannonSensor) {

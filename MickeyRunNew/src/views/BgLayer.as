@@ -78,7 +78,7 @@ package views {
 				image1 = new Image(Assets.getTexture("BgLayer" + _layer));
 				image1.blendMode = BlendMode.NONE;
 				image1.touchable = false;
-				image1.scaleX = image1.scaleY = 1.3;
+				image1.scaleX = image1.scaleY = 1.4;
 				image1.x = image1.y = 0;
 //				image2 = new Image(Assets.getTexture("BgLayer" + _layer));
 //				image2.blendMode = BlendMode.NONE;
