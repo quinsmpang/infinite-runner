@@ -39,7 +39,7 @@ package
 		
 		public var minY:int = -12000;
 		
-		public var nextLevel:String = "lev_01";
+		public var nextLevel:String = "lev_00"; // starting level
 		public var maxLevel:int = 1;
 		
 		public var log:ILog;

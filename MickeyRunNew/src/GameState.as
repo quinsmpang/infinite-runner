@@ -6,36 +6,23 @@ package {
 	
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
-	import citrus.objects.CitrusSprite;
-	import citrus.objects.NapePhysicsObject;
-	import citrus.objects.platformer.nape.Sensor;
 	import citrus.physics.nape.Nape;
-	import citrus.physics.nape.NapeUtils;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	
-	import nape.callbacks.InteractionCallback;
-	import nape.constraint.WeldJoint;
 	import nape.geom.Vec2;
 	
-	import objects.CustomCrate;
 	import objects.CustomHills;
-	import objects.CustomPortal;
 	
 	import starling.display.Button;
 	import starling.events.Event;
-	import starling.extensions.particles.PDParticleSystem;
-	import starling.extensions.particles.ParticleSystem;
-	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	
 	import steamboat.data.metadata.MetaData;
 	import steamboat.data.metadata.RowData;
 	
-	import views.GameBackground;
 	import views.GameHUD;
 	import views.HillsTexture;
-	import views.ParticleAssets;
 
 	/**
 	 * @author Aymeric
@@ -125,7 +112,7 @@ package {
 			
 			_cameraBounds = new Rectangle(0, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.01, stage.stageHeight * 0.65), 
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.65), 
 				_cameraBounds, new MathVector(0.02, 0.05));
 			view.camera.allowZoom = true;
 			
@@ -143,41 +130,14 @@ package {
 			_context.initNewLevel();
 //			_context.gameEndedSig.add( gameEndedControl );
 			
-//			gameDistance = _context.getAndIncGameDistance();
-			
 			//first level:
 			gameDistance = generateLevel( _context.nextLevel );
 			
-//			temp();
 			_context.setViewCamLensWidth( view.camera.cameraLensWidth + ( view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() )) );
 			
 			_ce.playing = true;
 		}
 		 
-		private function onFireButtonClick(event:Event):void
-		{
-			event.stopPropagation();
-			event.stopImmediatePropagation();
-		}
-		
-		public override function destroy():void
-		{
-//			_portalEntryParticleSystem = null;
-			super.destroy();
-		}
-		
-//		private function gameEndedControl():void
-//		{
-//			_context.hasGameEnded = true;
-			
-//			view.camera.target = null;
-//			view.camera.bounds = new Rectangle( 0, -800, 
-////				view.camera.camPos.x + view.camera.cameraLensWidth
-//				view.camera.camPos.x + ( view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() ) )
-//					, int.MAX_VALUE );
-//		}
-		
-		
 		private var levelDistance:int = 1000;
 		private function generateLevel( level:String ):int
 		{
@@ -185,6 +145,13 @@ package {
 			
 			levelDistance = rowData.getInt( "distance" );
 			
+			var heroPos:Point = _context.locToPoint( rowData.getString( "hero_pos" ) );
+			heroPos.y += groundLevel;
+			
+			_hero.x = heroPos.x;
+			_hero.y = heroPos.y;
+			_ce.state.view.camera.update();
+				
 			_context.nextLevel = rowData.getString( "next_level" );
 			
 			var levelComponents:Array = rowData.getArray( "components" );
@@ -238,87 +205,6 @@ package {
 			return levelDistance;
 		}
 		
-		private function temp():void
-		{
-			var crate1:CustomCrate = _context.viewMaster.addCrate( false, true, 1000, groundLevel - 152 );
-			var crate2:CustomCrate = _context.viewMaster.addCrate( false, true, 900, groundLevel - 305 );
-			
-			var joint1:WeldJoint = new WeldJoint( crate1.body, crate2.body,
-//				Vec2.weak( 2050, groundLevel - 153 ),
-				crate1.body.worldPointToLocal(
-					Vec2.weak( crate1.x + crate1.width / 2, crate1.y + crate1.height / 2 )
-					), 
-				crate2.body.worldPointToLocal(
-					Vec2.weak( crate2.x + crate2.width / 2, crate2.y + crate2.height / 2 )
-				), 
-				Math.PI/2 );
-			joint1.space = _nape.space;
-//			joint1.stiff = false;
-			
-//			joint1.active =  false;
-			
-//			joint1.damping = 0.001;
-//			joint1.frequency = 5000;
-		}
-		
-		private function generateFirstLevel():int {
-			
-			// ground
-			_context.viewMaster.addPlatform( 1000, 2000, groundLevel, false, 1, false );
-			_context.viewMaster.addPlatform( 2500, 500, groundLevel - 500, false, 1, false, 0 );
-			_context.viewMaster.addPlatform( 4000, 2000, groundLevel, false, 1 );
-			
-//			_context.viewMaster.addPlatform( 5500, 1000, groundLevel - 400, false, 1 );
-			_context.viewMaster.addMovingPlatform( 5500, groundLevel - 400, 6000, groundLevel - 400, 1000, 1, true, 100 );
-//			_context.viewMaster.addPlatform( 7250, 1000, groundLevel - 200, false, 1 );
-			_context.viewMaster.addMovingPlatform( 7250, groundLevel - 400, 7250, groundLevel - 1200, 1000, 1, true, 100 );
-			
-			_context.viewMaster.addPlatform( 9000, 2000, groundLevel - 1200, false, 1 );
-			
-			return 10000;
-		}
-		
-		private function generateThirdLevel():int {
-			
-			// ground
-			_context.viewMaster.addPlatform( 2000, 4000, groundLevel, false, 1 );
-			_context.viewMaster.addPlatform( 6200, 4000, groundLevel, false, 1 );
-//			_context.viewMaster.addPlatform( 10000, 20000, groundLevel, false, 1 );
-			
-			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, false, 0, true, 0 );
-//			_context.viewMaster.addPlatform( 2200, 600, groundLevel - 200, true, 0, true );
-			_context.viewMaster.addPlatform( 2500, 1000, groundLevel - 700, false, 0, false );
-//			_context.viewMaster.addPlatform( 3800, 1000, groundLevel - 400, false, 0, false, Math.PI/4 );
-			_context.viewMaster.addMovingPlatform( 4000, groundLevel - 800, 4000, groundLevel - 1200, 1000, 1, false, 30 );
-			_context.viewMaster.addMovingPlatform( 5300, groundLevel - 400, 5300, groundLevel - 600, 1000, 1, false, 30 );
-			
-			_context.viewMaster.addPlatform( 5500, 600, groundLevel - 200, false, 0, true, 0 );
-			_context.viewMaster.addPlatform( 6800, 1000, groundLevel - 700, false, 0, false );
-			
-			_context.viewMaster.addPlatform( 9500, 600, groundLevel - 200, false, 0, true, 0 );
-			_context.viewMaster.addPlatform( 10800, 1000, groundLevel - 700, false, 0, false );
-			
-			return 12000;
-		}
-		
-		private function generateSecondLevel():int {
-			// ground
-			_context.viewMaster.addPlatform( 1000, 6000, groundLevel, false, 0.5 );
-			
-			_context.viewMaster.addPlatform( 1000, 300, groundLevel - 200, false, 0, true );
-			_context.viewMaster.addPlatform( 1500, 600, groundLevel - 200, true, 0 );
-			_context.viewMaster.addPlatform( 2000, 600, groundLevel - 500, true, 0, true );
-			_context.viewMaster.addPlatform( 2500, 600, groundLevel - 200, false, 0 );
-			_context.viewMaster.addPlatform( 3000, 600, groundLevel - 100, false, 0, true );
-			
-			_context.viewMaster.addMovingPlatform( 2500, groundLevel - 500, 
-				3000, groundLevel - 500, 50 );
-				
-			_context.viewMaster.addCrate( false, true, 2000, groundLevel - 200 );
-			
-			return 3800;
-		}
-		
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			
@@ -353,16 +239,6 @@ package {
 			}
 			_context.viewMaster.animateEatParticles();
 			
-//			if ( _context.hasGameEnded ) {
-////				if ( viewCamPosX == -1 ) viewCamPosX = view.camera.camPos.x;
-//				if ( viewCamLensWidth == -1 ) 
-//					viewCamLensWidth = view.camera.cameraLensWidth + view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() );
-////					viewCamLensWidth = view.camera.cameraLensWidth;
-//				
-//				if ( _hero.x - 100 > levelDistance ) {
-//					onGameEnded();
-//				}
-//			}
 		}
 	}
 }

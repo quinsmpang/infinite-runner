@@ -1,22 +1,114 @@
 {
   "content" : {
     "objects" : {
-      "Levels" : [ {
-        "uid" : "lev_01",
-        "distance" : "12250",
-        "next_level" : "lev_01",
-		"components" : [ 
-			"lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 
-			"lev_01_platform_4", "lev_01_platform_5", "lev_01_platform_6", "lev_01_platform_7", 
-			"lev_01_star_1", "lev_01_star_2", "lev_01_star_3", "lev_01_pluto",
-			"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_enemy_1" ],
-		"seq" : "1"
-      } ],
+      "Levels" : [ 
+      	{
+      		"uid" : "lev_00",
+	        "distance" : "3100",
+	        "hero_pos" : "200|-500",
+	        "next_level" : "lev_01",
+			"components" : [ 
+				"lev_00_platform_1", "lev_00_platform_2", 
+				"lev_00_star_1", "lev_00_star_2", "lev_00_star_3", "lev_00_pluto",
+				"lev_00_portal_1"
+				],
+			"seq" : "1"
+     	 }, {
+	        "uid" : "lev_01",
+	        "distance" : "7800",
+	        "hero_pos" : "200|-500",
+	        "next_level" : "lev_00",
+			"components" : [ 
+				"lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 
+				"lev_01_platform_4", "lev_01_platform_5", "lev_01_platform_6",
+				"lev_01_star_1", "lev_01_star_2", "lev_01_star_3", "lev_01_pluto", "lev_01_spring_1",
+				"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_portal_4",
+				"lev_01_enemy_1", "lev_01_enemy_2", "lev_01_enemy_3", "lev_01_enemy_4"
+				],
+			"seq" : "1"
+     	 }, {
+     	 	"uid" : "lev_02",
+	        "distance" : "7800",
+	        "hero_pos" : "4050|-1200",
+	        "next_level" : "lev_00",
+			"components" : [ 
+				"lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 
+				"lev_01_platform_4", "lev_01_platform_5", "lev_01_platform_6",
+				"lev_01_star_1", "lev_01_star_2", "lev_01_star_3", "lev_02_pluto", "lev_01_spring_1",
+				"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_portal_4",
+				"lev_01_enemy_1", "lev_01_enemy_2", "lev_01_enemy_3", "lev_01_enemy_4"
+				],
+			"seq" : "1"
+     	 }
+      ],
       "Components" : [ {
+      	"uid" : "lev_00_platform_1",
+        "level" : "lev_00",
+		"type" : "platform",
+		"pos" : "1000|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : ""
+      }, {
+      	"uid" : "lev_00_platform_2",
+        "level" : "lev_00",
+		"type" : "platform",
+		"pos" : "2850|-100",
+		"width" : "500",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : ""
+      }, {
+      	"uid" : "lev_00_portal_1",
+        "level" : "lev_00",
+		"type" : "portal",
+		"pos" : "1800|-400",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "2500|-300"
+	 }, {
+	 	"uid" : "lev_00_pluto",
+        "level" : "lev_00",
+		"type" : "pluto",
+		"pos" : "2850|-250",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
+	 	"uid" : "lev_00_star_1",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "1000|-200",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
+		"uid" : "lev_00_star_2",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "1200|-400",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
+		"uid" : "lev_00_star_3",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "1400|-200",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
         "uid" : "lev_01_platform_1",
         "level" : "lev_01",
 		"type" : "platform",
-		"pos" : "1000|0",
+		"pos" : "1100|0",
 		"width" : "2000",
 		"height" : "50",
 		"friction" : "1",
@@ -25,8 +117,8 @@
         "uid" : "lev_01_platform_2",
         "level" : "lev_01",
 		"type" : "platform",
-		"pos" : "2500|-400",
-		"width" : "500",
+		"pos" : "2600|-300",
+		"width" : "1000",
 		"height" : "50",
 		"friction" : "0",
 		"second_pos" : ""
@@ -34,7 +126,7 @@
         "uid" : "lev_01_platform_3",
         "level" : "lev_01",
 		"type" : "platform",
-		"pos" : "4000|0",
+		"pos" : "4000|100",
 		"width" : "2000",
 		"height" : "50",
 		"friction" : "1",
@@ -52,8 +144,8 @@
         "uid" : "lev_01_platform_5",
         "level" : "lev_01",
 		"type" : "platform",
-		"pos" : "8400|0",
-		"width" : "2000",
+		"pos" : "7600|-600",
+		"width" : "500",
 		"height" : "50",
 		"friction" : "1",
 		"second_pos" : ""
@@ -61,17 +153,8 @@
         "uid" : "lev_01_platform_6",
         "level" : "lev_01",
 		"type" : "platform",
-		"pos" : "10600|0",
+		"pos" : "5000|-1000",
 		"width" : "2000",
-		"height" : "50",
-		"friction" : "1",
-		"second_pos" : ""
-	 }, {
-        "uid" : "lev_01_platform_7",
-        "level" : "lev_01",
-		"type" : "platform",
-		"pos" : "12000|0",
-		"width" : "500",
 		"height" : "50",
 		"friction" : "1",
 		"second_pos" : ""
@@ -83,25 +166,43 @@
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "1800|-500"
+		"second_pos" : "1800|-400"
 	 }, {
 		"uid" : "lev_01_portal_2",
         "level" : "lev_01",
 		"type" : "portal",
-		"pos" : "8000|-100",
+		"pos" : "6000|-100",
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "4000|-500"
+		"second_pos" : "500|-500"
 	 }, {
 		"uid" : "lev_01_portal_3",
         "level" : "lev_01",
 		"type" : "portal",
-		"pos" : "1500|-300",
+		"pos" : "4100|-500",
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "2250|-800"
+		"second_pos" : "4200|-1200"
+	 }, {
+		"uid" : "lev_01_portal_4",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "7400|0",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "500|-200"
+	 }, {
+	 	"uid" : "lev_01_spring_1",
+        "level" : "lev_01",
+		"type" : "spring",
+		"pos" : "7000|-130",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
 	 }, {
 		"uid" : "lev_01_star_1",
         "level" : "lev_01",
@@ -124,7 +225,7 @@
 		"uid" : "lev_01_star_3",
         "level" : "lev_01",
 		"type" : "star",
-		"pos" : "8000|-420",
+		"pos" : "5000|-1300",
 		"width" : "",
 		"height" : "",
 		"friction" : "",
@@ -133,7 +234,16 @@
 		"uid" : "lev_01_pluto",
         "level" : "lev_01",
 		"type" : "pluto",
-		"pos" : "12000|-120",
+		"pos" : "7600|-720",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
+	 	"uid" : "lev_01_pluto",
+        "level" : "lev_01",
+		"type" : "pluto",
+		"pos" : "7600|-720",
 		"width" : "",
 		"height" : "",
 		"friction" : "",
@@ -147,7 +257,43 @@
 		"height" : "",
 		"friction" : "",
 		"second_pos" : ""
-      } ]
+	 }, {
+		"uid" : "lev_01_enemy_2",
+        "level" : "lev_01",
+		"type" : "enemy",
+		"pos" : "2600|-520",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
+		"uid" : "lev_01_enemy_3",
+        "level" : "lev_01",
+		"type" : "enemy",
+		"pos" : "2400|-520",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 }, {
+		"uid" : "lev_01_enemy_4",
+        "level" : "lev_01",
+		"type" : "enemy",
+		"pos" : "6500|-520",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+      }, {
+      	"uid" : "lev_02_pluto",
+        "level" : "lev_02",
+		"type" : "pluto",
+		"pos" : "2800|-720",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : ""
+	 } ]
     }
   },
   "spreadsheetInfo" : {
