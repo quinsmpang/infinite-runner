@@ -1,7 +1,5 @@
 package
 {
-	import starling.display.BlendMode;
-	
 	import citrus.core.CitrusEngine;
 	import citrus.core.IState;
 	import citrus.core.starling.StarlingState;
@@ -24,10 +22,18 @@ package
 	import objects.Pluto;
 	import objects.pools.PoolParticle;
 	
+	import starling.display.BlendMode;
 	import starling.display.Button;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
+	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	
+	import steamboat.data.metadata.MetaData;
+	import steamboat.data.metadata.RowData;
 	
 	import views.GameBackground;
 	
@@ -47,8 +53,29 @@ package
 			_state = state;
 			_miscTextureAtlas = Assets.getMiscAtlas();
 			
-			_context.startButton = new Button(Assets.getAtlas().getTexture("startButton"));
-			_context.startButton.fontColor = 0xffffff;
+//			_context.startButton = new Button(Assets.getMiscAtlas().getTexture("button1"));
+//			_context.startButton = new Button(Assets.getAtlas().getTexture("startButton"));
+//			_context.startButton.fontColor = 0xffffff;
+		}
+		
+		private function createButton( buttonNum:int, x:int, y:int=-1 ):Button
+		{
+			var button:Button = new Button(Assets.getMiscAtlas().getTexture( "button" + buttonNum ));
+			
+			button.name = "button" + buttonNum;
+//			button.fontColor = 0xffffff;
+			
+			button.x = CitrusEngine.getInstance().stage.stageWidth/2 - button.width/2 + x;
+			
+			if ( y == -1 ) {
+				button.y = CitrusEngine.getInstance().stage.stageHeight/2 - button.height/2;
+			}
+			
+			button.addEventListener( Event.TRIGGERED, onLevelButtonClick );
+			( _state as StarlingState ).addChild( button );
+			button.visible = false;
+			
+			return button;
 		}
 		
 		public function init():void 
@@ -59,14 +86,25 @@ package
 			eatParticlesToAnimate = new Vector.<Particle>();
 			eatParticlesToAnimateLength = 0;
 			
-//			var startButton:Button = _context.startButton;
+			_context.levelButton1 = createButton( 1, -300 );
+			_context.levelButton2 = createButton( 2, 0 );
+			_context.levelButton3 = createButton( 3, +300 );
+			
 			_context.startButton = new Button(Assets.getAtlas().getTexture("startButton"));
-			_context.startButton.fontColor = 0xffffff;
 			_context.startButton.x = CitrusEngine.getInstance().stage.stageWidth/2 - _context.startButton.width/2;
 			_context.startButton.y = CitrusEngine.getInstance().stage.stageHeight/2 - _context.startButton.height/2;
 			_context.startButton.addEventListener(Event.TRIGGERED, onStartButtonClick);
 			( _state as StarlingState ).addChild(_context.startButton);
 			_context.startButton.visible = false;
+			
+			_context.pauseButton = new Button(Assets.getAtlas().getTexture("pauseButton"));
+			_context.pauseButton.scaleX = _context.pauseButton.scaleY = 1.5;			_context.pauseButton.x = CitrusEngine.getInstance().stage.stageWidth - _context.pauseButton.width - 20;
+			_context.pauseButton.y = 20;//CitrusEngine.getInstance().stage.stageHeight/2 - _context.pauseButton.height/2;
+//			_context.pauseButton.y = CitrusEngine.getInstance().stage.stageHeight/2 - _context.pauseButton.height/2;
+//			_context.pauseButton.addEventListener(Event.TRIGGERED, onPauseButtonClick);
+			_context.pauseButton.addEventListener(TouchEvent.TOUCH, onPauseButtonClick);
+			( _state as StarlingState ).addChild(_context.pauseButton);
+			_context.pauseButton.visible = true;
 		}
 		
 		public function addBackground():void
@@ -77,9 +115,45 @@ package
 			_state.add(bg);
 		}
 		
+		private function onPauseButtonClick(event:TouchEvent):void
+		{
+			var touchStart:Touch = event.getTouch( _context.pauseButton, TouchPhase.BEGAN);
+			
+			if ( touchStart ) {
+				event.stopImmediatePropagation();
+				_context.pauseGame();
+			}
+		}
+		
 		private function onStartButtonClick(event:Event):void
 		{
-			_context.startButton.removeEventListener(Event.TRIGGERED, onStartButtonClick);
+			CitrusEngine.getInstance().playing = true;
+			_context.startButton.visible = false;
+			_context.pauseButton.visible = true;
+		}
+		
+		private function onLevelButtonClick(event:Event):void
+		{
+//			_context.startButton.removeEventListener(Event.TRIGGERED, onStartButtonClick);
+			
+			if ( event.target is Button ) {
+				var btn:Button = event.target as Button;
+				for ( var i:int = 1; i <= 3; i++ ) 
+				{
+					if ( btn.name == "button" + i ) {
+						var rowData:RowData = MetaData.getSheetData( "Levels" ).findValue( "seq", i );
+						if ( rowData ) {
+							_context.nextLevel = rowData.uid;
+						}
+					}
+				}
+				
+			}
+			
+			_context.levelButton1.removeEventListener( Event.TRIGGERED, onLevelButtonClick );
+			_context.levelButton2.removeEventListener( Event.TRIGGERED, onLevelButtonClick );
+			_context.levelButton3.removeEventListener( Event.TRIGGERED, onLevelButtonClick );
+			
 			CitrusEngine.getInstance().state = new GameState( _context );
 		}
 		

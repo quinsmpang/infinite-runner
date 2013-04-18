@@ -20,6 +20,7 @@ package views  {
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.TouchEvent;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	import starling.utils.HAlign;
@@ -81,6 +82,7 @@ package views  {
 			starBWTexture = Assets.getMiscAtlas().getTexture( "star2bw" );
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			this.addEventListener(TouchEvent.TOUCH, onScreenTouched);
 		}
 		
 		private function createStar( i:int, color:Boolean=false ):Image
@@ -88,8 +90,8 @@ package views  {
 			stars[i] = new Image( color ? starColorTexture : starBWTexture );
 			var image:Image = stars[ i ] as Image;
 			
-			image.x = 10 + i * 60;
-			image.y = 10;
+			image.x = 20 + i * 60;
+			image.y = 20;
 			image.width = 50;
 			image.height = 47;
 			
@@ -109,6 +111,10 @@ package views  {
 			}
 		}
 		
+		private function onScreenTouched( event:TouchEvent ):void
+		{
+			
+		}
 		/**
 		 * On added to stage. 
 		 * @param event
@@ -123,8 +129,8 @@ package views  {
 //			setStars( 2 );
 			
 			// Get fonts for score labels and values.
-			fontScoreLabel = Fonts.getFont("ScoreLabel");
-			fontScoreValue = Fonts.getFont("ScoreValue");
+//			fontScoreLabel = Fonts.getFont("ScoreLabel");
+//			fontScoreValue = Fonts.getFont("ScoreValue");
 			
 //			// Lives label
 //			livesLabel = new TextField(150, 20, "L I V E S", fontScoreLabel.fontName, fontScoreLabel.fontSize, 0xffffff);
@@ -145,43 +151,43 @@ package views  {
 //			livesText.y = livesLabel.y + livesLabel.height;
 //			this.addChild(livesText);
 			
-			// Distance label
-			distanceLabel = new TextField(150, 20, "S C O R E", fontScoreLabel.fontName, fontScoreLabel.fontSize, 0xffffff);
-			distanceLabel.hAlign = HAlign.RIGHT;
-			distanceLabel.vAlign = VAlign.TOP;
-
-			distanceLabel.x = int(stage.stageWidth - distanceLabel.width - 10);
-			distanceLabel.y = 5;
-			this.addChild(distanceLabel);
-			
-			// Distance
-			distanceText = new TextField(150, 75, "0", fontScoreValue.fontName, fontScoreValue.fontSize, 0xffffff);
-			distanceText.hAlign = HAlign.RIGHT;
-			distanceText.vAlign = VAlign.TOP;
-			distanceText.width = distanceLabel.width;
-			
-			distanceText.x = int(distanceLabel.x + distanceLabel.width - distanceText.width);
-			distanceText.y = distanceLabel.y + distanceLabel.height;
-			this.addChild(distanceText);
-			
-			// Score label
-			foodScoreLabel = new TextField(150, 20, "C O I N S", fontScoreLabel.fontName, fontScoreLabel.fontSize, 0xffffff);
-			foodScoreLabel.hAlign = HAlign.RIGHT;
-			foodScoreLabel.vAlign = VAlign.TOP;
-
-			foodScoreLabel.x = int(distanceLabel.x - foodScoreLabel.width - 50);
-			foodScoreLabel.y = 5;
-			this.addChild(foodScoreLabel);
-			
-			// Score
-			foodScoreText = new TextField(150, 75, "0", fontScoreValue.fontName, fontScoreValue.fontSize, 0xffffff);
-			foodScoreText.hAlign = HAlign.RIGHT;
-			foodScoreText.vAlign = VAlign.TOP;
-			foodScoreText.width = foodScoreLabel.width;
-			
-			foodScoreText.x = int(foodScoreLabel.x + foodScoreLabel.width - foodScoreText.width);
-			foodScoreText.y = foodScoreLabel.y + foodScoreLabel.height;
-			this.addChild(foodScoreText);
+//			// Distance label
+//			distanceLabel = new TextField(150, 20, "S C O R E", fontScoreLabel.fontName, fontScoreLabel.fontSize, 0xffffff);
+//			distanceLabel.hAlign = HAlign.RIGHT;
+//			distanceLabel.vAlign = VAlign.TOP;
+//
+//			distanceLabel.x = int(stage.stageWidth - distanceLabel.width - 10);
+//			distanceLabel.y = 5;
+//			this.addChild(distanceLabel);
+//			
+//			// Distance
+//			distanceText = new TextField(150, 75, "0", fontScoreValue.fontName, fontScoreValue.fontSize, 0xffffff);
+//			distanceText.hAlign = HAlign.RIGHT;
+//			distanceText.vAlign = VAlign.TOP;
+//			distanceText.width = distanceLabel.width;
+//			
+//			distanceText.x = int(distanceLabel.x + distanceLabel.width - distanceText.width);
+//			distanceText.y = distanceLabel.y + distanceLabel.height;
+//			this.addChild(distanceText);
+//			
+//			// Score label
+//			foodScoreLabel = new TextField(150, 20, "C O I N S", fontScoreLabel.fontName, fontScoreLabel.fontSize, 0xffffff);
+//			foodScoreLabel.hAlign = HAlign.RIGHT;
+//			foodScoreLabel.vAlign = VAlign.TOP;
+//
+//			foodScoreLabel.x = int(distanceLabel.x - foodScoreLabel.width - 50);
+//			foodScoreLabel.y = 5;
+//			this.addChild(foodScoreLabel);
+//			
+//			// Score
+//			foodScoreText = new TextField(150, 75, "0", fontScoreValue.fontName, fontScoreValue.fontSize, 0xffffff);
+//			foodScoreText.hAlign = HAlign.RIGHT;
+//			foodScoreText.vAlign = VAlign.TOP;
+//			foodScoreText.width = foodScoreLabel.width;
+//			
+//			foodScoreText.x = int(foodScoreLabel.x + foodScoreLabel.width - foodScoreText.width);
+//			foodScoreText.y = foodScoreLabel.y + foodScoreLabel.height;
+//			this.addChild(foodScoreText);
 		}
 
 		/**
@@ -205,7 +211,7 @@ package views  {
 		public function set distance(value:int):void
 		{
 			_distance = value;
-			distanceText.text = _distance.toString();
+//			distanceText.text = _distance.toString();
 		}
 
 		/**
@@ -217,7 +223,7 @@ package views  {
 		public function set foodScore(value:int):void
 		{
 			_foodScore = value;
-			foodScoreText.text = _foodScore.toString();
+//			foodScoreText.text = _foodScore.toString();
 		}
 		
 		/**

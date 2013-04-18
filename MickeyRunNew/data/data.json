@@ -25,7 +25,7 @@
 				"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_portal_4",
 				"lev_01_enemy_1", "lev_01_enemy_2", "lev_01_enemy_3", "lev_01_enemy_4"
 				],
-			"seq" : "1"
+			"seq" : "2"
      	 }, {
      	 	"uid" : "lev_02",
 	        "distance" : "7800",
@@ -38,7 +38,7 @@
 				"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_portal_4",
 				"lev_01_enemy_1", "lev_01_enemy_2", "lev_01_enemy_3", "lev_01_enemy_4"
 				],
-			"seq" : "1"
+			"seq" : "3"
      	 }
       ],
       "Components" : [ {
@@ -171,7 +171,7 @@
 		"uid" : "lev_01_portal_2",
         "level" : "lev_01",
 		"type" : "portal",
-		"pos" : "6000|-100",
+		"pos" : "6000|-500",
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",

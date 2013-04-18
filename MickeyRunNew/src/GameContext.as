@@ -50,7 +50,14 @@ package
 		public var gameState:SubscribableHashtable;
 		
 		public var _hero:MickeyHero;
+		
 		public var startButton:Button;
+		public var pauseButton:Button;
+		
+		public var levelButton1:Button;
+		public var levelButton2:Button;
+		public var levelButton3:Button;
+		
 		public var hud:GameHUD;
 		
 		public const CAM_ZOOM:Number = 0.8;
@@ -85,12 +92,21 @@ package
 			viewMaster.init();
 		}
 		
+		public function pauseGame():void
+		{
+			CitrusEngine.getInstance().playing = false;
+			pauseButton.visible = false;
+			startButton.visible = true;
+		}
+		
 		public function endGame():void
 		{
 			gameEndedSig.dispatch();
 			gameEndedSig.removeAll();
 			CitrusEngine.getInstance().playing = false;
-			startButton.visible = true;
+			pauseButton.visible = false;
+			
+			levelButton1.visible = levelButton2.visible = levelButton3.visible = true;
 		}
 		
 		public function setViewCamLensWidth( w:int ):void

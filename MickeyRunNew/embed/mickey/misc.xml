@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:8f9adc1a709f77d296079d2a7c2af15f$ -->
+<!-- $TexturePacker:SmartUpdate:30671868e2abb9ebf1c4feecec11c5fc$ -->
 <TextureAtlas imagePath="misc.png">
     <SubTexture name="ParticleTexture" x="1978" y="2" width="64" height="64"/>
-    <SubTexture name="ball" x="1942" y="347" width="50" height="50"/>
+    <SubTexture name="ball" x="1955" y="441" width="50" height="50"/>
     <SubTexture name="bgMountains" x="399" y="98" width="1272" height="230" frameX="-8" frameY="-570" frameWidth="1280" frameHeight="800"/>
-    <SubTexture name="bush" x="1955" y="218" width="76" height="49"/>
-    <SubTexture name="cannon" x="1955" y="120" width="80" height="96" frameX="-10" frameY="-7" frameWidth="100" frameHeight="106"/>
-    <SubTexture name="coin" x="1673" y="252" width="40" height="40"/>
-    <SubTexture name="large_ball" x="1815" y="250" width="98" height="98" frameX="0" frameY="-1" frameWidth="100" frameHeight="100"/>
-    <SubTexture name="large_crate" x="1952" y="269" width="70" height="76"/>
+    <SubTexture name="bush" x="1955" y="390" width="76" height="49"/>
+    <SubTexture name="button1" x="1842" y="198" width="167" height="92"/>
+    <SubTexture name="button2" x="1673" y="192" width="167" height="92"/>
+    <SubTexture name="button3" x="1673" y="98" width="167" height="92"/>
+    <SubTexture name="cannon" x="1955" y="292" width="80" height="96" frameX="-10" frameY="-7" frameWidth="100" frameHeight="106"/>
+    <SubTexture name="coin" x="1489" y="330" width="40" height="40"/>
+    <SubTexture name="large_ball" x="1842" y="98" width="98" height="98" frameX="0" frameY="-1" frameWidth="100" frameHeight="100"/>
+    <SubTexture name="large_crate" x="1974" y="120" width="70" height="76"/>
     <SubTexture name="platformNew1000" x="399" y="330" width="984" height="96" frameX="-9" frameY="-18" frameWidth="1000" frameHeight="150"/>
     <SubTexture name="platformNew2000" x="2" y="2" width="1974" height="94" frameX="-9" frameY="-20" frameWidth="2000" frameHeight="150"/>
-    <SubTexture name="platformNew500" x="1385" y="350" width="480" height="94" frameX="-9" frameY="-20" frameWidth="500" frameHeight="150"/>
-    <SubTexture name="small_ball" x="1915" y="321" width="25" height="25"/>
-    <SubTexture name="small_crate" x="1915" y="250" width="35" height="38"/>
-    <SubTexture name="spring" x="1815" y="202" width="138" height="46" frameX="-6" frameY="-104" frameWidth="150" frameHeight="150"/>
-    <SubTexture name="spring2" x="1815" y="98" width="138" height="102" frameX="-5" frameY="-47" frameWidth="150" frameHeight="150"/>
-    <SubTexture name="star" x="1915" y="290" width="30" height="29"/>
+    <SubTexture name="platformNew500" x="2" y="493" width="480" height="94" frameX="-9" frameY="-20" frameWidth="500" frameHeight="150"/>
+    <SubTexture name="small_ball" x="1942" y="129" width="25" height="25"/>
+    <SubTexture name="small_crate" x="2011" y="198" width="35" height="38"/>
+    <SubTexture name="spring" x="1815" y="396" width="138" height="46" frameX="-6" frameY="-104" frameWidth="150" frameHeight="150"/>
+    <SubTexture name="spring2" x="1815" y="292" width="138" height="102" frameX="-5" frameY="-47" frameWidth="150" frameHeight="150"/>
+    <SubTexture name="star" x="1942" y="98" width="30" height="29"/>
     <SubTexture name="star1" x="1978" y="68" width="50" height="50"/>
-    <SubTexture name="star2" x="1994" y="396" width="50" height="47"/>
-    <SubTexture name="star2bw" x="1994" y="347" width="50" height="47"/>
+    <SubTexture name="star2" x="1437" y="330" width="50" height="47"/>
+    <SubTexture name="star2bw" x="1385" y="330" width="50" height="47"/>
+    <SubTexture name="star2bwsmall" x="24" y="98" width="20" height="19"/>
+    <SubTexture name="star2small" x="2" y="98" width="20" height="19"/>
     <SubTexture name="tree" x="2" y="120" width="395" height="360" frameX="0" frameY="0" frameWidth="403" frameHeight="360"/>
-    <SubTexture name="very_large_crate" x="1673" y="98" width="140" height="152"/>
+    <SubTexture name="very_large_crate" x="1673" y="286" width="140" height="152"/>
 </TextureAtlas>

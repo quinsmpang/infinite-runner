@@ -137,7 +137,7 @@ package {
 			
 			_ce.playing = true;
 		}
-		 
+		
 		private var levelDistance:int = 1000;
 		private function generateLevel( level:String ):int
 		{
