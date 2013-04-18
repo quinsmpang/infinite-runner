@@ -66,6 +66,8 @@ package
 		public const CAM_ZOOM:Number = 0.8;
 		public const CAM_ZOOM_MULT:Number = ( 1 - CAM_ZOOM ) + 0.1;
 		
+		public var groundLevel:int = 0;
+		
 		private static var _instance:GameContext;
 		
 		public function GameContext()

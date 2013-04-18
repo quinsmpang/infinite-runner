@@ -8,9 +8,9 @@
 	        "hero_pos" : "200|-500",
 	        "next_level" : "lev_01",
 			"components" : [ 
-				"lev_00_platform_1", "lev_00_platform_2", 
+				"lev_00_platform_1", "lev_00_platform_2", "lev_00_platform_3",
 				"lev_00_star_1", "lev_00_star_2", "lev_00_star_3", "lev_00_pluto",
-				"lev_00_portal_1"
+				"lev_00_portal_1", "lev_00_portal_2"
 				],
 			"seq" : "1"
      	 }, {
@@ -36,7 +36,8 @@
 				"lev_01_platform_4", "lev_01_platform_5", "lev_01_platform_6",
 				"lev_01_star_1", "lev_01_star_2", "lev_01_star_3", "lev_02_pluto", "lev_01_spring_1",
 				"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_portal_4",
-				"lev_01_enemy_1", "lev_01_enemy_2", "lev_01_enemy_3", "lev_01_enemy_4"
+				"lev_01_enemy_1", "lev_01_enemy_2", "lev_01_enemy_3", "lev_01_enemy_4",
+				"lev_02_crate_1"
 				],
 			"seq" : "3"
      	 }
@@ -45,20 +46,32 @@
       	"uid" : "lev_00_platform_1",
         "level" : "lev_00",
 		"type" : "platform",
-		"pos" : "1000|0",
+		"pos" : "1200|0",
 		"width" : "2000",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
       }, {
       	"uid" : "lev_00_platform_2",
         "level" : "lev_00",
 		"type" : "platform",
-		"pos" : "2850|-100",
+		"pos" : "3050|-600",
 		"width" : "500",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+      	"uid" : "lev_00_platform_3",
+        "level" : "lev_00",
+		"type" : "platform",
+		"pos" : "3200|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
       }, {
       	"uid" : "lev_00_portal_1",
         "level" : "lev_00",
@@ -67,16 +80,28 @@
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "2500|-300"
+		"second_pos" : "2700|-1000",
+		"spawn_item" : ""
+	 }, {
+	 	"uid" : "lev_00_portal_2",
+        "level" : "lev_00",
+		"type" : "portal",
+		"pos" : "2900|-100",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "100|-1000",
+		"spawn_item" : ""
 	 }, {
 	 	"uid" : "lev_00_pluto",
         "level" : "lev_00",
 		"type" : "pluto",
-		"pos" : "2850|-250",
+		"pos" : "3050|-850",
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 	 	"uid" : "lev_00_star_1",
         "level" : "lev_01",
@@ -85,7 +110,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_00_star_2",
         "level" : "lev_01",
@@ -94,7 +120,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_00_star_3",
         "level" : "lev_01",
@@ -103,7 +130,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
         "uid" : "lev_01_platform_1",
         "level" : "lev_01",
@@ -112,7 +140,8 @@
 		"width" : "2000",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
       }, {
         "uid" : "lev_01_platform_2",
         "level" : "lev_01",
@@ -121,7 +150,8 @@
 		"width" : "1000",
 		"height" : "50",
 		"friction" : "0",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
       }, {
         "uid" : "lev_01_platform_3",
         "level" : "lev_01",
@@ -130,7 +160,8 @@
 		"width" : "2000",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
         "uid" : "lev_01_platform_4",
         "level" : "lev_01",
@@ -139,7 +170,8 @@
 		"width" : "2000",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
         "uid" : "lev_01_platform_5",
         "level" : "lev_01",
@@ -148,7 +180,8 @@
 		"width" : "500",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
         "uid" : "lev_01_platform_6",
         "level" : "lev_01",
@@ -157,7 +190,8 @@
 		"width" : "2000",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_portal_1",
         "level" : "lev_01",
@@ -166,7 +200,8 @@
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "1800|-400"
+		"second_pos" : "1800|-400",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_portal_2",
         "level" : "lev_01",
@@ -175,7 +210,8 @@
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "500|-500"
+		"second_pos" : "500|-500",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_portal_3",
         "level" : "lev_01",
@@ -184,7 +220,8 @@
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "4200|-1200"
+		"second_pos" : "4200|-1200",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_portal_4",
         "level" : "lev_01",
@@ -193,7 +230,18 @@
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "500|-200"
+		"second_pos" : "500|-200",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_02_portal_5",
+        "level" : "lev_02",
+		"type" : "portal",
+		"pos" : "5800|-1100",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "1000|-500",
+		"spawn_item" : ""
 	 }, {
 	 	"uid" : "lev_01_spring_1",
         "level" : "lev_01",
@@ -202,7 +250,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_star_1",
         "level" : "lev_01",
@@ -211,7 +260,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_star_2",
         "level" : "lev_01",
@@ -220,7 +270,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_star_3",
         "level" : "lev_01",
@@ -229,7 +280,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_pluto",
         "level" : "lev_01",
@@ -238,7 +290,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 	 	"uid" : "lev_01_pluto",
         "level" : "lev_01",
@@ -247,7 +300,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_enemy_1",
         "level" : "lev_01",
@@ -256,7 +310,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_enemy_2",
         "level" : "lev_01",
@@ -265,7 +320,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_enemy_3",
         "level" : "lev_01",
@@ -274,7 +330,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
 	 }, {
 		"uid" : "lev_01_enemy_4",
         "level" : "lev_01",
@@ -283,7 +340,8 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
       }, {
       	"uid" : "lev_02_pluto",
         "level" : "lev_02",
@@ -292,7 +350,18 @@
 		"width" : "",
 		"height" : "",
 		"friction" : "",
-		"second_pos" : ""
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+      	"uid" : "lev_02_crate_1",
+        "level" : "lev_02",
+		"type" : "large_crate",
+		"pos" : "5800|-1200",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : "lev_02_portal_5"
 	 } ]
     }
   },
@@ -304,7 +373,7 @@
     "spreadsheetName" : "Mickey Run Meta Data",
     "pages" : [ {
       "pageName" : "Components",
-      "columns" : [ "uid", "level", "pos", "width", "height", "friction", "second_pos" ]
+      "columns" : [ "uid", "level", "pos", "width", "height", "friction", "second_pos", "spawn_item" ]
     }, {
       "pageName" : "Levels",
       "columns" : [ "uid", "distance", "components", "seq" ]

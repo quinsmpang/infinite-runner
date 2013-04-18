@@ -17,6 +17,7 @@ package
 		public static const COMPONENT_TYPE_PLUTO:String = "pluto";
 		public static const COMPONENT_TYPE_SPRING:String = "spring";
 		public static const COMPONENT_TYPE_STAR:String = "star";
+		public static const COMPONENT_TYPE_LARGE_CRATE:String = "large_crate";
 		
 		public static const COL_POS:String = "pos";
 		public static const COL_SECOND_POS:String = "second_pos";

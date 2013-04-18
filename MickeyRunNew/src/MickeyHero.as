@@ -97,14 +97,14 @@ package {
 			jumpAcceleration += 10;
 			jumpHeight += 200;
 			
-			this._body.gravMass = 2.8;
+			this._body.gravMass = 2.4;
 			
 			// working combo: jumAcc += 6; body.gravMass = 6.8; jumpHeight += 200;
 			
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
 			
-			downTimer = new Timer( 12000 );
+			downTimer = new Timer( 6000 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 			
 			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem( Assets.getParticleCoffeeConfig() , 

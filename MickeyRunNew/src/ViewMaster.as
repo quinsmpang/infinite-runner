@@ -1,5 +1,7 @@
 package
 {
+	import flash.geom.Point;
+	
 	import citrus.core.CitrusEngine;
 	import citrus.core.IState;
 	import citrus.core.starling.StarlingState;
@@ -267,7 +269,8 @@ package
 			_state.add(pluto);
 		}
 		
-		public function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false, x:int=-1, y:int=-1 ):CustomCrate {
+		public function addCrate(addSmallCrate:Boolean, veryLargeCrate:Boolean=false, 
+								 x:int=-1, y:int=-1, spawnItem:String=null ):CustomCrate {
 			var image:Image;
 			var width:int; var height:int;
 			
@@ -283,7 +286,7 @@ package
 			}
 			
 			var physicObject:CustomCrate = new CustomCrate("physicobject", { 
-				x:x, y:y, width:width, height:height, view:image}, _context );
+				x:x, y:y, width:width, height:height, view:image}, _context, spawnItem );
 			_state.add(physicObject);	
 			
 			return physicObject;
@@ -402,6 +405,51 @@ package
 			floor.waitForPassenger = wait;
 			floor.enabled = true;
 			_state.add(floor);
+		}
+		
+		public function createLevelComponent( componentID:String ):void 
+		{
+			var componentData:RowData = MetaData.getRowData( "Components", componentID );
+			
+			var pos:Point = _context.locToPoint( componentData.getString( "pos" ) );
+			pos.y += _context.groundLevel;
+			
+			var width:int = componentData.getInt( "width" );
+			var height:int = componentData.getInt( "height" );
+			var friction:Number = componentData.getNumber( "friction" );
+			
+			var secondPos:Point = _context.locToPoint( componentData.getString( "second_pos" ) );
+			secondPos.y += _context.groundLevel;
+			
+			var type:String = componentData.getString( "type" );
+			var spawnItem:String = componentData.getString( "spawn_item" );
+			
+			switch ( type ) {
+				case GameConstants.COMPONENT_TYPE_PLATFORM:
+					_context.viewMaster.addPlatform( 
+						pos.x, width, pos.y, false, friction, true );
+					break;
+				case GameConstants.COMPONENT_TYPE_PORTAL:
+					_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y );
+					break;
+				case GameConstants.COMPONENT_TYPE_ENEMY:
+					_context.viewMaster.addEnemy( pos.x, pos.y ); 
+					break;
+				case GameConstants.COMPONENT_TYPE_PLUTO:
+					_context.viewMaster.addPluto( pos.x, pos.y );
+					break;
+				case GameConstants.COMPONENT_TYPE_SPRING:
+					_context.viewMaster.addCannonSensor( pos.x, pos.y ); 
+					break;
+				case GameConstants.COMPONENT_TYPE_STAR:
+					_context.viewMaster.addStar( pos.x, pos.y );
+					break;
+				case GameConstants.COMPONENT_TYPE_LARGE_CRATE:
+					_context.viewMaster.addCrate( false, true, pos.x, pos.y, spawnItem );
+					break;
+				default:
+					break;
+			}
 		}
 		
 		private var eatParticlesPool:PoolParticle;

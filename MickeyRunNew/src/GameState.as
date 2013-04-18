@@ -52,8 +52,6 @@ package {
 		
 		private var gameDistance:int = 0;
 		
-		private var groundLevel:int = 0;
-		
 		public var heroAnim:AnimationSequence;
 		private var mickeyTextureAtlas:TextureAtlas;
 		
@@ -70,7 +68,7 @@ package {
 			super.initialize();
 			
 			// ground level y
-			groundLevel = stage.stageHeight * 0.9;
+			_context.groundLevel = stage.stageHeight * 0.9;
 			
 
 			if ( _context.viewMaster == null ) {
@@ -102,7 +100,7 @@ package {
 //			_hillsTexture = new HillsTexture();
 			
 //			_hills = new CustomHills("hills", 
-//				{rider:_hero, sliceHeight:400, sliceWidth:100, currentYPoint:groundLevel, //currentXPoint: 10, 
+//				{rider:_hero, sliceHeight:400, sliceWidth:100, currentYPoint:_context.groundLevel, //currentXPoint: 10, 
 //					widthHills: stage.stageWidth + ( stage.stageWidth * 0.5 ), 
 //					registration:"topLeft", view:_hillsTexture},
 //				_context );
@@ -147,7 +145,7 @@ package {
 			levelDistance = rowData.getInt( "distance" );
 			
 			var heroPos:Point = _context.locToPoint( rowData.getString( "hero_pos" ) );
-			heroPos.y += groundLevel;
+			heroPos.y += _context.groundLevel;
 			
 			_hero.x = heroPos.x;
 			_hero.y = heroPos.y;
@@ -160,44 +158,7 @@ package {
 			for (var i:int = 0; i < levelComponents.length; i++) 
 			{
 				var component:String = levelComponents[ i ];
-				var componentData:RowData = MetaData.getRowData( "Components", component );
-				
-				var pos:Point = _context.locToPoint( componentData.getString( "pos" ) );
-				pos.y += groundLevel;
-				
-				var width:int = componentData.getInt( "width" );
-				var height:int = componentData.getInt( "height" );
-				var friction:Number = componentData.getNumber( "friction" );
-				
-				var secondPos:Point = _context.locToPoint( componentData.getString( "second_pos" ) );
-				secondPos.y += groundLevel;
-				
-				var type:String = componentData.getString( "type" );
-				
-				switch ( type ) {
-					case GameConstants.COMPONENT_TYPE_PLATFORM:
-						_context.viewMaster.addPlatform( 
-							pos.x, width, pos.y, false, friction, true );
-						break;
-					case GameConstants.COMPONENT_TYPE_PORTAL:
-						_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y );
-						break;
-					case GameConstants.COMPONENT_TYPE_ENEMY:
-						_context.viewMaster.addEnemy( pos.x, pos.y ); 
-						break;
-					case GameConstants.COMPONENT_TYPE_PLUTO:
-						_context.viewMaster.addPluto( pos.x, pos.y );
-						break;
-					case GameConstants.COMPONENT_TYPE_SPRING:
-						_context.viewMaster.addCannonSensor( pos.x, pos.y ); 
-						break;
-					case GameConstants.COMPONENT_TYPE_STAR:
-						_context.viewMaster.addStar( pos.x, pos.y );
-						break;
-					default:
-						break;
-				}
-				
+				_context.viewMaster.createLevelComponent( component );
 			}
 			
 			view.camera.bounds = new Rectangle( 0, _context.minY, 
@@ -230,9 +191,9 @@ package {
 				_context.endGame();
 			}
 			
-			if ( _hero.y > groundLevel + 500 ) {
+			if ( _hero.y > _context.groundLevel + 500 ) {
 				if ( !_hero._isFlying ) _hero.startFlying( true, true, 3000 );
-				_hero.y = groundLevel + 500;
+				_hero.y = _context.groundLevel + 500;
 			}
 			
 			if ( _hero.onGround && _hero.body.velocity.x > 50 ) {
