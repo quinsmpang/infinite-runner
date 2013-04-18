@@ -39,7 +39,8 @@ package
 		
 		public var minY:int = -12000;
 		
-		public var nextLevel:String = "lev_00"; // starting level
+		public var currentLevel:String = "lev_00"; // starting level
+		public var currentLevelNum:int = 1; // starting level
 		public var maxLevel:int = 1;
 		
 		public var log:ILog;
@@ -57,6 +58,8 @@ package
 		public var levelButton1:Button;
 		public var levelButton2:Button;
 		public var levelButton3:Button;
+		
+		public var levelNumStars:Array = [];
 		
 		public var hud:GameHUD;
 		
@@ -101,12 +104,20 @@ package
 		
 		public function endGame():void
 		{
+			var numStars:int = levelNumStars[ currentLevelNum ];
+			if ( _hero.numCoinsCollected > numStars ) {
+				levelNumStars[ currentLevelNum ] = numStars = _hero.numCoinsCollected;
+			}
+			
+			viewMaster.setStars( currentLevelNum, numStars );
+			
 			gameEndedSig.dispatch();
 			gameEndedSig.removeAll();
 			CitrusEngine.getInstance().playing = false;
 			pauseButton.visible = false;
 			
 			levelButton1.visible = levelButton2.visible = levelButton3.visible = true;
+			viewMaster.showStars( true );
 		}
 		
 		public function setViewCamLensWidth( w:int ):void

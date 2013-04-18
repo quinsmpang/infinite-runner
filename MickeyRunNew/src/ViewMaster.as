@@ -56,6 +56,8 @@ package
 //			_context.startButton = new Button(Assets.getMiscAtlas().getTexture("button1"));
 //			_context.startButton = new Button(Assets.getAtlas().getTexture("startButton"));
 //			_context.startButton.fontColor = 0xffffff;
+			starColorTexture = Assets.getMiscAtlas().getTexture( "star2small" );
+			starBWTexture = Assets.getMiscAtlas().getTexture( "star2bwsmall" );
 		}
 		
 		private function createButton( buttonNum:int, x:int, y:int=-1 ):Button
@@ -75,7 +77,59 @@ package
 			( _state as StarlingState ).addChild( button );
 			button.visible = false;
 			
+			var offset:int = ( buttonNum - 1 ) * 3;
+			var starY:int = button.y + button.height;
+			var starX:int = button.x + button.width / 2 - 12;
+			createStar( 1 + offset - 1, starX - 25, starY, false );
+			createStar( 2 + offset - 1, starX, starY, false );
+			createStar( 3 + offset - 1, starX + 25, starY, false );
+			
 			return button;
+		}
+		
+		private var stars:Array = [];
+		private var starColorTexture:Texture;
+		private var starBWTexture:Texture;
+		// create stars under each button
+		private function createStar( i:int, x:int, y:int, color:Boolean=false ):Image
+		{
+			stars[i] = new Image( color ? starColorTexture : starBWTexture );
+			var image:Image = stars[ i ] as Image;
+			
+			image.x = x;
+			image.y = y;
+			image.width = 20;
+			image.height = 19;
+			
+			image.visible = false;
+			( _state as StarlingState ).addChild( image );
+			return image;
+		}
+		
+		// show stars under each button
+		public function showStars( show:Boolean ):void
+		{
+			var image:Image;
+			for (var i:int = 0; i < stars.length; i++) 
+			{
+				image = stars[ i ] as Image;
+				if ( image ) image.visible = show;
+			}
+			
+		}
+		
+		// set stars for each button
+		public function setStars( buttonNum:int, numStars:int ):void
+		{
+			var image:Image;
+			var offset:int = ( buttonNum - 1 ) * 3;
+			for (var i:int = 0; i < 3; i++) 
+			{
+				image = stars[ i + offset ] as Image;
+				if ( image ) {
+					image.texture = ( i <= numStars - 1 ) ? starColorTexture : starBWTexture;
+				}
+			}
 		}
 		
 		public function init():void 
@@ -87,8 +141,13 @@ package
 			eatParticlesToAnimateLength = 0;
 			
 			_context.levelButton1 = createButton( 1, -300 );
+			setStars( 1, _context.levelNumStars[ 1 ] );
+			
 			_context.levelButton2 = createButton( 2, 0 );
+			setStars( 2, _context.levelNumStars[ 2 ] );
+			
 			_context.levelButton3 = createButton( 3, +300 );
+			setStars( 3, _context.levelNumStars[ 3 ] );
 			
 			_context.startButton = new Button(Assets.getAtlas().getTexture("startButton"));
 			_context.startButton.x = CitrusEngine.getInstance().stage.stageWidth/2 - _context.startButton.width/2;
@@ -143,7 +202,7 @@ package
 					if ( btn.name == "button" + i ) {
 						var rowData:RowData = MetaData.getSheetData( "Levels" ).findValue( "seq", i );
 						if ( rowData ) {
-							_context.nextLevel = rowData.uid;
+							_context.currentLevel = rowData.uid;
 						}
 					}
 				}

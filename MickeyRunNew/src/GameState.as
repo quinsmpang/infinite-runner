@@ -113,7 +113,7 @@ package {
 			_cameraBounds = new Rectangle(0, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
 
 			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.65), 
-				_cameraBounds, new MathVector(0.02, 0.05));
+				_cameraBounds, new MathVector(0.02, 0.02));
 			view.camera.allowZoom = true;
 			
 //			view.camera.zoomEasing = 0.01;
@@ -131,7 +131,7 @@ package {
 //			_context.gameEndedSig.add( gameEndedControl );
 			
 			//first level:
-			gameDistance = generateLevel( _context.nextLevel );
+			gameDistance = generateLevel( _context.currentLevel );
 			
 			_context.setViewCamLensWidth( view.camera.cameraLensWidth + ( view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() )) );
 			
@@ -143,6 +143,7 @@ package {
 		{
 			var rowData:RowData = MetaData.getRowData( "Levels", level );
 			
+			_context.currentLevelNum = rowData.getInt( "seq" );
 			levelDistance = rowData.getInt( "distance" );
 			
 			var heroPos:Point = _context.locToPoint( rowData.getString( "hero_pos" ) );
@@ -152,7 +153,7 @@ package {
 			_hero.y = heroPos.y;
 			_ce.state.view.camera.update();
 				
-			_context.nextLevel = rowData.getString( "next_level" );
+//			_context.nextLevel = rowData.getString( "next_level" );
 			
 			var levelComponents:Array = rowData.getArray( "components" );
 			
