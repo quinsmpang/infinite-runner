@@ -52,6 +52,7 @@ package {
 		private var _flyingJumpHeight:uint = 250;
 		
 		public var _isSpeeding:Boolean = false;
+		public var _isMoving:Boolean = false;
 		
 		private var _zoomModified:Boolean = false;
 		
@@ -75,8 +76,6 @@ package {
 		
 		public var impulseCount:int = 0;
 		public const impulseMax:int = 50;
-		
-		private var _isMoving:Boolean = true;
 		
 		private var MICKEY_HERO:CbType = new CbType();
 		
@@ -159,7 +158,7 @@ package {
 		private var _firedMissile:Boolean = false;
 		
 		private var _doubleJumpAvailable:Boolean = true;
-		private var screenTouchedOnce:Boolean = false;
+		public var screenTouchedOnce:Boolean = false;
 		private var screenTapped:Boolean = false;
 		
 		private var applyImpulse:Boolean = false;
@@ -172,7 +171,9 @@ package {
 			if (_mobileInput.screenTouchedRight && !_mobileInput.screenTouchedLeft) {
 				screenTouchedOnce = true;
 				
-				if ( _isFlying ) {
+				if ( !_isMoving ) {
+					velocity.x = _minSpeed;
+				} else if ( _isFlying ) {
 					if ( _mobileInput.touchStartPoint ) {
 						velocity.y = -_flyingJumpHeight;
 					}
@@ -208,6 +209,12 @@ package {
 			} else {
 				
 				if ( screenTouchedOnce ) screenTapped = true;
+				
+				if ( screenTouchedOnce && !_isMoving ) _isMoving = true;
+				
+				if ( !_isMoving && _onGround ) {
+					velocity.x = 0;
+				}
 				
 				if ( !_isFlying ) {
 					if ( velocity.y > 0 ) { // going downwards
@@ -312,6 +319,11 @@ package {
 
 		private function _updateAnimation():void {
 
+			if ( !_isMoving && _onGround ) {
+				_animation = "mickeyidle_";
+				return;
+			}
+			
 			if ( _isFlying ) {
 				_animation = true ? "mickeycarpet_" : "mickeybubble_";
 				return;

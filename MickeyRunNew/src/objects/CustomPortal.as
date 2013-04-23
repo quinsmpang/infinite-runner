@@ -78,6 +78,11 @@ package objects
 				collider.x = _exitX;
 				collider.y = _exitY;
 			}
+			
+			if ( collider is MickeyHero ) {
+				( collider as MickeyHero )._isMoving = false;
+				( collider as MickeyHero ).screenTouchedOnce = false;
+			}
 		}
 		
 		

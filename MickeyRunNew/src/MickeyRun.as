@@ -21,7 +21,7 @@ package
 		{
 			Starling.multitouchEnabled = true;
 			Starling.handleLostContext = true;
-			setUpStarling( false );
+			setUpStarling( true );
 			
 			
 			_context.gameState.addKeyListener( "patch.file", handleFileLoaded );

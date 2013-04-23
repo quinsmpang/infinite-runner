@@ -76,13 +76,13 @@ package {
 			if (touchStart) {
 				touchStartPoint = touchStart.getLocation( (_ce.state as StarlingState) );
 				
-				if ( _context.isTouchSideRight( touchStartPoint ) ) {
-					_screenRightTouched = true;
-//					trace( "screen right touched" );
-				} else {
-					_screenLeftTouched = true;
-//					trace( "screen left touched" );
-				}
+				_screenRightTouched = true;
+					
+//				if ( _context.isTouchSideRight( touchStartPoint ) ) {
+//					_screenRightTouched = true;
+//				} else {
+//					_screenLeftTouched = true;
+//				}
 			}
 			
 //			if ( touchMoved ) {
@@ -96,15 +96,13 @@ package {
 			
 			if (touchEnd) {
 				touchEndPoint = touchEnd.getLocation( (_ce.state as StarlingState) );
+				_screenRightTouched = false;
 				
-				if ( _context.isTouchSideRight( touchEndPoint ) ) {
-					_screenRightTouched = false;
-				} else {
-					_screenLeftTouched = false;
-				}
-//				_screenRightTouched = false;
-//				_screenLeftTouched = false;
-//				trace( " touch ended " );
+//				if ( _context.isTouchSideRight( touchEndPoint ) ) {
+//					_screenRightTouched = false;
+//				} else {
+//					_screenLeftTouched = false;
+//				}
 			}
 		}
 

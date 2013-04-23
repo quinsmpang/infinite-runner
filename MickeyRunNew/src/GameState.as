@@ -55,6 +55,8 @@ package {
 		public var heroAnim:AnimationSequence;
 		private var mickeyTextureAtlas:TextureAtlas;
 		
+		private var groundLevel:int;
+		
 //		private var _portalEntryParticleSystem:ParticleSystem;
 		
 		public function GameState( context:GameContext ) 
@@ -69,7 +71,7 @@ package {
 			
 			// ground level y
 			_context.groundLevel = stage.stageHeight * 0.9;
-			
+			groundLevel = _context.groundLevel;
 
 			if ( _context.viewMaster == null ) {
 				_context.viewMaster = new ViewMaster( _context, _ce.state );
@@ -111,7 +113,7 @@ package {
 			_cameraBounds = new Rectangle(0, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
 
 			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.65), 
-				_cameraBounds, new MathVector(0.02, 0.02));
+				_cameraBounds, new MathVector(0.05, 0.03));
 			view.camera.allowZoom = true;
 			
 //			view.camera.zoomEasing = 0.01;
@@ -172,7 +174,7 @@ package {
 			
 			_context.viewCamPos = view.camera.camPos;
 			_context.viewCamLeftX = view.camera.camPos.x;
-			_context.viewCamRightX = _context.viewCamLeftX + _context.viewCamLensWidth;
+//			_context.viewCamRightX = _context.viewCamLeftX + _context.viewCamLensWidth;
 			
 			// update the hills here to remove the displacement made by StarlingArt. Called after all operations done.
 //			_hillsTexture.update();
@@ -191,9 +193,9 @@ package {
 				_context.endGame();
 			}
 			
-			if ( _hero.y > _context.groundLevel + 500 ) {
+			if ( _hero.y > groundLevel + 500 ) {
 				if ( !_hero._isFlying ) _hero.startFlying( true, true, 3000 );
-				_hero.y = _context.groundLevel + 500;
+				_hero.y = groundLevel + 500;
 			}
 			
 			if ( _hero.onGround && _hero.body.velocity.x > 50 ) {
