@@ -81,7 +81,7 @@ package objects
 			
 			if ( collider is MickeyHero ) {
 				( collider as MickeyHero )._isMoving = false;
-				( collider as MickeyHero ).screenTouchedOnce = false;
+				( collider as MickeyHero ).screenTappedOnce = false;
 			}
 		}
 		

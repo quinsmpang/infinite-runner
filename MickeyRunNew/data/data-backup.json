@@ -1,0 +1,383 @@
+{
+  "content" : {
+    "objects" : {
+      "Levels" : [ 
+      	{
+      		"uid" : "lev_00",
+	        "distance" : "3100",
+	        "hero_pos" : "200|-500",
+	        "next_level" : "lev_01",
+			"components" : [ 
+				"lev_00_platform_1", "lev_00_platform_2", "lev_00_platform_3",
+				"lev_00_star_1", "lev_00_star_2", "lev_00_star_3", "lev_00_pluto",
+				"lev_00_portal_1", "lev_00_portal_2"
+				],
+			"seq" : "1"
+     	 }, {
+	        "uid" : "lev_01",
+	        "distance" : "7800",
+	        "hero_pos" : "200|-500",
+	        "next_level" : "lev_00",
+			"components" : [ 
+				"lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 
+				"lev_01_platform_4", "lev_01_platform_5", "lev_01_platform_6",
+				"lev_01_star_1", "lev_01_star_2", "lev_01_star_3", "lev_01_pluto", "lev_01_spring_1",
+				"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_portal_4",
+				"lev_01_enemy_1", "lev_01_enemy_2", "lev_01_enemy_3", "lev_01_enemy_4"
+				],
+			"seq" : "2"
+     	 }, {
+     	 	"uid" : "lev_02",
+	        "distance" : "7800",
+	        "hero_pos" : "4050|-1200",
+	        "next_level" : "lev_00",
+			"components" : [ 
+				"lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 
+				"lev_01_platform_4", "lev_01_platform_5", "lev_01_platform_6",
+				"lev_01_star_1", "lev_01_star_2", "lev_01_star_3", "lev_02_pluto", "lev_01_spring_1",
+				"lev_01_portal_1", "lev_01_portal_2", "lev_01_portal_3", "lev_01_portal_4",
+				"lev_01_enemy_1", "lev_01_enemy_2", "lev_01_enemy_3", "lev_01_enemy_4",
+				"lev_02_crate_1"
+				],
+			"seq" : "3"
+     	 }
+      ],
+      "Components" : [ {
+      	"uid" : "lev_00_platform_1",
+        "level" : "lev_00",
+		"type" : "platform",
+		"pos" : "1200|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+      	"uid" : "lev_00_platform_2",
+        "level" : "lev_00",
+		"type" : "platform",
+		"pos" : "3050|-600",
+		"width" : "500",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+      	"uid" : "lev_00_platform_3",
+        "level" : "lev_00",
+		"type" : "platform",
+		"pos" : "3200|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+      	"uid" : "lev_00_portal_1",
+        "level" : "lev_00",
+		"type" : "portal",
+		"pos" : "1800|-400",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "2700|-1000",
+		"spawn_item" : ""
+	 }, {
+	 	"uid" : "lev_00_portal_2",
+        "level" : "lev_00",
+		"type" : "portal",
+		"pos" : "2900|-100",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "100|-1000",
+		"spawn_item" : ""
+	 }, {
+	 	"uid" : "lev_00_pluto",
+        "level" : "lev_00",
+		"type" : "pluto",
+		"pos" : "3050|-850",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+	 	"uid" : "lev_00_star_1",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "1000|-200",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_00_star_2",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "1200|-400",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_00_star_3",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "1400|-200",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+        "uid" : "lev_01_platform_1",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "1100|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+        "uid" : "lev_01_platform_2",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "2600|-300",
+		"width" : "1000",
+		"height" : "50",
+		"friction" : "0",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+        "uid" : "lev_01_platform_3",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "4000|100",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+        "uid" : "lev_01_platform_4",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "6200|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+        "uid" : "lev_01_platform_5",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "7600|-600",
+		"width" : "500",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+        "uid" : "lev_01_platform_6",
+        "level" : "lev_01",
+		"type" : "platform",
+		"pos" : "5000|-1000",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_portal_1",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "2700|-100",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "1800|-400",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_portal_2",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "6000|-500",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "500|-500",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_portal_3",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "4100|-500",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "4200|-1200",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_portal_4",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "7400|0",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "500|-200",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_02_portal_5",
+        "level" : "lev_02",
+		"type" : "portal",
+		"pos" : "5800|-1100",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "1000|-500",
+		"spawn_item" : ""
+	 }, {
+	 	"uid" : "lev_01_spring_1",
+        "level" : "lev_01",
+		"type" : "spring",
+		"pos" : "7000|-130",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_star_1",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "1000|-420",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_star_2",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "4000|-820",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_star_3",
+        "level" : "lev_01",
+		"type" : "star",
+		"pos" : "5000|-1300",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_pluto",
+        "level" : "lev_01",
+		"type" : "pluto",
+		"pos" : "7600|-720",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+	 	"uid" : "lev_01_pluto",
+        "level" : "lev_01",
+		"type" : "pluto",
+		"pos" : "7600|-720",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_enemy_1",
+        "level" : "lev_01",
+		"type" : "enemy",
+		"pos" : "4400|-120",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_enemy_2",
+        "level" : "lev_01",
+		"type" : "enemy",
+		"pos" : "2600|-520",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_enemy_3",
+        "level" : "lev_01",
+		"type" : "enemy",
+		"pos" : "2400|-520",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_01_enemy_4",
+        "level" : "lev_01",
+		"type" : "enemy",
+		"pos" : "6500|-520",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+      	"uid" : "lev_02_pluto",
+        "level" : "lev_02",
+		"type" : "pluto",
+		"pos" : "2800|-720",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+      	"uid" : "lev_02_crate_1",
+        "level" : "lev_02",
+		"type" : "large_crate",
+		"pos" : "5800|-1200",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : "lev_02_portal_5"
+	 } ]
+    }
+  },
+  "spreadsheetInfo" : {
+    "hash" : "-150447662",
+    "importTime" : "4/12/13 1:10 PM",
+    "importerVersion" : "3",
+    "spreadsheetFormat" : "PLAYDEF_1",
+    "spreadsheetName" : "Mickey Run Meta Data",
+    "pages" : [ {
+      "pageName" : "Components",
+      "columns" : [ "uid", "level", "pos", "width", "height", "friction", "second_pos", "spawn_item" ]
+    }, {
+      "pageName" : "Levels",
+      "columns" : [ "uid", "distance", "components", "seq" ]
+    } ]
+  },
+  "version" : 3
+}

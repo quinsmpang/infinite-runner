@@ -158,8 +158,9 @@ package {
 		private var _firedMissile:Boolean = false;
 		
 		private var _doubleJumpAvailable:Boolean = true;
-		public var screenTouchedOnce:Boolean = false;
-		private var screenTapped:Boolean = false;
+		public var screenTappedOnce:Boolean = false;
+		private var screenTappedTwice:Boolean = false;
+		private var screenTappedThrice:Boolean = false;
 		
 		private var applyImpulse:Boolean = false;
 		override public function update(timeDelta:Number):void {
@@ -169,10 +170,13 @@ package {
 			if ( velocity.x < _minSpeed && !_mobileInput.screenTouchedLeft ) velocity.x = _minSpeed;
 			
 			if (_mobileInput.screenTouchedRight && !_mobileInput.screenTouchedLeft) {
-				screenTouchedOnce = true;
+				
+//				trace( "screenTappedOnce:" + screenTappedOnce + " screenTappedTwice:" + screenTappedTwice + 
+//					" doubleTapAvailable:" + _doubleJumpAvailable );
 				
 				if ( !_isMoving ) {
 					velocity.x = _minSpeed;
+					_isMoving = true;
 				} else if ( _isFlying ) {
 					if ( _mobileInput.touchStartPoint ) {
 						velocity.y = -_flyingJumpHeight;
@@ -181,15 +185,20 @@ package {
 
 					if (_onGround) {
 	
+						screenTappedOnce = true;
 						_zoomModified = true;
 						velocity.y = -jumpHeight;
 						_onGround = false;
 						
 						_animation = "slice_";
 	
-					} else if ( screenTapped && _doubleJumpAvailable ) {
+					} else if ( screenTappedTwice && _doubleJumpAvailable ) {
 						velocity.y = -jumpHeight;
 						_doubleJumpAvailable = false;
+					} else if ( screenTappedThrice ) {
+						if ( !_isFlying ) startFlying( true, true, 3000 );
+						screenTappedThrice = false;
+						_doubleJumpAvailable = true;
 					} else if (velocity.y < 0) {
 						velocity.y -= jumpAcceleration;
 					} else {
@@ -208,9 +217,10 @@ package {
 				}
 			} else {
 				
-				if ( screenTouchedOnce ) screenTapped = true;
+				if ( screenTappedOnce ) screenTappedTwice = true;
+				if ( screenTappedTwice && !_doubleJumpAvailable ) screenTappedThrice = true;
 				
-				if ( screenTouchedOnce && !_isMoving ) _isMoving = true;
+//				if ( screenTappedOnce && !_isMoving ) _isMoving = true;
 				
 				if ( !_isMoving && _onGround ) {
 					velocity.x = 0;
@@ -374,10 +384,10 @@ package {
 		override protected function createConstraint():void {
 			super.createConstraint();
 
-			_preListener = new PreListener(InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, handlePreContact);
-//			_preListener = new PreListener(InteractionType.ANY, MICKEY_HERO, CbType.ANY_BODY, handlePreContact);
-			_body.space.listeners.add(_preListener);
 			_body.cbTypes.add(MICKEY_HERO);
+//			_preListener = new PreListener(InteractionType.ANY, CbType.ANY_BODY, CbType.ANY_BODY, handlePreContact);
+			_preListener = new PreListener(InteractionType.ANY, MICKEY_HERO, CbType.ANY_BODY, handlePreContact);
+			_body.space.listeners.add(_preListener);
 			
 		}
 		
@@ -472,12 +482,13 @@ package {
 			}
 			
 			if (callback.int2.userData.myData is Platform ||
-				callback.int2.userData.myData is CustomHills
+				callback.int1.userData.myData is Platform
 			) {
 				_onGround = true;
 				_doubleJumpAvailable = true;
-				screenTapped = false;
-				screenTouchedOnce = false;
+				screenTappedOnce = false;
+				screenTappedTwice = false;
+				screenTappedThrice = false;
 			} 
 
 			return PreFlag.ACCEPT;
