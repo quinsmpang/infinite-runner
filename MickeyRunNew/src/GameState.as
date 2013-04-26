@@ -70,7 +70,7 @@ package {
 			super.initialize();
 			
 			// ground level y
-			_context.groundLevel = stage.stageHeight * 0.9;
+			_context.groundLevel = stage.stageHeight;
 			groundLevel = _context.groundLevel;
 
 			if ( _context.viewMaster == null ) {
@@ -83,7 +83,7 @@ package {
 			heroAnim = new AnimationSequence(mickeyTextureAtlas, 
 				[ "slice_", "mickeyjump2_", "mickeythrow_", 
 					"mickeypush_", "mickeycarpet_", "mickeybubble_", "mickeyidle_", "mickeywatch_" ], 
-				"slice_", 15, true, "none");
+				"slice_", 12, true, "none");
 			
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
 				"mickeycarpet_", "mickeybubble_", "mickeywatch_", "petebwwalk_", "plutowalk_" ]);
@@ -112,8 +112,8 @@ package {
 			
 			_cameraBounds = new Rectangle(0, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.65), 
-				_cameraBounds, new MathVector(0.05, 0.03));
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.75), 
+				_cameraBounds, new MathVector(0.15, 0.03));
 			view.camera.allowZoom = true;
 			
 //			view.camera.zoomEasing = 0.01;
@@ -190,12 +190,20 @@ package {
 //			}
 			
 			if ( _hero.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
-				_context.endGame();
+//				_context.endGame();
+				_hero.x = 100;
+				_hero.y = _context.groundLevel - 100;
+				_hero._isMoving = false;
+				_hero._isFlying = false;
 			}
 			
 			if ( _hero.y > groundLevel + 500 ) {
 				if ( !_hero._isFlying ) _hero.startFlying( true, true, 3000 );
 				_hero.y = groundLevel + 500;
+			}
+			
+			if ( _hero.y < _context.minY + 200 ) {
+				_hero.y = _context.minY + 200;
 			}
 			
 			if ( _hero.onGround && _hero.body.velocity.x > 50 ) {

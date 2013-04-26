@@ -75,7 +75,7 @@ package {
 		private var _ignoreNextPlatform:Boolean = false;
 		
 		public var impulseCount:int = 0;
-		public const impulseMax:int = 50;
+		public const impulseMax:int = 12;
 		
 		private var MICKEY_HERO:CbType = new CbType();
 		
@@ -93,17 +93,17 @@ package {
 			
 			_heroAnim = heroAnim;
 
-			jumpAcceleration += 10;
-			jumpHeight += 200;
+			jumpAcceleration += 5;
+			jumpHeight += 120;
 			
-			this._body.gravMass = 2.4;
+			this._body.gravMass = 2.2;
 			
 			// working combo: jumAcc += 6; body.gravMass = 6.8; jumpHeight += 200;
 			
 			_mobileInput = new TouchInput();
 			_mobileInput.initialize();
 			
-			downTimer = new Timer( 6000 );
+			downTimer = new Timer( 2000 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
 			
 			particleCoffee = new CitrusSprite("particleCoffee", {view:new PDParticleSystem( Assets.getParticleCoffeeConfig() , 
@@ -132,6 +132,8 @@ package {
 			// TODO Auto-generated method stub
 			_isSpeeding = false;
 			_isFlying = false;
+			_animation = "mickeyjump2_";
+			_body.velocity.y = -jumpHeight;
 			downTimer.stop();
 			if ( _flyingPD ) _flyingPD.stop();
 		}
@@ -158,6 +160,7 @@ package {
 		private var _firedMissile:Boolean = false;
 		
 		private var _doubleJumpAvailable:Boolean = true;
+		private var _flightAvailable:Boolean = true;
 		public var screenTappedOnce:Boolean = false;
 		private var screenTappedTwice:Boolean = false;
 		private var screenTappedThrice:Boolean = false;
@@ -174,6 +177,8 @@ package {
 //				trace( "screenTappedOnce:" + screenTappedOnce + " screenTappedTwice:" + screenTappedTwice + 
 //					" doubleTapAvailable:" + _doubleJumpAvailable );
 				
+				screenTappedOnce = true;
+						
 				if ( !_isMoving ) {
 					velocity.x = _minSpeed;
 					_isMoving = true;
@@ -192,13 +197,13 @@ package {
 						
 						_animation = "slice_";
 	
-					} else if ( screenTappedTwice && _doubleJumpAvailable ) {
-						velocity.y = -jumpHeight;
+					} else if ( screenTappedTwice ) { // && _doubleJumpAvailable ) {
+//						velocity.y = -jumpHeight;
 						_doubleJumpAvailable = false;
-					} else if ( screenTappedThrice ) {
-						if ( !_isFlying ) startFlying( true, true, 3000 );
-						screenTappedThrice = false;
-						_doubleJumpAvailable = true;
+					} else if ( screenTappedThrice ) {// && _flightAvailable ) {
+//						if ( !_isFlying ) startFlying( true, true, 1500 );
+//						screenTappedThrice = false;
+						_flightAvailable = false;
 					} else if (velocity.y < 0) {
 						velocity.y -= jumpAcceleration;
 					} else {
@@ -238,16 +243,16 @@ package {
 			}
 
 			if ( _isFlying ) {
-				velocity.x = _minSpeed + 40;
-				if ( velocity.x > _maxSpeed + 20 ) velocity.x = _maxSpeed + 20;
+				velocity.x = _maxSpeed + 40;
+//				if ( velocity.x > _maxSpeed + 20 ) velocity.x = _maxSpeed + 20;
 			} else if ( _isSpeeding ) {
 //				velocity.x = _minSpeed + 100;
 //				if ( velocity.x > _maxSpeed + 150 ) velocity.x = _maxSpeed + 150;
 			} else {
 //				velocity.x += (_minSpeed - velocity.x) * 0.2;
-//				velocity.x = _minSpeed + 10;
-				if ( velocity.x > _maxSpeed ) {
-					velocity.x = _maxSpeed;
+//				velocity.x = _minSpeed;
+				if ( velocity.x > _minSpeed ) {
+					velocity.x = _minSpeed;
 				}
 			}
 			
@@ -266,7 +271,7 @@ package {
 			}
 			
 			if ( impulseCount-- > 0 ) {
-				_body.applyImpulse( Vec2.weak( 0, -100 ) );
+				_body.applyImpulse( Vec2.weak( 0, -200 ) );
 				if ( impulseCount > impulseMax - 2 ) {
 					velocity.y = -jumpHeight;
 					_onGround = false;
@@ -372,7 +377,7 @@ package {
 			}
 
 			if ( _animation == "slice_" ) {
-				setAnimFPS( _animation, Math.round( this.body.velocity.x / 10 ) );
+//				setAnimFPS( _animation, Math.round( this.body.velocity.x / 12 ) );
 			}
 			
 //			if ( _mobileInput._buttonClicked ) {
@@ -410,6 +415,16 @@ package {
 					}
 				}
 			}
+			
+			if ( collider is Platform ) {
+				_onGround = true;
+//				_isMoving = false;
+				_doubleJumpAvailable = true;
+				_flightAvailable = true;
+				screenTappedOnce = false;
+				screenTappedTwice = false;
+				screenTappedThrice = false;
+			} 
 			
 			if (callback.int2.userData.myData is CustomCoin) {
 				numStars++;	
@@ -481,15 +496,17 @@ package {
 				}
 			}
 			
-			if (callback.int2.userData.myData is Platform ||
-				callback.int1.userData.myData is Platform
-			) {
-				_onGround = true;
-				_doubleJumpAvailable = true;
-				screenTappedOnce = false;
-				screenTappedTwice = false;
-				screenTappedThrice = false;
-			} 
+//			if (callback.int2.userData.myData is Platform ||
+//				callback.int1.userData.myData is Platform
+//			) {
+//				_onGround = true;
+////				_isMoving = false;
+//				_doubleJumpAvailable = true;
+//				_flightAvailable = true;
+//				screenTappedOnce = false;
+//				screenTappedTwice = false;
+//				screenTappedThrice = false;
+//			} 
 
 			return PreFlag.ACCEPT;
 		}

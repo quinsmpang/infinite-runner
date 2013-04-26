@@ -26,8 +26,8 @@ package
 		public var gameEndedSig:Signal;
 		public var hasGameEnded:Boolean = false;
 		
-		public var heroMinSpeed:int = 180;
-		public var heroMaxSpeed:int = 200;
+		public var heroMinSpeed:int = 130;
+		public var heroMaxSpeed:int = 250;
 		
 		public var numCratesHit:int = 1;
 		
@@ -37,7 +37,7 @@ package
 		public var viewCamRightX:int = 0;
 		private var screenHalfX:int = 0;
 		
-		public var minY:int = -12000;
+		public var minY:int = -1500;
 		
 		public var currentLevel:String = "lev_00"; // starting level
 		public var currentLevelNum:int = 1; // starting level
@@ -63,7 +63,7 @@ package
 		
 		public var hud:GameHUD;
 		
-		public const CAM_ZOOM:Number = 0.8;
+		public const CAM_ZOOM:Number = 0.6;
 		public const CAM_ZOOM_MULT:Number = ( 1 - CAM_ZOOM ) + 0.1;
 		
 		public var groundLevel:int = 0;
