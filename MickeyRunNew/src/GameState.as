@@ -72,6 +72,8 @@ package {
 			// ground level y
 			_context.groundLevel = stage.stageHeight;
 			groundLevel = _context.groundLevel;
+			
+			_context.maxY = _context.groundLevel + 200;
 
 			if ( _context.viewMaster == null ) {
 				_context.viewMaster = new ViewMaster( _context, _ce.state );
@@ -112,8 +114,8 @@ package {
 			
 			_cameraBounds = new Rectangle(0, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.75), 
-				_cameraBounds, new MathVector(0.15, 0.03));
+			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.65), 
+				_cameraBounds, new MathVector(0.15, 0.08));
 			view.camera.allowZoom = true;
 			
 //			view.camera.zoomEasing = 0.01;
@@ -197,9 +199,9 @@ package {
 				_hero._isFlying = false;
 			}
 			
-			if ( _hero.y > groundLevel + 500 ) {
-				if ( !_hero._isFlying ) _hero.startFlying( true, true, 3000 );
-				_hero.y = groundLevel + 500;
+			if ( _hero.y > _context.maxY ) {
+				if ( !_hero._isFlying ) _hero.startFlying( true, true, 1500 );
+				_hero.y = _context.maxY;
 			}
 			
 			if ( _hero.y < _context.minY + 200 ) {

@@ -75,7 +75,7 @@ package {
 		private var _ignoreNextPlatform:Boolean = false;
 		
 		public var impulseCount:int = 0;
-		public const impulseMax:int = 12;
+		public const impulseMax:int = 8;
 		
 		private var MICKEY_HERO:CbType = new CbType();
 		
@@ -93,10 +93,10 @@ package {
 			
 			_heroAnim = heroAnim;
 
-			jumpAcceleration += 5;
-			jumpHeight += 120;
+			jumpAcceleration += 3;
+			jumpHeight += 100;
 			
-			this._body.gravMass = 2.2;
+			this._body.gravMass = 2.3;
 			
 			// working combo: jumAcc += 6; body.gravMass = 6.8; jumpHeight += 200;
 			
@@ -279,6 +279,7 @@ package {
 				
 				if ( velocity.y > 0 ) {
 					impulseCount = 0;
+					_isMoving = false;
 				}
 				
 			}
@@ -377,7 +378,7 @@ package {
 			}
 
 			if ( _animation == "slice_" ) {
-//				setAnimFPS( _animation, Math.round( this.body.velocity.x / 12 ) );
+				setAnimFPS( _animation, Math.round( this.body.velocity.x / 10 ) );
 			}
 			
 //			if ( _mobileInput._buttonClicked ) {
