@@ -42,14 +42,16 @@ package objects
 		
 		private function onSensorTouched(callback:InteractionCallback):void
 		{
-			var collider:NapePhysicsObject = callback.int1.userData.myData is Sensor ?
-				callback.int2.userData.myData as NapePhysicsObject : callback.int1.userData.myData;
-			if ( collider && collider is MickeyHero ) {
-				var mickey:MickeyHero = collider as MickeyHero;
-				mickey.impulseCount = mickey.impulseMax;
-				springAnimCount = 10;
-				this.view = springUnCompressed;
-			}
+//			if ( _context.viewMaster._mobileInput.screenTouched ) {
+				var collider:NapePhysicsObject = callback.int1.userData.myData is Sensor ?
+					callback.int2.userData.myData as NapePhysicsObject : callback.int1.userData.myData;
+				if ( collider && collider is MickeyHero ) {
+					var mickey:MickeyHero = collider as MickeyHero;
+					mickey.impulseCount = mickey.impulseMax;
+					springAnimCount = 10;
+					this.view = springUnCompressed;
+				}
+//			}
 		}
 	}
 }

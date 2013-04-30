@@ -81,6 +81,8 @@ package {
 			
 			_context.viewMaster.setState( this );
 			
+			_context.initNewLevel();
+			
 			mickeyTextureAtlas = Assets.getMickeyAtlas();
 			heroAnim = new AnimationSequence(mickeyTextureAtlas, 
 				[ "slice_", "mickeyjump2_", "mickeythrow_", 
@@ -129,7 +131,6 @@ package {
 			hud.foodScore = 0;
 			hud.distance = 0;
 			
-			_context.initNewLevel();
 //			_context.gameEndedSig.add( gameEndedControl );
 			
 			//first level:

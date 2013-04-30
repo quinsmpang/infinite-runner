@@ -106,7 +106,7 @@ package {
 			}
 		}
 
-		public function get screenTouchedRight():Boolean {
+		public function get screenTouched():Boolean {
 			return _screenRightTouched;
 		}
 		

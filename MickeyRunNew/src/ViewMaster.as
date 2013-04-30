@@ -42,6 +42,7 @@ package
 
 	public class ViewMaster
 	{
+		public var _mobileInput:TouchInput;
 		private var _miscTextureAtlas:TextureAtlas;
 		private var _context:GameContext;
 		private var _state:IState;
@@ -136,6 +137,9 @@ package
 		
 		public function init():void 
 		{
+			_mobileInput = new TouchInput();
+			_mobileInput.initialize();
+			
 			eatParticlesPool = new PoolParticle(eatParticleCreate, eatParticleClean, 20, 30);
 			
 			// Initialize particles-to-animate vectors.
@@ -313,9 +317,9 @@ package
 			var image:Image;
 			var width:int; var height:int;
 			
-			width = 50; height = 50;
+			width = 100; height = 50;
 
-			var physicObject:CustomCannonSensor = new CustomCannonSensor("physicobject", 
+			var physicObject:CustomCannonSensor = new CustomCannonSensor("spring", 
 				{ x:cannonX, y:coinY, width:width, height:height, view:image}, _context );
 			_state.add(physicObject);	
 		}
@@ -443,6 +447,15 @@ package
 					break;
 				case GameConstants.COMPONENT_TYPE_STAR:
 					_context.viewMaster.addStar( pos.x, pos.y );
+					break;
+				case GameConstants.COMPONENT_TYPE_BALL:
+					_context.viewMaster.addBall( false, pos.x, pos.y );
+					break;
+				case GameConstants.COMPONENT_TYPE_POWERUP:
+					_context.viewMaster.addPowerup( pos.x, pos.y );
+					break;
+				case GameConstants.COMPONENT_TYPE_CRATE:
+					_context.viewMaster.addCrate( false, false, pos.x, pos.y, spawnItem );
 					break;
 				case GameConstants.COMPONENT_TYPE_LARGE_CRATE:
 					_context.viewMaster.addCrate( false, true, pos.x, pos.y, spawnItem );

@@ -19,9 +19,9 @@ package objects
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			
-			if ( this.x + this.width < _context.viewCamLeftX ) {
-				this.kill = true;
-			}
+//			if ( this.x + this.width < _context.viewCamLeftX ) {
+//				this.kill = true;
+//			}
 		}
 		
 		override protected function createShape():void {

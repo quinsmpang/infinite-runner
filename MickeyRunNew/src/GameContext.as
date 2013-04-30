@@ -26,7 +26,7 @@ package
 		public var gameEndedSig:Signal;
 		public var hasGameEnded:Boolean = false;
 		
-		public var heroMinSpeed:int = 150;
+		public var heroMinSpeed:int = 140;
 		public var heroMaxSpeed:int = 250;
 		
 		public var numCratesHit:int = 1;
@@ -64,7 +64,7 @@ package
 		
 		public var hud:GameHUD;
 		
-		public const CAM_ZOOM:Number = 0.8;
+		public const CAM_ZOOM:Number = 0.7;
 		public const CAM_ZOOM_MULT:Number = ( 1 - CAM_ZOOM ) + 0.1;
 		
 		public var groundLevel:int = 0;

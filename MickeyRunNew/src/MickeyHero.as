@@ -100,8 +100,7 @@ package {
 			
 			// working combo: jumAcc += 6; body.gravMass = 6.8; jumpHeight += 200;
 			
-			_mobileInput = new TouchInput();
-			_mobileInput.initialize();
+			_mobileInput = context.viewMaster._mobileInput;
 			
 			downTimer = new Timer( 2000 );
 			downTimer.addEventListener( TimerEvent.TIMER, handleTimeEvent );
@@ -172,7 +171,7 @@ package {
 			
 			if ( velocity.x < _minSpeed && !_mobileInput.screenTouchedLeft ) velocity.x = _minSpeed;
 			
-			if (_mobileInput.screenTouchedRight && !_mobileInput.screenTouchedLeft) {
+			if (_mobileInput.screenTouched && !_mobileInput.screenTouchedLeft) {
 				
 //				trace( "screenTappedOnce:" + screenTappedOnce + " screenTappedTwice:" + screenTappedTwice + 
 //					" doubleTapAvailable:" + _doubleJumpAvailable );
@@ -284,7 +283,7 @@ package {
 				
 			}
 			
-			if ( _mobileInput.screenTouchedLeft && ( _mobileInput.screenTouchedRight || _isFlying ) && !_firedMissile ) {
+			if ( _mobileInput.screenTouchedLeft && ( _mobileInput.screenTouched || _isFlying ) && !_firedMissile ) {
 				missile = new CustomMissile("Missile", 
 					{x:x + width, y:y, group:group, 
 						width:25, height:25, 
@@ -295,7 +294,7 @@ package {
 				_firedMissile = true;
 			} else {
 				if ( ( _isFlying && !_mobileInput.screenTouchedLeft )
-					|| ( !_isFlying && ( !_mobileInput.screenTouchedLeft || !_mobileInput.screenTouchedRight ) ) ) {
+					|| ( !_isFlying && ( !_mobileInput.screenTouchedLeft || !_mobileInput.screenTouched ) ) ) {
 					_firedMissile = false;
 				}
 			}
@@ -345,10 +344,10 @@ package {
 				return;
 			}
 			
-			if (_mobileInput.screenTouchedRight && _mobileInput.screenTouchedLeft) {
+			if (_mobileInput.screenTouched && _mobileInput.screenTouchedLeft) {
 				_animation = "mickeythrow_";
 //				setAnimFPS( _animation, 4 );
-			} else if (_mobileInput.screenTouchedRight) {
+			} else if (_mobileInput.screenTouched) {
 				
 				if ( _onGround )
 					_animation = "slice_";
