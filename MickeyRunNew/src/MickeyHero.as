@@ -96,7 +96,7 @@ package {
 			jumpAcceleration += 3;
 			jumpHeight += 100;
 			
-			this._body.gravMass = 2.3;
+			this._body.gravMass = 2.6;
 			
 			// working combo: jumAcc += 6; body.gravMass = 6.8; jumpHeight += 200;
 			
@@ -187,9 +187,9 @@ package {
 					}
 				} else {
 
-					if (_onGround) {
+					if ( _onGround ) {
 	
-						screenTappedOnce = true;
+//						screenTappedOnce = true;
 						_zoomModified = true;
 						velocity.y = -jumpHeight;
 						_onGround = false;
@@ -377,7 +377,7 @@ package {
 			}
 
 			if ( _animation == "slice_" ) {
-				setAnimFPS( _animation, Math.round( this.body.velocity.x / 10 ) );
+				setAnimFPS( _animation, Math.round( this.body.velocity.x / 8 ) );
 			}
 			
 //			if ( _mobileInput._buttonClicked ) {
@@ -396,6 +396,7 @@ package {
 			
 		}
 		
+		private var lastPlatID:String = "";
 		override public function handleBeginContact(callback:InteractionCallback):void {
 			
 			var collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
@@ -417,6 +418,11 @@ package {
 			}
 			
 			if ( collider is Platform ) {
+				if ( lastPlatID != "" && lastPlatID != collider.name ) {
+//					_isMoving = false;
+				}  
+				
+				lastPlatID = collider.name;
 				_onGround = true;
 //				_isMoving = false;
 				_doubleJumpAvailable = true;

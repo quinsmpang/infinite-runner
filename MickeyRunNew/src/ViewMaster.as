@@ -47,6 +47,8 @@ package
 		private var _context:GameContext;
 		private var _state:IState;
 		
+		public var _cameraTracker:CitrusSprite;
+		
 		/** Game background object. */
 		private var bg:GameBackground;
 
@@ -175,7 +177,7 @@ package
 		public function addBackground():void
 		{
 			if ( bg == null ) {
-				bg = new GameBackground("background", null, _context._hero, true, _context);
+				bg = new GameBackground("background", null, _context._mickey, true, _context);
 			}
 			_state.add(bg);
 		}
@@ -246,7 +248,7 @@ package
 		
 		public function addPortal( entryX:int, entryY:int, entryH:int, exitX:int, exitY:int ):void
 		{
-			var endLevel:Sensor = new CustomPortal( "portal", { x: entryX, y: entryY, height: 200, width: 200 },
+			var endLevel:Sensor = new CustomPortal( "portal", { x: entryX, y: entryY, height: 50, width: 200 },
 				_context, exitX, exitY );
 			_state.add( endLevel );
 		}
@@ -270,6 +272,9 @@ package
 			
 			var pluto:Pluto = new Pluto("pluto", {x:x, y:y,
 				radius:37, view:plutoAnim, group:1}, _context, plutoAnim );
+			
+			_context._pluto = pluto;
+			
 			_state.add(pluto);
 		}
 		
@@ -348,7 +353,7 @@ package
 			_state.add(physicObject);	
 		}
 		
-		public function addPlatform( platformX:int=0, platWidth:int=0, 
+		public function addPlatform( platID:String, platformX:int=0, platWidth:int=0, 
 									  platformY:int=0, ballAdd:Boolean=false, friction:Number=10,
 									coinAdd:Boolean=false, rotation:Number=0 ):CustomPlatform {
 			if ( Math.random() > 0.2 ) {
@@ -368,7 +373,7 @@ package
 			
 //			image.rotation = rotation;
 			
-			var floor:CustomPlatform = new CustomPlatform("floor", {
+			var floor:CustomPlatform = new CustomPlatform( platID, {
 				x: platformX, 
 				y: platformY,
 				width:platWidth, 
@@ -431,7 +436,7 @@ package
 			switch ( type ) {
 				case GameConstants.COMPONENT_TYPE_PLATFORM:
 					_context.viewMaster.addPlatform( 
-						pos.x, width, pos.y, false, friction, true );
+						componentID, pos.x, width, pos.y, false, friction, true );
 					break;
 				case GameConstants.COMPONENT_TYPE_PORTAL:
 					_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y );

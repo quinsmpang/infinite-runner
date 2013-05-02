@@ -1,5 +1,8 @@
 package objects
 {
+	import flash.utils.setTimeout;
+	
+	import citrus.core.CitrusEngine;
 	import citrus.core.starling.StarlingState;
 	import citrus.objects.CitrusSprite;
 	import citrus.objects.NapePhysicsObject;
@@ -92,7 +95,7 @@ package objects
 			super.update( timeDelta );
 			
 			if ( this.x < _context.viewCamLeftX 
-				|| ( this.x > _context.viewCamLeftX + _context.viewCamLensWidth )  ) {
+				|| ( this.x > _context.viewCamLeftX + _context.viewCamLensWidth + 200 )  ) {
 				
 				if ( !isEntrySleeping ) {
 					_portalEntryPD.stop();

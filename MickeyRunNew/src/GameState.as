@@ -6,6 +6,7 @@ package {
 	
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
+	import citrus.objects.CitrusSprite;
 	import citrus.physics.nape.Nape;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
@@ -15,7 +16,6 @@ package {
 	import objects.CustomHills;
 	
 	import starling.display.Button;
-	import starling.events.Event;
 	import starling.textures.TextureAtlas;
 	
 	import steamboat.data.metadata.MetaData;
@@ -30,7 +30,7 @@ package {
 	public class GameState extends StarlingState {
 		
 		private var _nape:Nape;
-		private var _hero:MickeyHero;
+		private var _mickey:MickeyHero;
 		
 		private var _hillsTexture:HillsTexture;
 		
@@ -97,10 +97,10 @@ package {
 			_nape.gravity = Vec2.weak( 0, 1000 );
 			add(_nape);
 			
-			_context._hero = new MickeyHero( "hero", {x:50, y: 100, radius:37, view:heroAnim, group:1}, 
+			_context._mickey = new MickeyHero( "hero", {x:50, y: 100, radius:37, view:heroAnim, group:1}, 
 				_context, heroAnim );
-			_hero = _context._hero;
-			add(_hero);
+			_mickey = _context._mickey;
+			add(_mickey);
 			
 			_context.viewMaster.addBackground();
 //			_hillsTexture = new HillsTexture();
@@ -114,9 +114,12 @@ package {
 			
 //			_hills.visible = false;
 			
-			_cameraBounds = new Rectangle(0, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
+			_cameraBounds = new Rectangle(100, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
+			
+			// sprite that will track Starling camera
+			_context.viewMaster._cameraTracker = new CitrusSprite( "cameraTracker", { width: 1, height: 1 } );
 
-			view.camera.setUp( _hero, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.65), 
+			view.camera.setUp( _context.viewMaster._cameraTracker, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.75), 
 				_cameraBounds, new MathVector(0.15, 0.08));
 			view.camera.allowZoom = true;
 			
@@ -152,8 +155,8 @@ package {
 			var heroPos:Point = _context.locToPoint( rowData.getString( "hero_pos" ) );
 			heroPos.y += _context.groundLevel;
 			
-			_hero.x = heroPos.x;
-			_hero.y = heroPos.y;
+			_mickey.x = heroPos.x;
+			_mickey.y = heroPos.y;
 			_ce.state.view.camera.update();
 				
 //			_context.nextLevel = rowData.getString( "next_level" );
@@ -183,34 +186,41 @@ package {
 //			_hillsTexture.update();
 			
 			// update HUD
-			hud.distance = _hero.x * 0.1;
+			hud.distance = _mickey.x * 0.1;
 			
-			hud.foodScore = _hero.numCoinsCollected;
+			_context.viewMaster._cameraTracker.x = _mickey.body.position.x;
+			_context.viewMaster._cameraTracker.y = _mickey.body.position.y;
+//			_context.viewMaster._cameraTracker.x = _context._pluto.body.position.x;
+//			_context.viewMaster._cameraTracker.y = _context._pluto.body.position.y;
+			
+			hud.foodScore = _mickey.numCoinsCollected;
 			
 			// game end distance
 //			if ( _hero.x + _context.viewCamPosX > gameDistance ) {
 //				_context.gameEnded();
 //			}
 			
-			if ( _hero.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
+			if ( _mickey.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
 //				_context.endGame();
-				_hero.x = 100;
-				_hero.y = _context.groundLevel - 100;
-				_hero._isMoving = false;
-				_hero._isFlying = false;
+				_mickey.x = 100;
+//				if ( _mickey.y > _context.groundLevel - 100 ) {
+					_mickey.y = _context.groundLevel - 100;
+//				}
+				_mickey._isMoving = false;
+				_mickey._isFlying = false;
 			}
 			
-			if ( _hero.y > _context.maxY ) {
-				if ( !_hero._isFlying ) _hero.startFlying( true, true, 1500 );
-				_hero.y = _context.maxY;
+			if ( _mickey.y > _context.maxY ) {
+				if ( !_mickey._isFlying ) _mickey.startFlying( true, true, 1500 );
+				_mickey.y = _context.maxY;
 			}
 			
-			if ( _hero.y < _context.minY + 200 ) {
-				_hero.y = _context.minY + 200;
+			if ( _mickey.y < _context.minY + 200 ) {
+				_mickey.y = _context.minY + 200;
 			}
 			
-			if ( _hero.onGround && _hero.body.velocity.x > 50 ) {
-				_context.viewMaster.createEatParticle( _hero );
+			if ( _mickey.onGround && _mickey.body.velocity.x > 50 ) {
+				_context.viewMaster.createEatParticle( _mickey );
 			}
 			_context.viewMaster.animateEatParticles();
 			

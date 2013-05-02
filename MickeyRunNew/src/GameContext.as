@@ -8,6 +8,8 @@ package
 	import common.util.SubscribableHashtable;
 	import common.util.TraceLog;
 	
+	import objects.Pluto;
+	
 	import org.osflash.signals.Signal;
 	
 	import starling.display.Button;
@@ -40,9 +42,8 @@ package
 		public var minY:int = -1500;
 		public var maxY:int;
 		
-		public var currentLevel:String = "lev_00"; // starting level
-		public var currentLevelNum:int = 1; // starting level
-		public var maxLevel:int = 1;
+		public var currentLevel:String = "lev_01"; // starting level
+		public var currentLevelNum:int = 2; // starting level
 		
 		public var log:ILog;
 		
@@ -51,7 +52,8 @@ package
 		public var assetLoader:AssetLoader;
 		public var gameState:SubscribableHashtable;
 		
-		public var _hero:MickeyHero;
+		public var _mickey:MickeyHero;
+		public var _pluto:Pluto;
 		
 		public var startButton:Button;
 		public var pauseButton:Button;
@@ -64,7 +66,7 @@ package
 		
 		public var hud:GameHUD;
 		
-		public const CAM_ZOOM:Number = 0.7;
+		public const CAM_ZOOM:Number = 0.65;
 		public const CAM_ZOOM_MULT:Number = ( 1 - CAM_ZOOM ) + 0.1;
 		
 		public var groundLevel:int = 0;
@@ -108,8 +110,8 @@ package
 		public function endGame():void
 		{
 			var numStars:int = levelNumStars[ currentLevelNum ];
-			if ( _hero.numCoinsCollected > numStars ) {
-				levelNumStars[ currentLevelNum ] = numStars = _hero.numCoinsCollected;
+			if ( _mickey.numCoinsCollected > numStars ) {
+				levelNumStars[ currentLevelNum ] = numStars = _mickey.numCoinsCollected;
 			}
 			
 			viewMaster.setStars( currentLevelNum, numStars );
