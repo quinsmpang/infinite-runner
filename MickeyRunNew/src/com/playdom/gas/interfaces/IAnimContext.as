@@ -1,0 +1,2 @@
+/* * Playdom, Inc. (c)2013 All Rights Reserved */ package com.playdom.gas.interfaces  {    
+	/**	 * System references for the animation system.  	 * 	 * @author Rob Harris	 */	public interface IAnimContext	{		function get viewW():int;		function set viewW(v:int):void;	}}

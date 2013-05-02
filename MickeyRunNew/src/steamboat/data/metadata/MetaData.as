@@ -5,7 +5,7 @@ package steamboat.data.metadata
 {
 	import flash.utils.getTimer;
 	
-	import common.interfaces.ILog;
+	import com.playdom.common.interfaces.ILog;
 
 	public class MetaData
 	{

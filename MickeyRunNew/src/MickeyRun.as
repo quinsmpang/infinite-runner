@@ -1,11 +1,11 @@
 package
 {
 	
+	import com.playdom.common.util.JSONLite;
+	
 	import flash.filesystem.File;
 	
 	import citrus.core.starling.StarlingCitrusEngine;
-	
-	import common.util.JSONLite;
 	
 	import starling.core.Starling;
 	

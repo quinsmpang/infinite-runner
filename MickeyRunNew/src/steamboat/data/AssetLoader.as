@@ -1,6 +1,6 @@
 package steamboat.data
 {
-	import common.interfaces.ILog;
+	import com.playdom.common.interfaces.ILog;
 	
 	import flash.display.Bitmap;
 	import flash.display.Loader;

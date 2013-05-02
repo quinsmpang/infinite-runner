@@ -1,5 +1,10 @@
 package {
 
+	import com.playdom.common.util.EnterFrameDispatcher;
+	import com.playdom.gas.AnimControl;
+	import com.playdom.gas.AnimList;
+	import com.playdom.gas.anims.Path;
+	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
@@ -15,7 +20,9 @@ package {
 	
 	import objects.CustomHills;
 	
+	import starling.display.BlendMode;
 	import starling.display.Button;
+	import starling.display.Image;
 	import starling.textures.TextureAtlas;
 	
 	import steamboat.data.metadata.MetaData;
@@ -69,6 +76,13 @@ package {
 		{
 			super.initialize();
 			
+//			var image1:Image = new Image(Assets.getTexture("BgLayer1"));
+//			image1.blendMode = BlendMode.NONE;
+//			image1.touchable = false;
+//			image1.x = 0;
+//			image1.y = 0;
+//			this.addChild( image1 );
+			
 			// ground level y
 			_context.groundLevel = stage.stageHeight;
 			groundLevel = _context.groundLevel;
@@ -102,6 +116,7 @@ package {
 			_mickey = _context._mickey;
 			add(_mickey);
 			
+			
 			_context.viewMaster.addBackground();
 //			_hillsTexture = new HillsTexture();
 			
@@ -134,12 +149,30 @@ package {
 			hud.foodScore = 0;
 			hud.distance = 0;
 			
+			_context.enterFrameDispatcher = new EnterFrameDispatcher();	
+			_context.animControl = new AnimControl( _context.viewCamLensWidth, 
+				view.camera.cameraLensHeight + ( view.camera.cameraLensHeight * ( 1 - view.camera.getZoom() ) ) );
+			
+			_context.animControl.start( _context.enterFrameDispatcher );
 //			_context.gameEndedSig.add( gameEndedControl );
 			
 			//first level:
 			gameDistance = generateLevel( _context.currentLevel );
 			
 			_context.setViewCamLensWidth( view.camera.cameraLensWidth + ( view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() )) );
+			
+			
+			var	image:Image = new Image( Assets.getMiscAtlas().getTexture("star2") );
+//			image.x = 400;
+//			image.y = 400;
+//			this.addChild( image );
+			var cspr:CitrusSprite = new CitrusSprite( "csprStar", { view: image } );
+			cspr.x = 400;
+			cspr.y = 400;
+			this.add( cspr );
+			
+			var alist:AnimList = _context.animControl.attachAnimList( cspr );
+			Path.make( alist, 1000, cspr.y, 1000, 2000 ).osc = true;
 			
 			_ce.playing = true;
 		}

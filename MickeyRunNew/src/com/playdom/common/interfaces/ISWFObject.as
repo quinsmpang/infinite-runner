@@ -1,0 +1,2 @@
+/* * Playdom, Inc. (c)2013 All Rights Reserved */ package com.playdom.common.interfaces  {    import flash.display.DisplayObject;    import flash.display.LoaderInfo;
+	/**	 * Provides access to display objects in a SWF.  	 * 	 * @author Rob Harris	 */	public interface ISWFObject	{		/**		 * Fetches a DisplayObject object.		 *  		 * @param key       A key to associate with the image.		 * 		 * @return A display object or null if not found. 		 */		function getDisplayObject( key:String, swfName:String, loaderInfo:LoaderInfo=null ):DisplayObject;	}}

@@ -1,0 +1,2 @@
+/** * Playdom, Inc. (c)2013 All Rights Reserved */package com.playdom.common.interfaces {
+	/**	 * Logs error messages to an output.  	 * 	 * @author Rob Harris	 */	public interface IErrorHandler	{		/**		 * Handles an error by sending a log message.		 * 		 * @param err  The error.		 */		function handleError( err:Error ):void;	}}

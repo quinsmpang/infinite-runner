@@ -1,12 +1,13 @@
 package
 {
+	import com.playdom.common.interfaces.ILog;
+	import com.playdom.common.util.SubscribableHashtable;
+	import com.playdom.common.util.TraceLog;
+	import com.playdom.gas.AnimControl;
+	
 	import flash.geom.Point;
 	
 	import citrus.core.CitrusEngine;
-	
-	import common.interfaces.ILog;
-	import common.util.SubscribableHashtable;
-	import common.util.TraceLog;
 	
 	import objects.Pluto;
 	
@@ -20,6 +21,7 @@ package
 	import steamboat.data.metadata.MetaData;
 	
 	import views.GameHUD;
+	import com.playdom.common.util.EnterFrameDispatcher;
 
 	public class GameContext
 	{		
@@ -70,6 +72,9 @@ package
 		public const CAM_ZOOM_MULT:Number = ( 1 - CAM_ZOOM ) + 0.1;
 		
 		public var groundLevel:int = 0;
+		
+		public var animControl:AnimControl;
+		public var enterFrameDispatcher:EnterFrameDispatcher;
 		
 		private static var _instance:GameContext;
 		

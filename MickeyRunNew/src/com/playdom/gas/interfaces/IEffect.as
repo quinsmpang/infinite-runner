@@ -1,0 +1,2 @@
+/* * Playdom, Inc. (c)2013 All Rights Reserved */ package com.playdom.gas.interfaces  {    import com.playdom.gas.AnimControl;        import flash.display.Sprite;
+	/**	 * Used to control animation effects.  	 * 	 * @author Rob Harris	 */	public interface IEffect	{		/**		 * Adds an animation to the stage.		 *  		 * @param layer       The insertion layer for the display objects.		 * @param animControl The animation control object.		 */		function makeScene(layer:Sprite, animControl:AnimControl):void	}}
