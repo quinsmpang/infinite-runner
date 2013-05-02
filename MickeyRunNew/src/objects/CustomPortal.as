@@ -75,8 +75,8 @@ package objects
 			// sensor handler
 			onBeginContact.add( onSensorTouched );
 			
-			var alist:AnimList = _context.animControl.attachAnimList( _portalExitPD );
-			Path.make( alist, 1000, _portalExitPD.y, 3000, 2000 ).osc = true;
+//			var alist:AnimList = _context.animControl.attachAnimList( _portalExitPD );
+//			Path.make( alist, 1000, _portalExitPD.y, 3000, 2000 ).osc = true;
 		}
 		
 		private function onSensorTouched(callback:InteractionCallback):void
@@ -100,8 +100,8 @@ package objects
 		override public function update( timeDelta:Number ):void {
 			super.update( timeDelta );
 			
-			_exitX = _portalExitPD.x;
-			_exitY = _portalExitPD.y;
+//			_exitX = _portalExitPD.x;
+//			_exitY = _portalExitPD.y;
 			
 			if ( this.x < _context.viewCamLeftX 
 				|| ( this.x > _context.viewCamLeftX + _context.viewCamLensWidth + 200 )  ) {
