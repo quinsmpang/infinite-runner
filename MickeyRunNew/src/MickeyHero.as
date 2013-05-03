@@ -198,6 +198,11 @@ package {
 	
 					} else if ( screenTappedTwice ) { // && _doubleJumpAvailable ) {
 //						velocity.y = -jumpHeight;
+						if ( !_onGround ) {
+							_isMoving = false;
+							screenTappedOnce = false;
+							_mobileInput.screenTouched = false;
+						}
 						_doubleJumpAvailable = false;
 					} else if ( screenTappedThrice ) {// && _flightAvailable ) {
 //						if ( !_isFlying ) startFlying( true, true, 1500 );

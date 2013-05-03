@@ -5,7 +5,7 @@
       	{
       		"uid" : "lev_00",
 	        "distance" : "2000",
-	        "hero_pos" : "200|-500",
+	        "hero_pos" : "200|-150",
 	        "next_level" : "lev_01",
 			"components" : [ 
 				"lev_00_platform_1", 
@@ -16,7 +16,7 @@
      	 }, {
 	        "uid" : "lev_01",
 	        "distance" : "2000",
-	        "hero_pos" : "200|-300",
+	        "hero_pos" : "200|-100",
 	        "next_level" : "lev_00",
 			"components" : [ 
 				"lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 

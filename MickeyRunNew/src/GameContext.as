@@ -41,7 +41,7 @@ package
 		public var viewCamRightX:int = 0;
 		private var screenHalfX:int = 0;
 		
-		public var minY:int = -1500;
+		public var minY:int = -3500;
 		public var maxY:int;
 		
 		public var currentLevel:String = "lev_01"; // starting level
@@ -68,7 +68,7 @@ package
 		
 		public var hud:GameHUD;
 		
-		public const CAM_ZOOM:Number = 0.65;
+		public const CAM_ZOOM:Number = 1.0;
 		public const CAM_ZOOM_MULT:Number = ( 1 - CAM_ZOOM ) + 0.1;
 		
 		public var groundLevel:int = 0;

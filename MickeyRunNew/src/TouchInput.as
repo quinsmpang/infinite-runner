@@ -22,6 +22,8 @@ package {
 		private var _screenLeftTouched:Boolean = false;
 		public var _buttonClicked:Boolean = false;
 		
+		public var _enabled:Boolean = true;
+		
 		private var _context:GameContext;
 		
 		public function TouchInput() {
@@ -61,6 +63,8 @@ package {
 		public var touchEndPoint:Point = new Point();
 		private function _touchEvent(tEvt:TouchEvent):void {
 				
+			if ( !_enabled ) return;
+			
 			var touchStart:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.BEGAN);
 			var touchEnd:Touch = tEvt.getTouch((_ce as StarlingCitrusEngine).starling.stage, TouchPhase.ENDED);
 			
@@ -108,6 +112,10 @@ package {
 
 		public function get screenTouched():Boolean {
 			return _screenRightTouched;
+		}
+		
+		public function set screenTouched( value:Boolean ):void {
+			_screenRightTouched = value;
 		}
 		
 		public function get screenTouchedLeft():Boolean {

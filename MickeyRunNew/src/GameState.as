@@ -3,7 +3,9 @@ package {
 	import com.playdom.common.util.EnterFrameDispatcher;
 	import com.playdom.gas.AnimControl;
 	import com.playdom.gas.AnimList;
+	import com.playdom.gas.anims.Normalizer;
 	import com.playdom.gas.anims.Path;
+	import com.playdom.gas.anims.TaskAnim;
 	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -106,7 +108,6 @@ package {
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
 				"mickeycarpet_", "mickeybubble_", "mickeywatch_", "petebwwalk_", "plutowalk_" ]);
 
-			
 			_nape = new Nape("nape");
 			_nape.gravity = Vec2.weak( 0, 1000 );
 			add(_nape);
@@ -115,7 +116,6 @@ package {
 				_context, heroAnim );
 			_mickey = _context._mickey;
 			add(_mickey);
-			
 			
 			_context.viewMaster.addBackground();
 //			_hillsTexture = new HillsTexture();
@@ -132,10 +132,13 @@ package {
 			_cameraBounds = new Rectangle(100, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
 			
 			// sprite that will track Starling camera
-			_context.viewMaster._cameraTracker = new CitrusSprite( "cameraTracker", { width: 1, height: 1 } );
+			_context.viewMaster._cameraTracker = new CitrusSprite( "cameraTracker", { width: 100, height: 100 } );
+//			_context.viewMaster._cameraTracker.view = new Image( Assets.getMiscAtlas().getTexture("star2") );
+//			this.add( _context.viewMaster._cameraTracker );
 
-			view.camera.setUp( _context.viewMaster._cameraTracker, new MathVector(stage.stageWidth * 0.1, stage.stageHeight * 0.75), 
-				_cameraBounds, new MathVector(0.15, 0.08));
+			view.camera.setUp( _context.viewMaster._cameraTracker, 
+				new MathVector(stage.stageWidth * 0.4, stage.stageHeight * 0.65), 
+				_cameraBounds, new MathVector(1.0, 1.0));
 			view.camera.allowZoom = true;
 			
 //			view.camera.zoomEasing = 0.01;
@@ -172,7 +175,27 @@ package {
 			this.add( cspr );
 			
 			var alist:AnimList = _context.animControl.attachAnimList( cspr );
-			Path.make( alist, 1000, cspr.y, 1000, 2000 ).osc = true;
+			var path:Path = Path.make( alist, 500, cspr.y, 700, 1000 );
+			path.osc = true;
+			path.easing = Normalizer.EASE_BOTH;
+			
+			_context.viewMaster._mobileInput._enabled = false;
+			
+			_context.viewMaster._cameraTracker.x = _context._pluto.body.position.x;
+			_context.viewMaster._cameraTracker.y = _context._pluto.body.position.y;
+			
+			alist = _context.animControl.attachAnimList( _context.viewMaster._cameraTracker );
+			path = Path.make( alist, _mickey.body.position.x, _mickey.body.position.y,
+				1000, 2000 );
+			path.block = true;
+			
+			var task:TaskAnim = TaskAnim.make( alist, 0 );
+			task.addTask( function():void {
+				view.camera.easing = new MathVector( 0.15, 0.08 );
+				view.camera.target = _mickey;
+				_context.viewMaster._mobileInput._enabled = true;
+			} );
+			
 			
 			_ce.playing = true;
 		}
@@ -221,8 +244,8 @@ package {
 			// update HUD
 			hud.distance = _mickey.x * 0.1;
 			
-			_context.viewMaster._cameraTracker.x = _mickey.body.position.x;
-			_context.viewMaster._cameraTracker.y = _mickey.body.position.y;
+//			_context.viewMaster._cameraTracker.x = _mickey.body.position.x;
+//			_context.viewMaster._cameraTracker.y = _mickey.body.position.y;
 //			_context.viewMaster._cameraTracker.x = _context._pluto.body.position.x;
 //			_context.viewMaster._cameraTracker.y = _context._pluto.body.position.y;
 			
@@ -257,6 +280,9 @@ package {
 			}
 			_context.viewMaster.animateEatParticles();
 			
+//			if ( _context.viewMaster._mobileInput.screenTouched ) {
+//				_context.viewMaster._mobileInput.screenTouched = false;
+//			}
 		}
 	}
 }
