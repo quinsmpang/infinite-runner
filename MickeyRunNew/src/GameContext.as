@@ -1,9 +1,12 @@
 package
 {
 	import com.playdom.common.interfaces.ILog;
+	import com.playdom.common.util.EnterFrameDispatcher;
 	import com.playdom.common.util.SubscribableHashtable;
 	import com.playdom.common.util.TraceLog;
 	import com.playdom.gas.AnimControl;
+	import com.playdom.gas.AnimList;
+	import com.playdom.gas.anims.TaskAnim;
 	
 	import flash.geom.Point;
 	
@@ -21,7 +24,6 @@ package
 	import steamboat.data.metadata.MetaData;
 	
 	import views.GameHUD;
-	import com.playdom.common.util.EnterFrameDispatcher;
 
 	public class GameContext
 	{		
@@ -113,6 +115,17 @@ package
 		}
 		
 		public function endGame():void
+		{
+			viewMaster._mobileInput._enabled = false;
+			_mickey._isMoving = false;
+			_pluto._isMoving = false;
+			
+			var alist:AnimList = animControl.attachAnimList();
+			var task:TaskAnim = TaskAnim.make( alist, 1500 );
+			task.addTask( endGameHelper );
+		}
+		
+		private function endGameHelper():void
 		{
 			var numStars:int = levelNumStars[ currentLevelNum ];
 			if ( _mickey.numCoinsCollected > numStars ) {

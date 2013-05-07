@@ -13,6 +13,7 @@ package objects
 		//		private var _hero:MickeyHero = null;
 		private var enemyAnim:AnimationSequence = null;
 		private var _context:GameContext;
+		public var _isMoving:Boolean;
 		
 		public function Pluto(name:String, params:Object=null, context:GameContext=null, 
 									enemyAnim:AnimationSequence=null )
@@ -20,6 +21,8 @@ package objects
 			this._context = context;
 			this.enemyKillVelocity = context.heroMaxSpeed;
 			this.enemyAnim = enemyAnim;
+			
+			_isMoving = true;
 			super(name, params);
 			//			this._hero = _hero;
 			//			this._body.mass += 500;
@@ -28,7 +31,10 @@ package objects
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
 			
-			
+			if ( !_isMoving )
+			{
+				body.velocity.x = 0;
+			}
 			//			if (_hero.x - this.x > 300 ) {
 			//				this._ce.state.remove(this);
 			//				this.destroy();
@@ -37,7 +43,14 @@ package objects
 		}
 		
 		override protected function updateAnimation():void {
-			_animation = "plutowalk_";
+			if ( _isMoving )
+			{
+				_animation = "plutowalk_";
+			}
+			else 
+			{
+				_animation = "plutohappy_";
+			}
 			//			_animation = _hurt ? "die" : "petebwwalk_";
 		}
 		
@@ -46,6 +59,7 @@ package objects
 		//			super.destroy();
 		//		}
 		
+		private var hasCollided:Boolean = false;
 		override public function handleBeginContact(callback:InteractionCallback):void {
 			var collider:NapePhysicsObject = NapeUtils.CollisionGetOther(this, callback);
 			
@@ -57,7 +71,11 @@ package objects
 				if ( collider is _enemyClass )
 				{
 //					hurt();
-					_context.endGame();
+					if ( !hasCollided ) 
+					{
+						_context.endGame();
+						hasCollided = true;
+					}
 				}
 				else if ((collider is Platform && collisionAngle != 90) || collider is Enemy)
 				{

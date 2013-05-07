@@ -106,7 +106,7 @@ package {
 				"slice_", 12, true, "none");
 			
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
-				"mickeycarpet_", "mickeybubble_", "mickeywatch_", "petebwwalk_", "plutowalk_" ]);
+				"mickeycarpet_", "mickeybubble_", "mickeywatch_", "petebwwalk_", "plutowalk_", "plutohappy_" ]);
 
 			_nape = new Nape("nape");
 			_nape.gravity = Vec2.weak( 0, 1000 );
@@ -133,7 +133,7 @@ package {
 			
 			// sprite that will track Starling camera
 			_context.viewMaster._cameraTracker = new CitrusSprite( "cameraTracker", { width: 100, height: 100 } );
-//			_context.viewMaster._cameraTracker.view = new Image( Assets.getMiscAtlas().getTexture("star2") );
+			_context.viewMaster._cameraTracker.view = new Image( Assets.getMiscAtlas().getTexture("star2") );
 //			this.add( _context.viewMaster._cameraTracker );
 
 			view.camera.setUp( _context.viewMaster._cameraTracker, 
@@ -175,18 +175,18 @@ package {
 			this.add( cspr );
 			
 			var alist:AnimList = _context.animControl.attachAnimList( cspr );
-			var path:Path = Path.make( alist, 500, cspr.y, 700, 1000 );
+			var path:Path = Path.make( alist, 500, cspr.y, 700, 800 );
 			path.osc = true;
 			path.easing = Normalizer.EASE_BOTH;
 			
 			_context.viewMaster._mobileInput._enabled = false;
 			
 			_context.viewMaster._cameraTracker.x = _context._pluto.body.position.x;
-			_context.viewMaster._cameraTracker.y = _context._pluto.body.position.y;
+			_context.viewMaster._cameraTracker.y = _context._pluto.body.position.y + 100;
 			
 			alist = _context.animControl.attachAnimList( _context.viewMaster._cameraTracker );
 			path = Path.make( alist, _mickey.body.position.x, _mickey.body.position.y,
-				1000, 2000 );
+				1000, 1500 );
 			path.block = true;
 			
 			var task:TaskAnim = TaskAnim.make( alist, 0 );

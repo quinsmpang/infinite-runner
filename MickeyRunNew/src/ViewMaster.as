@@ -267,8 +267,8 @@ package
 		public function addPluto( x:int, y:int ):void {
 			
 			var plutoAnim:AnimationSequence = new AnimationSequence(Assets.getCharactersTextureAtlas(), 
-				[ "plutowalk_" ], 
-				"plutowalk_", 12, true, "none");
+				[ "plutowalk_", "plutohappy_" ], 
+				"plutohappy_", 12, true, "none");
 			
 			var pluto:Pluto = new Pluto("pluto", {x:x, y:y,
 				radius:37, view:plutoAnim, group:1}, _context, plutoAnim );
