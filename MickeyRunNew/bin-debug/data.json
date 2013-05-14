@@ -31,11 +31,9 @@
 	        "hero_pos" : "200|-300",
 	        "next_level" : "lev_00",
 			"components" : [ 
-				"lev_01_platform_1", "lev_01_platform_2", "lev_01_platform_3", 
-				"lev_01_star_1", "lev_01_star_2", "lev_01_star_3", "lev_01_pluto", 
-				"lev_01_spring_1", "lev_01_spring_2",
-				"lev_01_portal_1", "lev_01_enemy_1",
-				"lev_02_crate_1"
+				"lev_01_platform_1", "lev_01_platform_3",
+				"lev_01_pluto", "lev_02_spring_1", "lev_02_spring_2",
+				"lev_02_spring_3", 
 				],
 			"seq" : "3"
      	 }
@@ -320,6 +318,36 @@
 		"friction" : "",
 		"second_pos" : "",
 		"spawn_item" : "lev_02_portal_5"
+	  }, {
+	 	"uid" : "lev_02_spring_1",
+        "level" : "lev_01",
+		"type" : "spring",
+		"pos" : "1000|-280",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	  }, {
+	 	"uid" : "lev_02_spring_2",
+        "level" : "lev_01",
+		"type" : "spring",
+		"pos" : "1100|-480",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	  }, {
+	 	"uid" : "lev_02_spring_3",
+        "level" : "lev_01",
+		"type" : "spring",
+		"pos" : "1200|-680",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
 	 } ]
     }
   },

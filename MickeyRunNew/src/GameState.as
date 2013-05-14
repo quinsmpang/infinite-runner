@@ -137,7 +137,7 @@ package {
 //			this.add( _context.viewMaster._cameraTracker );
 
 			view.camera.setUp( _context.viewMaster._cameraTracker, 
-				new MathVector(stage.stageWidth * 0.4, stage.stageHeight * 0.65), 
+				new MathVector(stage.stageWidth * 0.4, stage.stageHeight * 0.80), 
 				_cameraBounds, new MathVector(1.0, 1.0));
 			view.camera.allowZoom = true;
 			
@@ -152,11 +152,11 @@ package {
 			hud.foodScore = 0;
 			hud.distance = 0;
 			
-			_context.enterFrameDispatcher = new EnterFrameDispatcher();	
+//			_context.enterFrameDispatcher = new EnterFrameDispatcher();	
 			_context.animControl = new AnimControl( _context.viewCamLensWidth, 
 				view.camera.cameraLensHeight + ( view.camera.cameraLensHeight * ( 1 - view.camera.getZoom() ) ) );
 			
-			_context.animControl.start( _context.enterFrameDispatcher );
+//			_context.animControl.start( _context.enterFrameDispatcher );
 //			_context.gameEndedSig.add( gameEndedControl );
 			
 			//first level:
@@ -174,27 +174,36 @@ package {
 			cspr.y = 400;
 			this.add( cspr );
 			
-			var alist:AnimList = _context.animControl.attachAnimList( cspr );
-			var path:Path = Path.make( alist, 500, cspr.y, 700, 800 );
-			path.osc = true;
-			path.easing = Normalizer.EASE_BOTH;
-			
-			_context.viewMaster._mobileInput._enabled = false;
-			
-			_context.viewMaster._cameraTracker.x = _context._pluto.body.position.x;
-			_context.viewMaster._cameraTracker.y = _context._pluto.body.position.y + 100;
-			
-			alist = _context.animControl.attachAnimList( _context.viewMaster._cameraTracker );
-			path = Path.make( alist, _mickey.body.position.x, _mickey.body.position.y,
-				1000, 1500 );
-			path.block = true;
-			
-			var task:TaskAnim = TaskAnim.make( alist, 0 );
-			task.addTask( function():void {
+			if ( _context._pluto )
+			{
+				var alist:AnimList = _context.animControl.attachAnimList( cspr );
+				var path:Path = Path.make( alist, 500, cspr.y, 700, 800 );
+				path.osc = true;
+				path.easing = Normalizer.EASE_BOTH;
+				
+				_context.viewMaster._mobileInput._enabled = false;
+				_context.viewMaster._cameraTracker.x = _context._pluto.body.position.x;
+				_context.viewMaster._cameraTracker.y = _context._pluto.body.position.y + 100;
+				
+				alist = _context.animControl.attachAnimList( _context.viewMaster._cameraTracker );
+				path = Path.make( alist, _mickey.body.position.x, _mickey.body.position.y,
+					1000, 1500 );
+				path.block = true;
+				path.easing = Normalizer.EASE_BOTH;
+				
+				var task:TaskAnim = TaskAnim.make( alist, 0 );
+				task.addTask( function():void {
+					view.camera.easing = new MathVector( 0.15, 0.08 );
+					view.camera.target = _mickey;
+					_context.viewMaster._mobileInput._enabled = true;
+				} );
+			}
+			else
+			{
 				view.camera.easing = new MathVector( 0.15, 0.08 );
 				view.camera.target = _mickey;
 				_context.viewMaster._mobileInput._enabled = true;
-			} );
+			}
 			
 			
 			_ce.playing = true;
@@ -233,6 +242,8 @@ package {
 		
 		override public function update(timeDelta:Number):void {
 			super.update(timeDelta);
+			
+			_context.animControl.animate();
 			
 			_context.viewCamPos = view.camera.camPos;
 			_context.viewCamLeftX = view.camera.camPos.x;
