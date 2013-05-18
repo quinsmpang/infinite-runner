@@ -31,9 +31,11 @@
 	        "hero_pos" : "200|-300",
 	        "next_level" : "lev_00",
 			"components" : [ 
-				"lev_01_platform_1", "lev_01_platform_3",
-				"lev_01_pluto", "lev_02_spring_1", "lev_02_spring_2",
+				"lev_02_platform_1", "lev_02_platform_3",
+				"lev_02_pluto", "lev_02_spring_1", "lev_02_spring_2",
 				"lev_02_spring_3", 
+				"lev_02_star_1", "lev_02_star_2", "lev_02_star_3",
+				"lev_02_portal_1", "lev_02_portal_2",
 				],
 			"seq" : "3"
      	 }
@@ -308,6 +310,26 @@
 		"friction" : "",
 		"second_pos" : "",
 		"spawn_item" : ""
+   	  }, {
+		"uid" : "lev_02_portal_1",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "1950|-100",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "100|-550",
+		"spawn_item" : ""
+   	  }, {
+		"uid" : "lev_02_portal_2",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "1950|-550",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "100|-100",
+		"spawn_item" : ""
       }, {
       	"uid" : "lev_02_crate_1",
         "level" : "lev_02",
@@ -343,6 +365,66 @@
         "level" : "lev_01",
 		"type" : "spring",
 		"pos" : "1200|-680",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+        "uid" : "lev_02_platform_1",
+        "level" : "lev_02",
+		"type" : "platform",
+		"pos" : "1000|0",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+        "uid" : "lev_02_platform_3",
+        "level" : "lev_02",
+		"type" : "platform",
+		"pos" : "1000|-450",
+		"width" : "2000",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_02_star_1",
+        "level" : "lev_02",
+		"type" : "star",
+		"pos" : "1000|-220",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_02_star_2",
+        "level" : "lev_02",
+		"type" : "star",
+		"pos" : "1800|-220",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_02_star_3",
+        "level" : "lev_02",
+		"type" : "star",
+		"pos" : "500|-300",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_02_pluto",
+        "level" : "lev_02",
+		"type" : "pluto",
+		"pos" : "1600|-550",
 		"width" : "",
 		"height" : "",
 		"friction" : "",

@@ -53,7 +53,7 @@ package objects
 //			psTexture =	Assets.getMiscAtlas().getTexture( "ParticleTexture" );
 				
 			_portalEntryPD = new PDParticleSystem(psconfig, psTexture);
-			_portalEntryPD.start();
+//			_portalEntryPD.start();
 			
 			super( name, params );
 			this.view = _portalEntryPD;
@@ -64,7 +64,7 @@ package objects
 				_portalExitPD = 
 					((((_ce.state as StarlingState).view as StarlingView).getArt(_portalExit) as StarlingArt).content as PDParticleSystem);
 			}
-			_portalExitPD.start();
+//			_portalExitPD.start();
 			
 //			_portalEntryPD.blendMode = BlendMode.NONE;
 //			_portalExitPD.blendMode = BlendMode.NONE;
@@ -113,7 +113,7 @@ package objects
 				}
 			} else {
 				if ( isEntrySleeping ) {
-					_portalEntryPD.start();
+//					_portalEntryPD.start();
 					isEntrySleeping = false;
 				}
 			}
@@ -127,7 +127,7 @@ package objects
 				}
 			} else {
 				if ( isExitSleeping ) {
-					_portalExitPD.start();
+//					_portalExitPD.start();
 					isExitSleeping = false;
 				}
 			}

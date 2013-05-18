@@ -137,7 +137,7 @@ package {
 //			this.add( _context.viewMaster._cameraTracker );
 
 			view.camera.setUp( _context.viewMaster._cameraTracker, 
-				new MathVector(stage.stageWidth * 0.4, stage.stageHeight * 0.80), 
+				new MathVector(stage.stageWidth * 0.4, stage.stageHeight * 0.70), 
 				_cameraBounds, new MathVector(1.0, 1.0));
 			view.camera.allowZoom = true;
 			
@@ -165,21 +165,20 @@ package {
 			_context.setViewCamLensWidth( view.camera.cameraLensWidth + ( view.camera.cameraLensWidth  * ( 1 - view.camera.getZoom() )) );
 			
 			
-			var	image:Image = new Image( Assets.getMiscAtlas().getTexture("star2") );
-//			image.x = 400;
-//			image.y = 400;
-//			this.addChild( image );
-			var cspr:CitrusSprite = new CitrusSprite( "csprStar", { view: image } );
-			cspr.x = 400;
-			cspr.y = 400;
-			this.add( cspr );
+//			var	image:Image = new Image( Assets.getMiscAtlas().getTexture("star2") );
+//			var cspr:CitrusSprite = new CitrusSprite( "csprStar", { view: image } );
+//			cspr.x = 400;
+//			cspr.y = 400;
+//			this.add( cspr );
 			
 			if ( _context._pluto )
 			{
-				var alist:AnimList = _context.animControl.attachAnimList( cspr );
-				var path:Path = Path.make( alist, 500, cspr.y, 700, 800 );
-				path.osc = true;
-				path.easing = Normalizer.EASE_BOTH;
+				var alist:AnimList;
+				var path:Path;
+//				var alist:AnimList = _context.animControl.attachAnimList( cspr );
+//				var path:Path = Path.make( alist, 500, cspr.y, 700, 800 );
+//				path.osc = true;
+//				path.easing = Normalizer.EASE_BOTH;
 				
 				_context.viewMaster._mobileInput._enabled = false;
 				_context.viewMaster._cameraTracker.x = _context._pluto.body.position.x;
@@ -253,14 +252,14 @@ package {
 //			_hillsTexture.update();
 			
 			// update HUD
-			hud.distance = _mickey.x * 0.1;
+//			hud.distance = _mickey.x * 0.1;
 			
 //			_context.viewMaster._cameraTracker.x = _mickey.body.position.x;
 //			_context.viewMaster._cameraTracker.y = _mickey.body.position.y;
 //			_context.viewMaster._cameraTracker.x = _context._pluto.body.position.x;
 //			_context.viewMaster._cameraTracker.y = _context._pluto.body.position.y;
 			
-			hud.foodScore = _mickey.numCoinsCollected;
+//			hud.foodScore = _mickey.numCoinsCollected;
 			
 			// game end distance
 //			if ( _hero.x + _context.viewCamPosX > gameDistance ) {
@@ -282,14 +281,14 @@ package {
 				_mickey.y = _context.maxY;
 			}
 			
-			if ( _mickey.y < _context.minY + 200 ) {
-				_mickey.y = _context.minY + 200;
-			}
-			
-			if ( _mickey.onGround && _mickey.body.velocity.x > 50 ) {
-				_context.viewMaster.createEatParticle( _mickey );
-			}
-			_context.viewMaster.animateEatParticles();
+//			if ( _mickey.y < _context.minY + 200 ) {
+//				_mickey.y = _context.minY + 200;
+//			}
+//			
+//			if ( _mickey.onGround && _mickey.body.velocity.x > 50 ) {
+//				_context.viewMaster.createEatParticle( _mickey );
+//			}
+//			_context.viewMaster.animateEatParticles();
 			
 //			if ( _context.viewMaster._mobileInput.screenTouched ) {
 //				_context.viewMaster._mobileInput.screenTouched = false;

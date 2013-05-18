@@ -1,5 +1,9 @@
 package
 {
+	import com.playdom.gas.AnimList;
+	import com.playdom.gas.anims.Normalizer;
+	import com.playdom.gas.anims.Path;
+	
 	import flash.geom.Point;
 	
 	import citrus.core.CitrusEngine;
@@ -316,6 +320,11 @@ package
 			var physicObject:CustomCoin = new CustomCoin("star", 
 				{ x:starX, y:starY, width:width, height:height, view:image}, _context );
 			_state.add(physicObject);	
+			
+//			var alist:AnimList = _context.animControl.attachAnimList( physicObject );
+//			var path:Path = Path.make( alist, physicObject.x + 200, physicObject.y, 700, 800 );
+//			path.osc = true;
+//			path.easing = Normalizer.EASE_BOTH;
 		}
 		
 		public function addCannonSensor( cannonX:int, coinY:int ):void {

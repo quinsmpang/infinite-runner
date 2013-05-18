@@ -46,8 +46,8 @@ package
 		public var minY:int = -3500;
 		public var maxY:int;
 		
-		public var currentLevel:String = "lev_01"; // starting level
-		public var currentLevelNum:int = 2; // starting level
+		public var currentLevel:String = "lev_02"; // starting level
+		public var currentLevelNum:int; // starting level
 		
 		public var log:ILog;
 		
@@ -70,7 +70,7 @@ package
 		
 		public var hud:GameHUD;
 		
-		public const CAM_ZOOM:Number = 1.0;
+		public const CAM_ZOOM:Number = 0.65;
 		public const CAM_ZOOM_MULT:Number = ( 1 - CAM_ZOOM ) + 0.1;
 		
 		public var groundLevel:int = 0;
