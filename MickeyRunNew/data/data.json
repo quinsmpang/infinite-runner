@@ -27,15 +27,14 @@
 			"seq" : "2"
      	 }, {
      	 	"uid" : "lev_02",
-	        "distance" : "2000",
-	        "hero_pos" : "200|-300",
+	        "distance" : "1280",
+	        "hero_pos" : "200|-100",
 	        "next_level" : "lev_00",
 			"components" : [ 
-				"lev_02_platform_1", "lev_02_platform_3",
-				"lev_02_pluto", "lev_02_spring_1", "lev_02_spring_2",
-				"lev_02_spring_3", 
+				"lev_02_platform_1", "lev_02_platform_2", "lev_02_platform_3", "lev_02_platform_4",
+				"lev_02_spring_1", "lev_02_ball_1",
 				"lev_02_star_1", "lev_02_star_2", "lev_02_star_3",
-				"lev_02_portal_1", "lev_02_portal_2",
+				"lev_02_portal_1", "lev_02_portal_2", "lev_02_portal_3",
 				],
 			"seq" : "3"
      	 }
@@ -301,34 +300,44 @@
 		"second_pos" : "",
 		"spawn_item" : ""
       }, {
-      	"uid" : "lev_02_pluto",
-        "level" : "lev_02",
-		"type" : "pluto",
-		"pos" : "2800|-720",
-		"width" : "",
-		"height" : "",
-		"friction" : "",
-		"second_pos" : "",
-		"spawn_item" : ""
-   	  }, {
 		"uid" : "lev_02_portal_1",
         "level" : "lev_01",
 		"type" : "portal",
-		"pos" : "1950|-100",
+		"pos" : "1280|-100",
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
-		"second_pos" : "100|-550",
+		"second_pos" : "1280|-350",
 		"spawn_item" : ""
    	  }, {
 		"uid" : "lev_02_portal_2",
         "level" : "lev_01",
 		"type" : "portal",
-		"pos" : "1950|-550",
+		"pos" : "20|-350",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "20|-650",
+		"spawn_item" : ""
+      }, {
+		"uid" : "lev_02_portal_3",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "1280|-650",
 		"width" : "20",
 		"height" : "50",
 		"friction" : "1",
 		"second_pos" : "100|-100",
+		"spawn_item" : ""
+   	  }, {
+		"uid" : "lev_02_portal_4",
+        "level" : "lev_01",
+		"type" : "portal",
+		"pos" : "-100|-100",
+		"width" : "20",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "800|-350",
 		"spawn_item" : ""
       }, {
       	"uid" : "lev_02_crate_1",
@@ -344,7 +353,7 @@
 	 	"uid" : "lev_02_spring_1",
         "level" : "lev_01",
 		"type" : "spring",
-		"pos" : "1000|-280",
+		"pos" : "1000|-220",
 		"width" : "",
 		"height" : "",
 		"friction" : "",
@@ -374,8 +383,18 @@
         "uid" : "lev_02_platform_1",
         "level" : "lev_02",
 		"type" : "platform",
-		"pos" : "1000|0",
-		"width" : "2000",
+		"pos" : "640|-20",
+		"width" : "1280",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+        "uid" : "lev_02_platform_2",
+        "level" : "lev_02",
+		"type" : "platform",
+		"pos" : "370|-300",
+		"width" : "740",
 		"height" : "50",
 		"friction" : "1",
 		"second_pos" : "",
@@ -384,8 +403,18 @@
         "uid" : "lev_02_platform_3",
         "level" : "lev_02",
 		"type" : "platform",
-		"pos" : "1000|-450",
-		"width" : "2000",
+		"pos" : "1080|-300",
+		"width" : "400",
+		"height" : "50",
+		"friction" : "1",
+		"second_pos" : "",
+		"spawn_item" : ""
+      }, {
+        "uid" : "lev_02_platform_4",
+        "level" : "lev_02",
+		"type" : "platform",
+		"pos" : "640|-600",
+		"width" : "1280",
 		"height" : "50",
 		"friction" : "1",
 		"second_pos" : "",
@@ -421,10 +450,30 @@
 		"second_pos" : "",
 		"spawn_item" : ""
 	 }, {
+		"uid" : "lev_02_ball_1",
+        "level" : "lev_02",
+		"type" : "ball",
+		"pos" : "400|-250",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
 		"uid" : "lev_02_pluto",
         "level" : "lev_02",
 		"type" : "pluto",
-		"pos" : "1600|-550",
+		"pos" : "300|-450",
+		"width" : "",
+		"height" : "",
+		"friction" : "",
+		"second_pos" : "",
+		"spawn_item" : ""
+	 }, {
+		"uid" : "lev_02_enemy_1",
+        "level" : "lev_02",
+		"type" : "enemy",
+		"pos" : "400|-400",
 		"width" : "",
 		"height" : "",
 		"friction" : "",

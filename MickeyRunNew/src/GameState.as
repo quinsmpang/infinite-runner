@@ -25,6 +25,7 @@ package {
 	import starling.display.BlendMode;
 	import starling.display.Button;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.textures.TextureAtlas;
 	
 	import steamboat.data.metadata.MetaData;
@@ -100,13 +101,16 @@ package {
 			_context.initNewLevel();
 			
 			mickeyTextureAtlas = Assets.getMickeyAtlas();
+			var heroAnimArray:Array = [ "slice_", "mickeyjump2_", "mickeythrow_", 
+				"mickeypush_", "mickeycarpet_", "mickeybubble_", "mickeyidle_" ];
+			
 			heroAnim = new AnimationSequence(mickeyTextureAtlas, 
-				[ "slice_", "mickeyjump2_", "mickeythrow_", 
-					"mickeypush_", "mickeycarpet_", "mickeybubble_", "mickeyidle_", "mickeywatch_" ], 
-				"slice_", 12, true, "none");
+				heroAnimArray, "slice_", 12, true, "none");
+			
+			_context.viewMaster.scaleTextures( heroAnim, heroAnimArray );
 			
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
-				"mickeycarpet_", "mickeybubble_", "mickeywatch_", "petebwwalk_", "plutowalk_", "plutohappy_" ]);
+				"mickeycarpet_", "mickeybubble_", "petebwwalk_", "plutowalk_", "plutohappy_" ]);
 
 			_nape = new Nape("nape");
 			_nape.gravity = Vec2.weak( 0, 1000 );
@@ -129,7 +133,7 @@ package {
 			
 //			_hills.visible = false;
 			
-			_cameraBounds = new Rectangle(100, _context.minY, int.MAX_VALUE, int.MAX_VALUE);
+			_cameraBounds = new Rectangle(10, _context.minY, 1280, 720);
 			
 			// sprite that will track Starling camera
 			_context.viewMaster._cameraTracker = new CitrusSprite( "cameraTracker", { width: 100, height: 100 } );
@@ -137,7 +141,7 @@ package {
 //			this.add( _context.viewMaster._cameraTracker );
 
 			view.camera.setUp( _context.viewMaster._cameraTracker, 
-				new MathVector(stage.stageWidth * 0.4, stage.stageHeight * 0.70), 
+				new MathVector(stage.stageWidth * 0.4, stage.stageHeight * 0.80), 
 				_cameraBounds, new MathVector(1.0, 1.0));
 			view.camera.allowZoom = true;
 			
@@ -234,7 +238,7 @@ package {
 			}
 			
 			view.camera.bounds = new Rectangle( 0, _context.minY, 
-					levelDistance , int.MAX_VALUE );
+					levelDistance , stage.stageHeight );
 			
 			return levelDistance;
 		}

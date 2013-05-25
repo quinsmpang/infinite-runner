@@ -89,8 +89,11 @@ package objects
 			}
 			
 			if ( collider is MickeyHero ) {
+				var facingLeft:Boolean = _exitX < _context.viewCamLeftX + _context.viewCamLensWidth / 2;
+				( collider as MickeyHero ).turn( facingLeft );
 				( collider as MickeyHero )._isMoving = false;
 				( collider as MickeyHero ).screenTappedOnce = false;
+				
 				_context.viewMaster._mobileInput.screenTouched = false;
 			}
 		}

@@ -116,11 +116,11 @@ package views {
 //					this.x = _hero.x - offsetX;
 				
 				if ( _context.viewCamPos == null ) {
-					this.x = _ce.state.view.camera.camPos.x - 100;
-					this.y = _ce.state.view.camera.camPos.y - 100;
+//					this.x = _ce.state.view.camera.camPos.x - 100;
+//					this.y = _ce.state.view.camera.camPos.y - 100;
 				} else {
-					this.x = _context.viewCamLeftX - 100;
-					this.y = _context.viewCamPos.y - 100;
+//					this.x = _context.viewCamLeftX - 100;
+//					this.y = _context.viewCamPos.y - 100;
 				}
 				
 				speed = _hero.velocityX / 20;

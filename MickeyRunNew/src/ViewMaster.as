@@ -4,6 +4,7 @@ package
 	import com.playdom.gas.anims.Normalizer;
 	import com.playdom.gas.anims.Path;
 	
+	import starling.display.MovieClip;
 	import flash.geom.Point;
 	
 	import citrus.core.CitrusEngine;
@@ -67,6 +68,18 @@ package
 //			_context.startButton.fontColor = 0xffffff;
 			starColorTexture = Assets.getMiscAtlas().getTexture( "star2small" );
 			starBWTexture = Assets.getMiscAtlas().getTexture( "star2bwsmall" );
+		}
+		
+		public function scaleTextures( animSequence:AnimationSequence, animArray:Array ):void
+		{
+			var mc:MovieClip;
+			for each ( var anim:String in animArray )
+			{
+				mc = animSequence.mcSequences[ anim ] as MovieClip;
+				mc.scaleX = _context.TEXTURE_SCALE;
+				mc.scaleY = _context.TEXTURE_SCALE;
+			}
+			
 		}
 		
 		private function createButton( buttonNum:int, x:int, y:int=-1 ):Button
@@ -252,16 +265,19 @@ package
 		
 		public function addPortal( entryX:int, entryY:int, entryH:int, exitX:int, exitY:int ):void
 		{
-			var endLevel:Sensor = new CustomPortal( "portal", { x: entryX, y: entryY, height: 50, width: 200 },
+			var endLevel:Sensor = new CustomPortal( "portal", { x: entryX, y: entryY, height: 200, width: 200 },
 				_context, exitX, exitY );
 			_state.add( endLevel );
 		}
 		
 		public function addEnemy( x:int, y:int ):void {
 			
+			var enemyAnimArray:Array = [ "petebwwalk_" ];
 			var enemyAnim:AnimationSequence = new AnimationSequence(Assets.getCharactersTextureAtlas(), 
-				[ "petebwwalk_" ], 
+				enemyAnimArray, 
 				"petebwwalk_", 12, true, "none");
+			
+			_context.viewMaster.scaleTextures( enemyAnim, enemyAnimArray );
 			
 			var enemy:CustomEnemy = new CustomEnemy("enemy", {x:x, y:y,
 				radius:60, view:enemyAnim, group:1}, _context, enemyAnim );
@@ -270,9 +286,12 @@ package
 		
 		public function addPluto( x:int, y:int ):void {
 			
+			var plutoAnimArray:Array = [ "plutowalk_", "plutohappy_" ];
 			var plutoAnim:AnimationSequence = new AnimationSequence(Assets.getCharactersTextureAtlas(), 
-				[ "plutowalk_", "plutohappy_" ], 
+				plutoAnimArray, 
 				"plutohappy_", 12, true, "none");
+			
+			_context.viewMaster.scaleTextures( plutoAnim, plutoAnimArray );
 			
 			var pluto:Pluto = new Pluto("pluto", {x:x, y:y,
 				radius:37, view:plutoAnim, group:1}, _context, plutoAnim );
@@ -331,7 +350,7 @@ package
 			var image:Image;
 			var width:int; var height:int;
 			
-			width = 100; height = 50;
+			width = 100; height = 20;
 
 			var physicObject:CustomCannonSensor = new CustomCannonSensor("spring", 
 				{ x:cannonX, y:coinY, width:width, height:height, view:image}, _context );
@@ -366,18 +385,18 @@ package
 									  platformY:int=0, ballAdd:Boolean=false, friction:Number=10,
 									coinAdd:Boolean=false, rotation:Number=0 ):CustomPlatform {
 			if ( Math.random() > 0.2 ) {
-				addSprite( platformX, platformY - 400, "tree" ); 
+//				addSprite( platformX, platformY - 400, "tree" ); 
 			}
 			
 			var numBushes:int = ( platWidth / 200 ) * Math.random();
 			for (var i:int = 0; i < numBushes; i++) 
 			{
-				addSprite( platformX + ((platWidth/2) * Math.random()) - platWidth/4, platformY - 97, "bush" );
+//				addSprite( platformX + ((platWidth/2) * Math.random()) - platWidth/4, platformY - 97, "bush" );
 			}
 			
 						
 			var textureName:String = "platformNew" + platWidth;
-			var image:Image = new Image( _miscTextureAtlas.getTexture(textureName) );
+//			var image:Image = new Image( _miscTextureAtlas.getTexture(textureName) );
 //			image.scaleX = platWidth / 800;
 			
 //			image.rotation = rotation;
@@ -386,10 +405,10 @@ package
 				x: platformX, 
 				y: platformY,
 				width:platWidth, 
-				height: 100//, 
+				height: 10//, 
 //				friction:friction 
 			}, _context);
-			floor.view = image;
+//			floor.view = image;
 			
 			floor.body.rotation = rotation;
 			

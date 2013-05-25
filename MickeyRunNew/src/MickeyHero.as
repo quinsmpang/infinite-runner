@@ -94,7 +94,7 @@ package {
 			_heroAnim = heroAnim;
 
 			jumpAcceleration += 3;
-			jumpHeight += 100;
+			jumpHeight += 40;
 			
 			this._body.gravMass = 2.6;
 			
@@ -195,6 +195,7 @@ package {
 						_onGround = false;
 						
 						_animation = "slice_";
+		
 	
 					} else if ( screenTappedTwice ) { // && _doubleJumpAvailable ) {
 //						velocity.y = -jumpHeight;
@@ -304,6 +305,11 @@ package {
 				}
 			}
 			
+			if ( velocity.x != 0 ) {
+				if ( _inverted ) velocity.x = -_minSpeed;
+				else velocity.x = _minSpeed;
+			}
+				
 			_body.velocity = velocity;
 			
 			_updateAnimation();
@@ -316,6 +322,14 @@ package {
 			
 			particleCoffeePD.emitterY = this.y;
 			
+		}
+		
+		public function turn( left:Boolean=true ):void
+		{
+			if ( _isMoving )
+			{
+				_inverted = !left;
+			}
 		}
 		
 		private var _flyingPD:PDParticleSystem;
@@ -382,7 +396,7 @@ package {
 			}
 
 			if ( _animation == "slice_" ) {
-				setAnimFPS( _animation, Math.round( this.body.velocity.x / 8 ) );
+				setAnimFPS( _animation, Math.round( this.body.velocity.x / 6 ) );
 			}
 			
 //			if ( _mobileInput._buttonClicked ) {
