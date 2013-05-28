@@ -15,6 +15,7 @@ package {
 	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
 	import citrus.physics.nape.Nape;
+	import citrus.physics.nape.NapeDebugArt;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	
@@ -114,6 +115,7 @@ package {
 
 			_nape = new Nape("nape");
 			_nape.gravity = Vec2.weak( 0, 1000 );
+			_nape.visible = true;
 			add(_nape);
 			
 			_context._mickey = new MickeyHero( "hero", {x:50, y: 100, radius:37, view:heroAnim, group:1}, 

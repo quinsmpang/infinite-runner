@@ -32,7 +32,7 @@ package
 		public var gameEndedSig:Signal;
 		public var hasGameEnded:Boolean = false;
 		
-		public var heroMinSpeed:int = 100;
+		public var heroMinSpeed:int = 110;
 		public var heroMaxSpeed:int = 150;
 		
 		public var numCratesHit:int = 1;

@@ -265,7 +265,7 @@ package
 		
 		public function addPortal( entryX:int, entryY:int, entryH:int, exitX:int, exitY:int ):void
 		{
-			var endLevel:Sensor = new CustomPortal( "portal", { x: entryX, y: entryY, height: 200, width: 200 },
+			var endLevel:Sensor = new CustomPortal( "portal", { x: entryX, y: entryY, height: 200, width: 20 },
 				_context, exitX, exitY );
 			_state.add( endLevel );
 		}
