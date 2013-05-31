@@ -32,7 +32,7 @@ package
 		public var gameEndedSig:Signal;
 		public var hasGameEnded:Boolean = false;
 		
-		public var heroMinSpeed:int = 110;
+		public var heroMinSpeed:int = 120;
 		public var heroMaxSpeed:int = 150;
 		
 		public var numCratesHit:int = 1;
@@ -46,7 +46,7 @@ package
 		public var minY:int = 0;
 		public var maxY:int;
 		
-		public var currentLevel:String = "lev_02"; // starting level
+		public var currentLevel:String = "lev_00"; // starting level
 		public var currentLevelNum:int; // starting level
 		
 		public var log:ILog;

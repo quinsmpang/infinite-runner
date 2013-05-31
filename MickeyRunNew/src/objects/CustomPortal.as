@@ -83,13 +83,18 @@ package objects
 		{
 			var collider:NapePhysicsObject = callback.int1.userData.myData is Sensor ?
 				callback.int2.userData.myData as NapePhysicsObject : callback.int1.userData.myData;
+			var facingLeft:Boolean = _exitX < _context.viewCamLeftX + _context.viewCamLensWidth / 2;
+			
 			if ( collider ) {
 				collider.x = _exitX;
 				collider.y = _exitY;
 			}
 			
+			if ( collider is CustomBall ) {
+				( collider as CustomBall ).turn( facingLeft );
+			}
+			
 			if ( collider is MickeyHero ) {
-				var facingLeft:Boolean = _exitX < _context.viewCamLeftX + _context.viewCamLensWidth / 2;
 				( collider as MickeyHero ).turn( facingLeft );
 				( collider as MickeyHero )._isMoving = false;
 				( collider as MickeyHero ).screenTappedOnce = false;

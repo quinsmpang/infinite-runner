@@ -14,12 +14,17 @@ package {
 	import citrus.core.starling.StarlingState;
 	import citrus.math.MathVector;
 	import citrus.objects.CitrusSprite;
+	import citrus.objects.NapePhysicsObject;
 	import citrus.physics.nape.Nape;
 	import citrus.physics.nape.NapeDebugArt;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
 	
 	import nape.geom.Vec2;
+	import nape.phys.BodyType;
+	import nape.phys.GravMassMode;
+	import nape.shape.Circle;
+	import nape.shape.Polygon;
 	
 	import objects.CustomHills;
 	
@@ -123,7 +128,7 @@ package {
 			_mickey = _context._mickey;
 			add(_mickey);
 			
-			_context.viewMaster.addBackground();
+//			_context.viewMaster.addBackground();
 //			_hillsTexture = new HillsTexture();
 			
 //			_hills = new CustomHills("hills", 
@@ -242,7 +247,31 @@ package {
 			view.camera.bounds = new Rectangle( 0, _context.minY, 
 					levelDistance , stage.stageHeight );
 			
+//			testObjCreator();
+			
 			return levelDistance;
+		}
+		
+		private function testObjCreator():void
+		{
+			var nObj:NapePhysicsObject = new NapePhysicsObject( "temp" );
+//			nObj.body.shapes.add( new Polygon( Polygon.box( 100, 40 ) ) );
+//			nObj.body.position.setxy( 500, 0 );
+//			_ce.state.add( nObj );
+			
+//			nObj = new NapePhysicsObject( "temp" );
+//			nObj.body.shapes.add( new Polygon( Polygon.box(250, 30 ) ) );
+			nObj.body.shapes.add( new Circle( 50 ) );
+			nObj.body.position.setxy( 500, 620 );
+//			nObj.body.angularVel = 10;
+//			nObj.body.kinAngVel = 10;
+//			nObj.body.kinematicVel = Vec2.weak( 30, 0 );
+//			nObj.body.rotation = -0.3;
+			nObj.body.velocity = Vec2.weak( 50, 0 );
+			
+//			nObj.body.allowMovement = false;
+//			nObj.body.allowRotation = false;
+			_ce.state.add( nObj );
 		}
 		
 		override public function update(timeDelta:Number):void {
@@ -272,12 +301,13 @@ package {
 //				_context.gameEnded();
 //			}
 			
-			if ( _mickey.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
+			if ( _mickey.x < -50 || _mickey.x - 100 > levelDistance ) {//|| _hero.y > stage.stageHeight + 500) {
 //				_context.endGame();
 				_mickey.x = 100;
 //				if ( _mickey.y > _context.groundLevel - 100 ) {
 					_mickey.y = _context.groundLevel - 100;
 //				}
+				_mickey.turn( true );
 				_mickey._isMoving = false;
 				_mickey._isFlying = false;
 			}

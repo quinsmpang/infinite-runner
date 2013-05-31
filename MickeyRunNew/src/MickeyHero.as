@@ -98,6 +98,8 @@ package {
 			
 			this._body.gravMass = 2.6;
 			
+//			_body.force.set( new Vec2(0,-400));
+			
 			// working combo: jumAcc += 6; body.gravMass = 6.8; jumpHeight += 200;
 			
 			_mobileInput = context.viewMaster._mobileInput;
@@ -275,6 +277,11 @@ package {
 				_cannonHit = false;
 			}
 			
+			if ( velocity.x != 0 ) {
+				if ( _inverted ) velocity.x = -_minSpeed;
+				else velocity.x = _minSpeed;
+			}
+				
 			if ( impulseCount-- > 0 ) {
 				_body.applyImpulse( Vec2.weak( 0, -200 ) );
 				if ( impulseCount > impulseMax - 2 ) {
@@ -282,7 +289,11 @@ package {
 					_onGround = false;
 				}
 				
+//				_body.force.set( Vec2.weak( _inverted ? -500 : 500, -200 ) );
+//				velocity.x = _inverted ? -_minSpeed * 2 : _minSpeed * 2;
+					
 				if ( velocity.y > 0 ) {
+					_body.force.set( Vec2.weak( 0, 0 ) );
 					impulseCount = 0;
 					_isMoving = false;
 				}
@@ -305,11 +316,6 @@ package {
 				}
 			}
 			
-			if ( velocity.x != 0 ) {
-				if ( _inverted ) velocity.x = -_minSpeed;
-				else velocity.x = _minSpeed;
-			}
-				
 			_body.velocity = velocity;
 			
 			_updateAnimation();
@@ -324,12 +330,12 @@ package {
 			
 		}
 		
-		public function turn( left:Boolean=true ):void
+		public function turn( faceRight:Boolean=true ):void
 		{
-			if ( _isMoving )
-			{
-				_inverted = !left;
-			}
+//			if ( _isMoving )
+//			{
+				_inverted = !faceRight;
+//			}
 		}
 		
 		private var _flyingPD:PDParticleSystem;

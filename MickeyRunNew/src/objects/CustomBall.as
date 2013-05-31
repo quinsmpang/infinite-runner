@@ -22,6 +22,12 @@ package objects
 //			if ( this.x + this.width < _context.viewCamLeftX ) {
 //				this.kill = true;
 //			}
+			_body.velocity.x = _inverted ? -100 : 100;
+		}
+		
+		public function turn( left:Boolean=true ):void
+		{
+			_inverted = !left;
 		}
 		
 		override protected function createShape():void {

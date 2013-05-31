@@ -73,6 +73,24 @@ package objects
 //					hurt();
 					if ( !hasCollided ) 
 					{
+						var mickey:MickeyHero = collider as MickeyHero;
+						
+						if ( mickey.body.position.x < this.body.position.x )
+						{
+							if ( mickey.inverted ) {
+								// Mickey and Pluto should face each other
+								mickey.turn( true );
+							}
+							this._inverted = true;
+						}
+						else
+						{
+							if ( !mickey.inverted ) {
+								mickey.turn( false );
+							}
+							this._inverted = false;
+						}
+						
 						_context.endGame();
 						hasCollided = true;
 					}

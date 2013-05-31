@@ -4,7 +4,6 @@ package
 	import com.playdom.gas.anims.Normalizer;
 	import com.playdom.gas.anims.Path;
 	
-	import starling.display.MovieClip;
 	import flash.geom.Point;
 	
 	import citrus.core.CitrusEngine;
@@ -15,6 +14,9 @@ package
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.view.starlingview.AnimationSequence;
 	import citrus.view.starlingview.StarlingArt;
+	
+	import nape.phys.Body;
+	import nape.shape.Polygon;
 	
 	import objects.CustomBall;
 	import objects.CustomCannonSensor;
@@ -32,6 +34,7 @@ package
 	import starling.display.BlendMode;
 	import starling.display.Button;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -263,9 +266,9 @@ package
 			_state.add(physicObject);	
 		}
 		
-		public function addPortal( entryX:int, entryY:int, entryH:int, exitX:int, exitY:int ):void
+		public function addPortal( entryX:int, entryY:int, entryH:int, exitX:int, exitY:int, width:int=20, height:int=200 ):void
 		{
-			var endLevel:Sensor = new CustomPortal( "portal", { x: entryX, y: entryY, height: 200, width: 20 },
+			var endLevel:Sensor = new CustomPortal( "portal", { x: entryX, y: entryY, height: height, width: width },
 				_context, exitX, exitY );
 			_state.add( endLevel );
 		}
@@ -467,7 +470,7 @@ package
 						componentID, pos.x, width, pos.y, false, friction, true );
 					break;
 				case GameConstants.COMPONENT_TYPE_PORTAL:
-					_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y );
+					_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y, width, height );
 					break;
 				case GameConstants.COMPONENT_TYPE_ENEMY:
 					_context.viewMaster.addEnemy( pos.x, pos.y ); 
