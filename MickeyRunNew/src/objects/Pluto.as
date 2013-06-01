@@ -95,7 +95,9 @@ package objects
 						hasCollided = true;
 					}
 				}
-				else if ((collider is Platform && collisionAngle != 90) || collider is Enemy)
+				else if ( (collider is CustomPlatform && collisionAngle != 90) 
+					|| collider is Enemy
+					|| collider is CustomVerticalPlatform )
 				{
 					turnAround();
 				}

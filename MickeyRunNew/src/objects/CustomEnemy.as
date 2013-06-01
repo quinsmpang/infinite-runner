@@ -53,7 +53,9 @@ package objects
 				
 				if (collider is _enemyClass && collider.body.velocity.y != 0 && collider.body.velocity.y > enemyKillVelocity)
 					hurt();
-				else if ((collider is Platform && collisionAngle != 90) || collider is Enemy)
+				else if ( (collider is CustomPlatform && collisionAngle != 90) 
+					|| collider is Enemy
+					|| collider is CustomVerticalPlatform )
 					turnAround();
 			}
 				

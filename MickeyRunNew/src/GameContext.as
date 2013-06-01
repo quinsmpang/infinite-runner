@@ -33,7 +33,7 @@ package
 		public var hasGameEnded:Boolean = false;
 		
 		public var heroMinSpeed:int = 120;
-		public var heroMaxSpeed:int = 150;
+		public var heroMaxSpeed:int = 200;
 		
 		public var numCratesHit:int = 1;
 		

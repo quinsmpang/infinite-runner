@@ -119,16 +119,19 @@ package {
 				"mickeycarpet_", "mickeybubble_", "petebwwalk_", "plutowalk_", "plutohappy_" ]);
 
 			_nape = new Nape("nape");
-			_nape.gravity = Vec2.weak( 0, 1000 );
+			_nape.gravity = Vec2.weak( 0, 800 );
 			_nape.visible = true;
 			add(_nape);
 			
-			_context._mickey = new MickeyHero( "hero", {x:50, y: 100, radius:37, view:heroAnim, group:1}, 
+			_context._mickey = new MickeyHero( "hero", {x:50, y: 100, radius:32, view:heroAnim, group:1}, 
 				_context, heroAnim );
 			_mickey = _context._mickey;
 			add(_mickey);
 			
-//			_context.viewMaster.addBackground();
+			_context.viewMaster.addBackground();
+			
+			
+			
 //			_hillsTexture = new HillsTexture();
 			
 //			_hills = new CustomHills("hills", 
@@ -182,7 +185,7 @@ package {
 //			cspr.y = 400;
 //			this.add( cspr );
 			
-			if ( _context._pluto )
+			if ( false && _context._pluto )
 			{
 				var alist:AnimList;
 				var path:Path;
@@ -254,24 +257,27 @@ package {
 		
 		private function testObjCreator():void
 		{
-			var nObj:NapePhysicsObject = new NapePhysicsObject( "temp" );
+			_context.viewMaster.addVerticalPlatform(
+				"vertWall", 700, 560, 20, 180 );
+//			var nObj:NapePhysicsObject = new NapePhysicsObject( "temp" );
 //			nObj.body.shapes.add( new Polygon( Polygon.box( 100, 40 ) ) );
 //			nObj.body.position.setxy( 500, 0 );
 //			_ce.state.add( nObj );
 			
 //			nObj = new NapePhysicsObject( "temp" );
 //			nObj.body.shapes.add( new Polygon( Polygon.box(250, 30 ) ) );
-			nObj.body.shapes.add( new Circle( 50 ) );
-			nObj.body.position.setxy( 500, 620 );
-//			nObj.body.angularVel = 10;
-//			nObj.body.kinAngVel = 10;
+//			nObj.body.shapes.add( new Polygon( [ Vec2.weak( 10, 10 ), Vec2.weak( 200, 50 ), Vec2.weak( 200, 10 ) ] ) );
+//			nObj.body.shapes.add( new Circle( 50 ) );
+//			nObj.body.position.setxy( 500, 520 );
+//			nObj.body.angularVel = 2;
+//			nObj.body.kinAngVel = 2;
 //			nObj.body.kinematicVel = Vec2.weak( 30, 0 );
 //			nObj.body.rotation = -0.3;
-			nObj.body.velocity = Vec2.weak( 50, 0 );
+//			nObj.body.velocity = Vec2.weak( 50, 0 );
 			
 //			nObj.body.allowMovement = false;
 //			nObj.body.allowRotation = false;
-			_ce.state.add( nObj );
+//			_ce.state.add( nObj );
 		}
 		
 		override public function update(timeDelta:Number):void {

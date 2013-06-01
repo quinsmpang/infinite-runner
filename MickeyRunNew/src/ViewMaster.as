@@ -27,6 +27,7 @@ package
 	import objects.CustomPlatform;
 	import objects.CustomPortal;
 	import objects.CustomPowerup;
+	import objects.CustomVerticalPlatform;
 	import objects.Particle;
 	import objects.Pluto;
 	import objects.pools.PoolParticle;
@@ -384,6 +385,23 @@ package
 			_state.add(physicObject);	
 		}
 		
+		public function addVerticalPlatform( platID:String, platformX:int=0, platformY:int=0,
+											 platWidth:int=0, platHeight:int=0 ):CustomVerticalPlatform
+		{
+			
+			var floor:CustomVerticalPlatform = new CustomVerticalPlatform( platID, {
+				x: platformX, 
+				y: platformY,
+				width:platWidth, 
+				height: platHeight
+			}, _context);
+			
+			floor.oneWay = false;
+			_state.add(floor);
+			
+			return floor;
+		}
+									 
 		public function addPlatform( platID:String, platformX:int=0, platWidth:int=0, 
 									  platformY:int=0, ballAdd:Boolean=false, friction:Number=10,
 									coinAdd:Boolean=false, rotation:Number=0 ):CustomPlatform {
@@ -468,6 +486,10 @@ package
 				case GameConstants.COMPONENT_TYPE_PLATFORM:
 					_context.viewMaster.addPlatform( 
 						componentID, pos.x, width, pos.y, false, friction, true );
+					break;
+				case GameConstants.COMPONENT_TYPE_VERTICAL_PLATFORM:
+					_context.viewMaster.addVerticalPlatform( 
+						componentID, pos.x, pos.y, width, height );
 					break;
 				case GameConstants.COMPONENT_TYPE_PORTAL:
 					_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y, width, height );

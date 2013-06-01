@@ -20,6 +20,7 @@ package {
 	import nape.callbacks.PreFlag;
 	import nape.callbacks.PreListener;
 	import nape.geom.Vec2;
+	import nape.phys.Body;
 	
 	import objects.CustomBall;
 	import objects.CustomCannonSensor;
@@ -30,6 +31,7 @@ package {
 	import objects.CustomMissile;
 	import objects.CustomPlatform;
 	import objects.CustomPowerup;
+	import objects.CustomVerticalPlatform;
 	
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -93,10 +95,10 @@ package {
 			
 			_heroAnim = heroAnim;
 
-			jumpAcceleration += 3;
-//			jumpHeight += 40;
+//			jumpAcceleration += 3;
+			jumpHeight += 40;
 			
-			this._body.gravMass = 2.6;
+			this._body.gravMass = 3.0;
 			
 //			_body.force.set( new Vec2(0,-400));
 			
@@ -133,8 +135,8 @@ package {
 			// TODO Auto-generated method stub
 			_isSpeeding = false;
 			_isFlying = false;
-			_animation = "mickeyjump2_";
-			_body.velocity.y = -jumpHeight;
+//			_animation = "mickeyjump2_";
+//			_body.velocity.y = -jumpHeight;
 			downTimer.stop();
 			if ( _flyingPD ) _flyingPD.stop();
 		}
@@ -183,6 +185,8 @@ package {
 				if ( !_isMoving ) {
 					velocity.x = _minSpeed;
 					_isMoving = true;
+					_mobileInput.screenTouched = false;
+					
 				} else if ( _isFlying ) {
 					if ( _mobileInput.touchStartPoint ) {
 						velocity.y = -_flyingJumpHeight;
@@ -202,9 +206,10 @@ package {
 					} else if ( screenTappedTwice ) { // && _doubleJumpAvailable ) {
 //						velocity.y = -jumpHeight;
 						if ( !_onGround ) {
-							_isMoving = false;
+//							_isMoving = false;
 							screenTappedOnce = false;
 							_mobileInput.screenTouched = false;
+//							startSpeeding();
 						}
 						_doubleJumpAvailable = false;
 					} else if ( screenTappedThrice ) {// && _flightAvailable ) {
@@ -212,7 +217,7 @@ package {
 //						screenTappedThrice = false;
 						_flightAvailable = false;
 					} else if (velocity.y < 0) {
-						velocity.y -= jumpAcceleration;
+//						velocity.y -= jumpAcceleration;
 					} else {
 						;
 					}
@@ -253,8 +258,9 @@ package {
 				velocity.x = _maxSpeed + 40;
 //				if ( velocity.x > _maxSpeed + 20 ) velocity.x = _maxSpeed + 20;
 			} else if ( _isSpeeding ) {
-//				velocity.x = _minSpeed + 100;
-//				if ( velocity.x > _maxSpeed + 150 ) velocity.x = _maxSpeed + 150;
+//				velocity.x *= 1.1;
+				velocity.x = _maxSpeed;
+				if ( velocity.x > _maxSpeed ) velocity.x = _maxSpeed;
 			} else {
 //				velocity.x += (_minSpeed - velocity.x) * 0.2;
 //				velocity.x = _minSpeed;
@@ -278,12 +284,12 @@ package {
 			}
 			
 			if ( velocity.x != 0 ) {
-				if ( _inverted ) velocity.x = -_minSpeed;
-				else velocity.x = _minSpeed;
+				if ( _inverted ) velocity.x = _isSpeeding ? -_maxSpeed : -_minSpeed;
+				else velocity.x = _isSpeeding ? _maxSpeed : _minSpeed;
 			}
 				
 			if ( impulseCount-- > 0 ) {
-				_body.applyImpulse( Vec2.weak( 0, -200 ) );
+				_body.applyImpulse( Vec2.weak( 0, -100 ) );
 				if ( impulseCount > impulseMax - 2 ) {
 					velocity.y = -jumpHeight;
 					_onGround = false;
@@ -330,6 +336,21 @@ package {
 			
 		}
 		
+		public function isOnGround():Boolean
+		{
+			return _onGround;
+		}
+		
+		public function getPhysicsBody():Body
+		{
+			return _body;
+		}
+		
+		public function turnAround():void
+		{
+			_inverted = !_inverted;
+		}
+		
 		public function turn( faceRight:Boolean=true ):void
 		{
 //			if ( _isMoving )
@@ -355,6 +376,12 @@ package {
 			} else {
 				downTimer.reset();
 			}
+		}
+		
+		public function startSpeeding():void
+		{
+			_isSpeeding = true;
+			downTimer.start();
 		}
 
 		private function _updateAnimation():void {
@@ -442,7 +469,14 @@ package {
 				}
 			}
 			
-			if ( collider is Platform ) {
+			if ( collider is CustomVerticalPlatform ) {
+				_isMoving = false;
+				turnAround();
+				
+				_context.viewMaster._mobileInput.screenTouched = false;
+			}
+			
+			if ( collider is CustomPlatform ) {
 				if ( lastPlatID != "" && lastPlatID != collider.name ) {
 //					_isMoving = false;
 				}  
@@ -455,6 +489,9 @@ package {
 				screenTappedOnce = false;
 				screenTappedTwice = false;
 				screenTappedThrice = false;
+				
+				// allow only one jump per screen touch
+				_context.viewMaster._mobileInput.screenTouched = false;
 			} 
 			
 			if (callback.int2.userData.myData is CustomCoin) {
@@ -520,7 +557,7 @@ package {
 				
 				var collisionAngle:Number = callback.arbiter.collisionArbiter.normal.angle * 180 / Math.PI;
 				
-				if ( collider is Platform ) {
+				if ( collider is CustomPlatform ) {
 					if ( collisionAngle < 45 || collisionAngle > 135 ) {
 						return PreFlag.IGNORE;	
 					}

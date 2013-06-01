@@ -14,6 +14,7 @@ package objects
 	import citrus.view.starlingview.StarlingView;
 	
 	import nape.callbacks.InteractionCallback;
+	import nape.geom.Vec2;
 	import nape.phys.BodyType;
 	
 	import starling.display.BlendMode;
@@ -85,7 +86,20 @@ package objects
 				callback.int2.userData.myData as NapePhysicsObject : callback.int1.userData.myData;
 			var facingLeft:Boolean = _exitX < _context.viewCamLeftX + _context.viewCamLensWidth / 2;
 			
-			if ( collider ) {
+			if ( collider ) 
+			{
+				if ( collider is MickeyHero ) {
+					var mickey:MickeyHero = collider as MickeyHero;
+					
+					if ( mickey.isOnGround() ) return;
+					
+					mickey.turn( facingLeft );
+					mickey._isMoving = false;
+					mickey.screenTappedOnce = false;
+					
+					_context.viewMaster._mobileInput.screenTouched = false;
+				}
+				
 				collider.x = _exitX;
 				collider.y = _exitY;
 			}
@@ -94,13 +108,7 @@ package objects
 				( collider as CustomBall ).turn( facingLeft );
 			}
 			
-			if ( collider is MickeyHero ) {
-				( collider as MickeyHero ).turn( facingLeft );
-				( collider as MickeyHero )._isMoving = false;
-				( collider as MickeyHero ).screenTappedOnce = false;
-				
-				_context.viewMaster._mobileInput.screenTouched = false;
-			}
+			
 		}
 		
 		

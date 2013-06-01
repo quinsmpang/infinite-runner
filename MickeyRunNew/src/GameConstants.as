@@ -12,6 +12,7 @@ package
 		
 		
 		public static const COMPONENT_TYPE_PLATFORM:String = "platform";
+		public static const COMPONENT_TYPE_VERTICAL_PLATFORM:String = "vertical_platform";
 		public static const COMPONENT_TYPE_PORTAL:String = "portal";
 		public static const COMPONENT_TYPE_ENEMY:String = "enemy";
 		public static const COMPONENT_TYPE_PLUTO:String = "pluto";
