@@ -96,7 +96,7 @@ package {
 			_heroAnim = heroAnim;
 
 //			jumpAcceleration += 3;
-			jumpHeight += 40;
+			jumpHeight += 50;
 			
 			this._body.gravMass = 3.0;
 			

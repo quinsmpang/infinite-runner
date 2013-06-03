@@ -27,6 +27,7 @@ package
 	import objects.CustomPlatform;
 	import objects.CustomPortal;
 	import objects.CustomPowerup;
+	import objects.CustomSwitch;
 	import objects.CustomVerticalPlatform;
 	import objects.Particle;
 	import objects.Pluto;
@@ -298,7 +299,7 @@ package
 			_context.viewMaster.scaleTextures( plutoAnim, plutoAnimArray );
 			
 			var pluto:Pluto = new Pluto("pluto", {x:x, y:y,
-				radius:37, view:plutoAnim, group:1}, _context, plutoAnim );
+				radius:34, view:plutoAnim, group:1}, _context, plutoAnim );
 			
 			_context._pluto = pluto;
 			
@@ -350,6 +351,15 @@ package
 //			path.easing = Normalizer.EASE_BOTH;
 		}
 		
+		public function addSwitch( switchX:int, switchY:int, doorId:String ):void {
+			var width:int; var height:int;
+			width = 26; height = 26;
+
+			var physicObject:CustomSwitch = new CustomSwitch("switch", 
+				{ x:switchX, y:switchY, width:width, height:height }, _context, doorId );
+			_state.add(physicObject);	
+		}
+		
 		public function addCannonSensor( cannonX:int, coinY:int ):void {
 			var image:Image;
 			var width:int; var height:int;
@@ -386,14 +396,21 @@ package
 		}
 		
 		public function addVerticalPlatform( platID:String, platformX:int=0, platformY:int=0,
-											 platWidth:int=0, platHeight:int=0 ):CustomVerticalPlatform
+											 platWidth:int=0, platHeight:int=0, isDoor:Boolean=false ):CustomVerticalPlatform
 		{
+			var image:Image;
+			
+			if ( isDoor )
+			{
+				image = new Image( _miscTextureAtlas.getTexture("wooden_door") );
+			}
 			
 			var floor:CustomVerticalPlatform = new CustomVerticalPlatform( platID, {
 				x: platformX, 
 				y: platformY,
 				width:platWidth, 
-				height: platHeight
+				height: platHeight,
+				view: image
 			}, _context);
 			
 			floor.oneWay = false;
@@ -491,6 +508,10 @@ package
 					_context.viewMaster.addVerticalPlatform( 
 						componentID, pos.x, pos.y, width, height );
 					break;
+				case GameConstants.COMPONENT_TYPE_DOOR:
+					_context.viewMaster.addVerticalPlatform( 
+						componentID, pos.x, pos.y, width, height, true );
+					break;
 				case GameConstants.COMPONENT_TYPE_PORTAL:
 					_context.viewMaster.addPortal( pos.x, pos.y, height, secondPos.x, secondPos.y, width, height );
 					break;
@@ -502,6 +523,9 @@ package
 					break;
 				case GameConstants.COMPONENT_TYPE_SPRING:
 					_context.viewMaster.addCannonSensor( pos.x, pos.y ); 
+					break;
+				case GameConstants.COMPONENT_TYPE_SWITCH:
+					_context.viewMaster.addSwitch( pos.x, pos.y, spawnItem ); 
 					break;
 				case GameConstants.COMPONENT_TYPE_STAR:
 					_context.viewMaster.addStar( pos.x, pos.y );

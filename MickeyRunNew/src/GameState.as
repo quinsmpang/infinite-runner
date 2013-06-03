@@ -120,7 +120,7 @@ package {
 
 			_nape = new Nape("nape");
 			_nape.gravity = Vec2.weak( 0, 800 );
-			_nape.visible = true;
+//			_nape.visible = true;
 			add(_nape);
 			
 			_context._mickey = new MickeyHero( "hero", {x:50, y: 100, radius:32, view:heroAnim, group:1}, 

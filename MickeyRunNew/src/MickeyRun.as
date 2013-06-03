@@ -14,13 +14,13 @@ package
 	
 //	[SWF(frameRate="60", backgroundColor="0xb6dffc")]
 //	[SWF(frameRate="60", width="960", height="640", backgroundColor="0x000000")]
-	[SWF(frameRate="60", width="1280", height="740", backgroundColor="0xffffff")]
+	[SWF(frameRate="60", width="1280", height="760", backgroundColor="0xffffff")]
 	public class MickeyRun extends StarlingCitrusEngine
 	{
 		private var _context:GameContext = new GameContext();
 		public function MickeyRun()
 		{
-			Starling.multitouchEnabled = true;
+			Starling.multitouchEnabled = false;
 			Starling.handleLostContext = true;
 			setUpStarling( true );
 			

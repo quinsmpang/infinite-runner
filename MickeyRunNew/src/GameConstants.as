@@ -13,10 +13,12 @@ package
 		
 		public static const COMPONENT_TYPE_PLATFORM:String = "platform";
 		public static const COMPONENT_TYPE_VERTICAL_PLATFORM:String = "vertical_platform";
+		public static const COMPONENT_TYPE_DOOR:String = "door";
 		public static const COMPONENT_TYPE_PORTAL:String = "portal";
 		public static const COMPONENT_TYPE_ENEMY:String = "enemy";
 		public static const COMPONENT_TYPE_PLUTO:String = "pluto";
 		public static const COMPONENT_TYPE_SPRING:String = "spring";
+		public static const COMPONENT_TYPE_SWITCH:String = "switch";
 		public static const COMPONENT_TYPE_STAR:String = "star";
 		public static const COMPONENT_TYPE_BALL:String = "ball";
 		public static const COMPONENT_TYPE_POWERUP:String = "powerup";
