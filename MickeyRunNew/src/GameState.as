@@ -111,12 +111,12 @@ package {
 				"mickeypush_", "mickeycarpet_", "mickeybubble_", "mickeyidle_" ];
 			
 			heroAnim = new AnimationSequence(mickeyTextureAtlas, 
-				heroAnimArray, "slice_", 12, true, "none");
+				heroAnimArray, "slice_", 12, true );
 			
 			_context.viewMaster.scaleTextures( heroAnim, heroAnimArray );
 			
 			StarlingArt.setLoopAnimations(["slice_", "mickeypush_", 
-				"mickeycarpet_", "mickeybubble_", "petebwwalk_", "plutowalk_", "plutohappy_" ]);
+				"mickeycarpet_", "mickeybubble_", "petebwwalk_", "plutowalk_", "plutohappy_", "fire_" ]);
 
 			_nape = new Nape("nape");
 			_nape.gravity = Vec2.weak( 0, 800 );
@@ -250,15 +250,17 @@ package {
 			view.camera.bounds = new Rectangle( 0, _context.minY, 
 					levelDistance , stage.stageHeight );
 			
-//			testObjCreator();
+			testObjCreator();
 			
 			return levelDistance;
 		}
 		
 		private function testObjCreator():void
 		{
-			_context.viewMaster.addVerticalPlatform(
-				"vertWall", 700, 560, 20, 180 );
+			_context.viewMaster.addFire( 
+					"fire", 100, 630 );
+//			_context.viewMaster.addVerticalPlatform(
+//				"vertWall", 700, 560, 20, 180 );
 //			var nObj:NapePhysicsObject = new NapePhysicsObject( "temp" );
 //			nObj.body.shapes.add( new Polygon( Polygon.box( 100, 40 ) ) );
 //			nObj.body.position.setxy( 500, 0 );

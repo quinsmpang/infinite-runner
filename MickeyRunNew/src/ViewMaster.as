@@ -13,10 +13,6 @@ package
 	import citrus.objects.platformer.nape.Hero;
 	import citrus.objects.platformer.nape.Sensor;
 	import citrus.view.starlingview.AnimationSequence;
-	import citrus.view.starlingview.StarlingArt;
-	
-	import nape.phys.Body;
-	import nape.shape.Polygon;
 	
 	import objects.CustomBall;
 	import objects.CustomCannonSensor;
@@ -33,7 +29,6 @@ package
 	import objects.Pluto;
 	import objects.pools.PoolParticle;
 	
-	import starling.display.BlendMode;
 	import starling.display.Button;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -294,13 +289,14 @@ package
 			var plutoAnimArray:Array = [ "plutowalk_", "plutohappy_" ];
 			var plutoAnim:AnimationSequence = new AnimationSequence(Assets.getCharactersTextureAtlas(), 
 				plutoAnimArray, 
-				"plutohappy_", 12, true, "none");
+				"plutohappy_", 12, true );
 			
 			_context.viewMaster.scaleTextures( plutoAnim, plutoAnimArray );
 			
 			var pluto:Pluto = new Pluto("pluto", {x:x, y:y,
-				radius:34, view:plutoAnim, group:1}, _context, plutoAnim );
+				radius:32, view:plutoAnim, group:1}, _context, plutoAnim );
 			
+			pluto.body.gravMass = 4;
 			_context._pluto = pluto;
 			
 			_state.add(pluto);
@@ -329,7 +325,7 @@ package
 			return physicObject;
 		}
 		
-		public function addStar( starX:int, starY:int, bw:Boolean=false ):void {
+		public function addStar( starX:int, starY:int, bw:Boolean=false, secondPos:Point=null ):void {
 			var image:Image;
 			var width:int; var height:int;
 			
@@ -345,10 +341,14 @@ package
 				{ x:starX, y:starY, width:width, height:height, view:image}, _context );
 			_state.add(physicObject);	
 			
-//			var alist:AnimList = _context.animControl.attachAnimList( physicObject );
-//			var path:Path = Path.make( alist, physicObject.x + 200, physicObject.y, 700, 800 );
-//			path.osc = true;
-//			path.easing = Normalizer.EASE_BOTH;
+			if ( secondPos && secondPos.x != 0 && secondPos.y != 0 )
+			{
+				var dur:int = Math.random() * 1000 + 500;
+				var alist:AnimList = _context.animControl.attachAnimList( physicObject );
+				var path:Path = Path.make( alist, physicObject.x - 100, physicObject.y, 700, dur );
+				path.osc = true;
+				path.easing = Normalizer.EASE_BOTH;
+			}
 		}
 		
 		public function addSwitch( switchX:int, switchY:int, doorId:String ):void {
@@ -393,6 +393,20 @@ package
 			var physicObject:CustomPowerup = new CustomPowerup("powerup", 
 				{ x:coinX, y:coinY, width:width, height:height, view:image}, _context );
 			_state.add(physicObject);	
+		}
+		
+		public function addFire( platID:String, x:int=0, y:int=0 ):void
+		{
+			var fireAnim:AnimationSequence = new AnimationSequence( _miscTextureAtlas, 
+				[ "fire_" ], "fire_", 8, true );
+			
+			var fire:CitrusSprite = new CitrusSprite( platID, {
+				x: x,
+				y: y,
+				view: fireAnim
+			});
+			
+			_state.add( fire );
 		}
 		
 		public function addVerticalPlatform( platID:String, platformX:int=0, platformY:int=0,
@@ -508,6 +522,10 @@ package
 					_context.viewMaster.addVerticalPlatform( 
 						componentID, pos.x, pos.y, width, height );
 					break;
+				case GameConstants.COMPONENT_TYPE_FIRE:
+					_context.viewMaster.addFire( 
+						componentID, pos.x, pos.y );
+					break;
 				case GameConstants.COMPONENT_TYPE_DOOR:
 					_context.viewMaster.addVerticalPlatform( 
 						componentID, pos.x, pos.y, width, height, true );
@@ -528,7 +546,7 @@ package
 					_context.viewMaster.addSwitch( pos.x, pos.y, spawnItem ); 
 					break;
 				case GameConstants.COMPONENT_TYPE_STAR:
-					_context.viewMaster.addStar( pos.x, pos.y );
+					_context.viewMaster.addStar( pos.x, pos.y, false, secondPos );
 					break;
 				case GameConstants.COMPONENT_TYPE_BALL:
 					_context.viewMaster.addBall( false, pos.x, pos.y );

@@ -2,6 +2,8 @@ package objects
 {
 	import citrus.objects.platformer.nape.Coin;
 	
+	import nape.phys.BodyType;
+	
 	public class CustomCoin extends Coin
 	{	
 		private var _context:GameContext = null;
@@ -18,6 +20,11 @@ package objects
 //			if ( this.x + this.width < _context.viewCamLeftX ) {
 //				this.kill = true;
 //			}
+		}
+		
+		override protected function defineBody():void {
+			
+			_bodyType = BodyType.KINEMATIC;
 		}
 	}
 }
