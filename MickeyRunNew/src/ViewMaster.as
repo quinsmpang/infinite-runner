@@ -227,7 +227,7 @@ package
 					if ( btn.name == "button" + i ) {
 						var rowData:RowData = MetaData.getSheetData( "Levels" ).findValue( "seq", i );
 						if ( rowData ) {
-							_context.currentLevel = rowData.uid;
+							_context.currentLevel = "lev_00";// rowData.uid;
 						}
 					}
 				}
@@ -294,9 +294,9 @@ package
 			_context.viewMaster.scaleTextures( plutoAnim, plutoAnimArray );
 			
 			var pluto:Pluto = new Pluto("pluto", {x:x, y:y,
-				radius:32, view:plutoAnim, group:1}, _context, plutoAnim );
+				radius:33, view:plutoAnim, group:1}, _context, plutoAnim );
 			
-			pluto.body.gravMass = 4;
+			pluto.body.gravMass = 4.5;
 			_context._pluto = pluto;
 			
 			_state.add(pluto);
