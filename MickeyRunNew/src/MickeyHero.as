@@ -98,7 +98,7 @@ package {
 //			jumpAcceleration += 3;
 			jumpHeight += 50;
 			
-			this._body.gravMass = 3.0;
+//			this._body.gravMass = 3.0;
 			
 //			_body.force.set( new Vec2(0,-400));
 			

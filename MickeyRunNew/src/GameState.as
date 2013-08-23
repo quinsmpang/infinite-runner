@@ -151,8 +151,8 @@ package {
 //			this.add( _context.viewMaster._cameraTracker );
 
 			view.camera.setUp( _context.viewMaster._cameraTracker, 
-				new MathVector(stage.stageWidth * 0.4, stage.stageHeight * 0.80), 
-				_cameraBounds, new MathVector(1.0, 1.0));
+				new Point(stage.stageWidth * 0.4, stage.stageHeight * 0.80), 
+				_cameraBounds, new Point(1.0, 1.0));
 			view.camera.allowZoom = true;
 			
 //			view.camera.zoomEasing = 0.01;
@@ -206,14 +206,14 @@ package {
 				
 				var task:TaskAnim = TaskAnim.make( alist, 0 );
 				task.addTask( function():void {
-					view.camera.easing = new MathVector( 0.15, 0.08 );
+					view.camera.easing = new Point( 0.15, 0.08 );
 					view.camera.target = _mickey;
 					_context.viewMaster._mobileInput._enabled = true;
 				} );
 			}
 			else
 			{
-				view.camera.easing = new MathVector( 0.15, 0.08 );
+				view.camera.easing = new Point( 0.15, 0.08 );
 				view.camera.target = _mickey;
 				_context.viewMaster._mobileInput._enabled = true;
 			}

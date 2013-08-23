@@ -296,7 +296,7 @@ package
 			var pluto:Pluto = new Pluto("pluto", {x:x, y:y,
 				radius:33, view:plutoAnim, group:1}, _context, plutoAnim );
 			
-			pluto.body.gravMass = 4.5;
+//			pluto.body.gravMass = 4.5;
 			_context._pluto = pluto;
 			
 			_state.add(pluto);
@@ -462,9 +462,9 @@ package
 			}, _context);
 //			floor.view = image;
 			
-			floor.body.rotation = rotation;
+//			floor.body.rotation = rotation;
 			
-			floor.oneWay = true;
+//			floor.oneWay = true;
 			_state.add(floor);
 			
 			if ( ballAdd ) {
