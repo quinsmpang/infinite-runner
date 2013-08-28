@@ -36,11 +36,7 @@ package com.playdom.common.util {
     //import com.playdom.socialcity.ui.ModalManager;
 //    import liddles.debug.Assert;
 
-    import com.playdom.cms.util.JsonDecoderAsync;
-
-    import flash.system.System;
     import flash.utils.ByteArray;
-    import flash.utils.getTimer;
 
     /**
      * This class provides encoding and decoding of the JSON format.
